@@ -26,57 +26,102 @@
           ></button>
         </div>
       </header>
+      <section class="todo-statistics-container">
+        <div class="todo-statistics-card todo">
+          <span class="card-title">To Do</span>
+          <span class="card-count">0</span>
+        </div>
+        <div class="todo-statistics-card doing">
+          <span class="card-title">In Progress</span>
+          <span class="card-count">0</span>
+        </div>
+        <div class="todo-statistics-card done">
+          <span class="card-title"> Done </span>
+          <span class="card-count"> 0 </span>
+        </div>
+        <div class="todo-statistics-card achieve">
+          <span class="card-title">Achieved</span>
+          <span class="card-count"> 0% </span>
+        </div>
+      </section>
       <section class="search-container">
-        <h2 class="sr-only">검색 및 조회 그리고 할 일을 추가할 수 있는 섹션입니다</h2>
+        <h2 class="sr-only">
+          검색 및 조회 그리고 할 일을 추가할 수 있는 섹션입니다
+        </h2>
         <div class="search-block-wrapper">
-        <div class="search-input-container">
-          <input class="search-input" type="text" placeholder="할 일 검색..." />
-          <button class="search-input-button" type="button" aria-label="검색">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-search"
-              viewBox="0 0 16 16"
+          <div class="search-input-container">
+            <input
+              class="search-input"
+              type="text"
+              placeholder="할 일 검색..."
+            />
+            <button class="search-input-button" type="button" aria-label="검색">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-search"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="search-period-dropdown">
+            <button
+              class="search-period-dropdown-button"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
             >
-              <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <div class="search-period-dropdown">
-
-          <button
-            class="search-period-dropdown-button"
-            type="button"
-            aria-haspopup="listbox"
-            aria-expanded="false"
-          >
-            전체 기간
-            <span class="arrow-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-</svg></span>
-          </button>
-
-          <ul class="search-period-dropdown-menu dropdown-menu" role="listbox">
-            <li class="search-period-dropdown-item dropdown-item" role="option" data-value="option1">
               전체 기간
-            </li>
-            <li class="search-period-dropdown-item dropdown-item" role="option" data-value="option2">
-              오늘
-            </li>
-            <li class="search-period-dropdown-item dropdown-item" role="option" data-value="option3">
-              최근 7일
-            </li>
-          </ul>
+              <span class="arrow-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-caret-down-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              class="search-period-dropdown-menu dropdown-menu"
+              role="listbox"
+            >
+              <li
+                class="search-period-dropdown-item dropdown-item"
+                role="option"
+                data-value="option1"
+              >
+                전체 기간
+              </li>
+              <li
+                class="search-period-dropdown-item dropdown-item"
+                role="option"
+                data-value="option2"
+              >
+                오늘
+              </li>
+              <li
+                class="search-period-dropdown-item dropdown-item"
+                role="option"
+                data-value="option3"
+              >
+                최근 7일
+              </li>
+            </ul>
+          </div>
         </div>
-        </div>
-
         <div class="search-priority-dropdown">
-   
           <button
             class="search-priority-dropdown-button"
             type="button"
@@ -84,31 +129,72 @@
             aria-expanded="false"
           >
             전체 우선순위
-            <span class="arrow-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-</svg></span>
+            <span class="arrow-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-caret-down-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                />
+              </svg>
+            </span>
           </button>
 
-          <ul class="search-priority-dropdown-menu dropdown-menu" role="listbox">
-            <li class="search-priority-dropdown-item dropdown-item" role="option" data-value="option1">
+          <ul
+            class="search-priority-dropdown-menu dropdown-menu"
+            role="listbox"
+          >
+            <li
+              class="search-priority-dropdown-item dropdown-item"
+              role="option"
+              data-value="option1"
+            >
               HIGH (높음)
             </li>
-            <li class="search-priority-dropdown-item dropdown-item" role="option" data-value="option2">
+            <li
+              class="search-priority-dropdown-item dropdown-item"
+              role="option"
+              data-value="option2"
+            >
               MID (중간)
             </li>
-            <li class="search-priority-dropdown-item dropdown-item" role="option" data-value="option3">
+            <li
+              class="search-priority-dropdown-item dropdown-item"
+              role="option"
+              data-value="option3"
+            >
               LOW (낮음)
             </li>
           </ul>
         </div>
-        <button type="button" class="search-sort-button">정렬: 오름차순 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5"/>
-</svg></button>
+        <button type="button" class="search-sort-button">
+          정렬: 오름차순
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-arrow-up-short"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5"
+            />
+          </svg>
+        </button>
         <button class="add-task-button" type="button">+ 새 할 일</button>
-        </div>
+
         <div>
           <p class="search-sort-info">정렬: 오름차순</p>
-          <button type="button" class="reset-data-button">전체 데이터 초기화</button>
+          <button type="button" class="reset-data-button">
+            전체 데이터 초기화
+          </button>
         </div>
       </section>
       <section></section>
