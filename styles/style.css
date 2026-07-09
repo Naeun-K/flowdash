@@ -233,6 +233,11 @@ button {
   border: none;
   background-color: transparent;
 }
+.reset-data-button:hover {
+  background-color: #651fff;
+  color: #fff;
+  border-radius: 10px;
+}
 
 /* 컨테이너 스타일 */
 .todo-statistics-container {
@@ -609,6 +614,12 @@ button {
   }
 }
 
+/* hover color change*/
+.greeting-theme-toggle:hover {
+  background-color: #f8fafc;
+  border: 1px solid rgba(95, 66, 240, 1);
+  color: rgba(95, 66, 240, 1);
+}
 /*미디어 쿼리 모바일*/
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .greeting-container {
