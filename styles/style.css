@@ -508,6 +508,51 @@
   justify-content: center;
 }
 
+/* 태블릿 구간 (768px ~ 1199px) total 박스 */
+@media screen and (max-width: 1199px) {
+  /* 컨테이너 설정 */
+  .todo-statistics-container {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 24px;
+  }
+
+  /* 카드 설정: 2열로 배치 */
+  .todo-statistics-card {
+    flex: 0 0 calc(50% - (16px / 2));
+    max-width: calc(50% - (16px / 2));
+    padding: 20px;
+  }
+
+  /* 폰트 크기 및 높이조정 */
+  .todo-statistics-card .card-title {
+    font-size: 13.6px;
+    line-height: 20px;
+  }
+  .todo-statistics-card .card-count {
+    font-size: 30px;
+    line-height: 30px;
+  }
+}
+
+/* 태블릿 구간 (768px ~ 1199px) 할일,진행중,완료 일렬로 정렬*/
+@media screen  and (max-width: 1199px) {
+  .board-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .board-todo-board,
+  .board-doing-board,
+  .board-done-board {
+    width: 100%;
+    flex: none;
+  }
+}
+
 /*미디어 쿼리 모바일*/
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .greeting-container {
