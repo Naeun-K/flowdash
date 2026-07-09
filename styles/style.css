@@ -471,6 +471,18 @@ button {
   border: 1px solid #e0e5eb;
   background: #fff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  /* ... 기존 속성들 ... */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+
+  /* 카드 애니매이션 움직임추가  */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+/*카드 호버 시 애니메이션 효과 */
+.todo-statistics-card:hover {
+  transform: translateY(-7px); /* 위로 이동 */
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.3); /* 그림자 */
 }
 
 /* 제목 스타일 */
@@ -517,13 +529,10 @@ button {
   justify-content: center;
 }
 
-/*태블릿: 768px ~ 1199px */
-@media (max-width: 1199px) {
-  .container {
-    max-width: 700px;
-  }
-
+/*태블릿: 768px ~ 1099px */
+@media (max-width: 1099px) {
   .search-container {
+    max-width: 926px;
     margin: auto 0;
     box-sizing: border-box;
   }
@@ -570,7 +579,10 @@ button {
   .add-block {
     margin-top: 12px;
   }
+}
 
+/* 태블릿 구간 (768px ~ 1199px) total 박스 */
+@media screen and (min-width: 768px) and (max-width: 1199px) {
   /* 컨테이너 설정 */
   .todo-statistics-container {
     flex-wrap: wrap;
