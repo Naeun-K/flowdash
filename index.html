@@ -56,6 +56,7 @@
         </div>
       </header>
       <section class="todo-statistics-container">
+        <h2 class="sr-only">할 일 리스트 통계 보드</h2>
         <div class="todo-statistics-card total">
           <span class="card-title">Total Tasks</span>
           <span class="card-count">0</span>
@@ -78,9 +79,7 @@
         </div>
       </section>
       <section class="search-container">
-        <h2 class="sr-only">
-          검색 및 조회 그리고 할 일을 추가할 수 있는 섹션입니다
-        </h2>
+        <h2 class="sr-only">검색 및 조회 그리고 할 일을 추가할 수 있는 섹션</h2>
         <div class="search-block-wrapper">
           <div class="search-block">
             <div class="search-input-container">
@@ -241,6 +240,9 @@
         </div>
       </section>
       <section class="board-container">
+        <h2 class="sr-only">
+          할 일 리스트 / 진행 중인 리스트 / 완료된 업무 리스트
+        </h2>
         <div class="board-todo-board">
           <div class="board-header board-todo-header">
             <span class="board-title board-todo-title">할일</span>
@@ -270,5 +272,132 @@
       </section>
       <footer class="footer">&copy; 2026 UIONE. All rights reserved.</footer>
     </div>
+    <!-- ================================================= 모달 ======================================================= -->
+    <dialog class="new-task-modal">
+      <div class="modal-content">
+        <h2 class="modal-title">새 할 일</h2>
+        <form class="modal-form" method="dialog">
+          <div class="label-input-container">
+            <label for="task-title" class="modal-label">제목 *</label>
+            <input
+              type="text"
+              id="task-title"
+              name="task-title"
+              class="modal-input"
+              required
+            />
+          </div>
+          <div class="label-input-container">
+            <label for="task-description" class="modal-label">내용</label>
+            <textarea
+              id="task-description"
+              name="task-description"
+              class="modal-input modal-textarea"
+              rows="4"
+            ></textarea>
+          </div>
+          <div class="modal-radio-select-container">
+            <div class="modal-priority modal-radio-select-group">
+              <label for="task-priority" class="modal-label">우선순위</label>
+              <div class="label-input-container radio-container">
+                <input
+                  type="radio"
+                  id="task-priority-high"
+                  name="task-priority"
+                  value="HIGH"
+                  class="modal-input"
+                  required
+                />
+                <label
+                  for="task-priority-high"
+                  class="modal-radio-label radio-high"
+                  >높음</label
+                >
+                <input
+                  type="radio"
+                  id="task-priority-mid"
+                  name="task-priority"
+                  value="MID"
+                  class="modal-input"
+                  required
+                />
+                <label
+                  for="task-priority-mid"
+                  class="modal-radio-label radio-mid"
+                  >중간</label
+                >
+                <input
+                  type="radio"
+                  id="task-priority-low"
+                  name="task-priority"
+                  value="LOW"
+                  class="modal-input"
+                  required
+                />
+                <label
+                  for="task-priority-low"
+                  class="modal-radio-label radio-low"
+                  >낮음</label
+                >
+              </div>
+            </div>
+            <div
+              class="label-input-container task-status-container modal-radio-select-group"
+            >
+              <label for="task-status" class="modal-label">상태</label>
+              <div class="dropdown modal-status">
+                <button
+                  type="button"
+                  class="dropdown-button modal-status-button"
+                >
+                  <span class="modal-status-label">할 일</span>
+                  <span class="arrow-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-caret-down-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                      />
+                    </svg>
+                  </span>
+                </button>
+                <ul class="modal-status-menu dropdown-menu" role="listbox">
+                  <li
+                    data-value="TODO"
+                    role="option"
+                    class="modal-status-todo modal-status-item dropdown-item"
+                  >
+                    할 일
+                  </li>
+                  <li
+                    data-value="DOING"
+                    role="option"
+                    class="modal-status-doing dropdown-item modal-status-item"
+                  >
+                    진행중
+                  </li>
+                  <li
+                    data-value="DONE"
+                    role="option"
+                    class="modal-status-done dropdown-item modal-status-item"
+                  >
+                    완료
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="modal-button-container">
+            <button type="button" class="modal-close-button">취소</button>
+            <button type="submit" class="modal-submit-button">저장하기</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
   </body>
 </html>
