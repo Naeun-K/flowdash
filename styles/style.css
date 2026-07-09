@@ -1,3 +1,66 @@
+/*보드 전체 레이아웃*/
+.board-container {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  width: 100%;
+  margin: 24px auto 0;
+}
+/*할일 진행중 완료 보드 공통 스타일*/
+.board-todo-board,
+.board-doing-board,
+.board-done-board {
+  flex: 1;
+  min-width: 0;
+  min-height: 360px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--color-black-2, rgba(0, 0, 0, 0.02));
+  box-sizing: border-box;
+}
+/*보드 헤더 스타일*/
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #9aa7b8;
+}
+/* 진행중 보드 구분선 색상 */
+.board-header.board-doing-header {
+  border-bottom: 1px solid #5f42f0;
+}
+
+/* 보드 제목 스타일 */
+.board-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-black-1, #5c6f8a);
+}
+/* 보드별 할일 개수 */
+.board-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+
+  border-radius: 12px;
+  background: #fff;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+/*보드 헤더와 리스트 사이간격*/
+.todo-list,
+.doing-list,
+.done-list {
+  margin-top: 16px;
+}
+
 .greeting-container {
   display: flex;
   justify-content: space-between;
