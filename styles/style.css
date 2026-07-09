@@ -1,3 +1,80 @@
+.greeting-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  /* width: 1136.2px; */
+  height: 117.8px;
+  margin: 0 auto;
+  padding: 24.11px 32.11px;
+  border-radius: 16px;
+  border: 1px solid #e0e5eb;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  margin-top: 32px;
+}
+
+.greeting-content {
+  display: flex;
+  flex-direction: column;
+
+  /* 날짜와 인사말 사이 간격 */
+  gap: 3.99px;
+}
+
+.greeting {
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.greeting-message {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1b2432;
+}
+
+.greeting-nickname {
+  font-size: 28px;
+  font-weight: 700;
+  color: #5f42f0;
+}
+
+.greeting-icon {
+  width: 33.59px;
+  height: 33.59px;
+  padding-left: 4.41px;
+}
+
+.greeting-date {
+  font-size: 14.4px;
+  font-weight: 400;
+  color: #5c6f8a;
+}
+
+.greeting-theme-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.greeting-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 버튼 크기 수정 */
+  width: 40px;
+  height: 40px;
+  margin-right: 32.09px;
+  margin-top: 24.11px;
+  margin-bottom: 51.68px;
+  border-radius: 20px;
+  border: 1px solid #e0e5eb;
+  background: #fff;
+}
+
 /* 컨테이너 스타일 */
 .todo-statistics-container {
   display: flex;
@@ -53,9 +130,9 @@
   border-top: 1.111px solid #e0e5eb;
 
   /* 텍스트 스타일 적용 */
-  color: #5c6f8a; 
+  color: #5c6f8a;
   text-align: center;
-  font-family: "Pretendard", sans-serif; 
+  font-family: "Pretendard", sans-serif;
   font-size: 14.4px;
   font-style: normal;
   font-weight: 400;
@@ -64,6 +141,6 @@
 
 /*텍스트 위치 중앙설정*/
 .footer {
-  align-items: center; 
+  align-items: center;
   justify-content: center;
 }
