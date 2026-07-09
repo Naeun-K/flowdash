@@ -507,3 +507,35 @@
   align-items: center;
   justify-content: center;
 }
+
+/*미디어 쿼리 모바일*/
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .greeting-container {
+    height: auto;
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .greeting {
+    flex-wrap: wrap;
+    font-size: 28px;
+  }
+
+  .greeting-message,
+  .greeting-nickname {
+    font-size: 28px;
+  }
+
+  .greeting-message {
+    width: 100%;
+  }
+
+  .greeting-theme-toggle {
+    margin: 0;
+  }
+  .greeting-icon {
+    width: 33.59px;
+    height: 33.59px;
+    margin-left: 4.41px;
+  }
+}
