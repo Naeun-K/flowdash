@@ -54,6 +54,14 @@ button {
   gap: 8px;
   border-radius: 8px;
   border: 1px solid #e0e5eb;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.search-input-container:focus-within {
+  border-color: #5c4dff;
+  box-shadow: 0 0 0 3px rgba(92, 77, 255, 0.2);
 }
 .search-input {
   width: 100%;
@@ -61,7 +69,9 @@ button {
   align-self: stretch;
   font-size: 14px;
   border: none;
+  outline: none;
 }
+
 .search-input-button {
   border: none;
   background-color: transparent;
@@ -78,10 +88,11 @@ button {
   display: inline-block;
   height: 46.22px;
   position: relative;
+  /* width: 100%; */
 }
 
 .dropdown-button {
-  min-width: 150px;
+  width: 100%;
   background-color: #ffffff;
 
   padding: 10px 20px;
@@ -108,7 +119,8 @@ button {
   overflow: hidden;
   top: 102%;
   left: 0;
-  min-width: 130px;
+  /* min-width: 130px; */
+  width: 100%;
   background-color: #ffffff;
   border: 1px solid #e0e5eb;
   border-radius: 8px;
@@ -130,6 +142,7 @@ button {
 
 /* 각 항목 (li) 및 링크 스타일 */
 .dropdown-item {
+  width: 100%;
   display: block;
   padding: 10px 16px;
   color: #4a5568;
@@ -232,11 +245,15 @@ button {
   color: #c33;
   border: none;
   background-color: transparent;
+  border-radius: 10px;
+
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 .reset-data-button:hover {
   background-color: #651fff;
   color: #fff;
-  border-radius: 10px;
 }
 
 /* 컨테이너 스타일 */
@@ -445,6 +462,18 @@ button {
   border-radius: 20px;
   border: 1px solid #e0e5eb;
   background: #fff;
+
+  transition:
+    background-color 0.3s,
+    border 0.3s,
+    color 0.3s;
+}
+
+/* hover color change*/
+.greeting-theme-toggle:hover {
+  background-color: #f8fafc;
+  border: 1px solid rgba(95, 66, 240, 1);
+  color: rgba(95, 66, 240, 1);
 }
 
 /* 컨테이너 스타일 */
@@ -528,9 +557,209 @@ button {
   align-items: center;
   justify-content: center;
 }
+/* ---------------------------------------------------- 모달 스타일 시이자악 ------------------------------------ */
+.new-task-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
 
-/*태블릿: 768px ~ 1099px */
-@media (max-width: 1099px) {
+.new-task-modal[hidden] {
+  display: none;
+}
+
+.modal-content {
+  background-color: #fff;
+  min-width: 300px;
+  width: 500px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+}
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 23px;
+  align-self: stretch;
+}
+.modal-label {
+  align-self: stretch;
+  color: #1b2432;
+  font-size: 14.4px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21.6px;
+}
+.modal-input {
+  height: 46.22px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid #e0e5eb;
+  background: #fff;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.modal-input:focus {
+  border-color: #5c4dff;
+  box-shadow: 0 0 0 3px rgba(92, 77, 255, 0.2);
+}
+
+.modal-textarea {
+  height: 120px;
+  resize: none;
+}
+.modal-radio-select-container {
+  display: flex;
+  padding-top: 1px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+  flex-wrap: wrap;
+}
+.label-input-container {
+  display: flex;
+  padding-bottom: 7.34px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+.modal-radio-select-container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+.modal-radio-select-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.modal-priority {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.modal-input[type="radio"] {
+  display: none;
+}
+.radio-container {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  align-items: center;
+  flex-direction: row;
+}
+.modal-radio-label {
+  flex: 1;
+  text-align: center;
+  display: inline-block;
+  padding: 8.111px 16.111px;
+  align-items: flex-start;
+
+  border-radius: 20px;
+  border: 1px solid #e0e5eb;
+  background: #fff;
+
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+.radio-high {
+  color: #f25a5a;
+  border: solid 1px #f25a5a;
+}
+.radio-high:hover {
+  background-color: #f25a5a;
+  color: #000;
+}
+
+.radio-mid {
+  color: #f49d25;
+  border: solid 1px #f49d25;
+}
+.radio-mid:hover {
+  background-color: #f49d25;
+  color: #000;
+}
+.radio-low {
+  color: #29a366;
+  border: solid 1px #29a366;
+}
+.radio-low:hover {
+  background-color: #29a366;
+  color: #000;
+}
+.modal-status {
+  display: block;
+  width: 100%;
+  position: relative;
+}
+.modal-status-button {
+  display: flex;
+  justify-content: space-between;
+  overflow: visible;
+  width: 100%;
+}
+
+.modal-status-menu {
+  width: 100%;
+  z-index: 9;
+  position: absolute;
+  top: 100%; /* 버튼 바로 아래 위치 */
+  left: 0;
+}
+.modal-button-container {
+  display: flex;
+  padding-top: 8.99px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+}
+.modal-close-button {
+  display: flex;
+  padding: 12.56px 16px 13.65px 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #5c6f8a;
+  border: none;
+  background-color: #fff;
+}
+.modal-submit-button {
+  border: none;
+  display: flex;
+  padding: 12px 24px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+
+  border-radius: 8px;
+  background: #5f42f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+/* ---------------------------------------------------- 모달 스타일 끄읕 ------------------------------------ */
+/*태블릿: 768px ~ 1199px */
+@media (max-width: 1199px) {
+  .container {
+    max-width: 700px;
+  }
+
   .search-container {
     max-width: 926px;
     margin: auto 0;
@@ -626,12 +855,6 @@ button {
   }
 }
 
-/* hover color change*/
-.greeting-theme-toggle:hover {
-  background-color: #f8fafc;
-  border: 1px solid rgba(95, 66, 240, 1);
-  color: rgba(95, 66, 240, 1);
-}
 /*미디어 쿼리 모바일*/
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .greeting-container {

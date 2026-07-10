@@ -273,10 +273,17 @@
       <footer class="footer">&copy; 2026 UIONE. All rights reserved.</footer>
     </div>
     <!-- ================================================= 모달 ======================================================= -->
-    <dialog class="new-task-modal">
+    <div
+      class="new-task-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="new-task-modal-title"
+      aria-hidden="true"
+      hidden
+    >
       <div class="modal-content">
-        <h2 class="modal-title">새 할 일</h2>
-        <form class="modal-form" method="dialog">
+        <h2 id="new-task-modal-title" class="modal-title">새 할 일</h2>
+        <form class="modal-form">
           <div class="label-input-container">
             <label for="task-title" class="modal-label">제목 *</label>
             <input
@@ -398,6 +405,7 @@
           </div>
         </form>
       </div>
-    </dialog>
+    </div>
+    <script src="./scripts/modal.js"></script>
   </body>
 </html>
