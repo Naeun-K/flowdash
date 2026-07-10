@@ -96,6 +96,11 @@ button {
 .dropdown-button:hover {
   background-color: #f8fafc;
 }
+/* 클릭 시 테두리를 보라색으로 변경 */
+.dropdown-button:focus {
+  border-color: #5f42f0;
+  outline: none;
+}
 .arrow-icon svg {
   width: 12px;
   height: 12px;
@@ -173,6 +178,37 @@ button {
   line-height: normal;
   text-align: center;
   min-width: 150px;
+  transition: border-color 0.3s ease;
+}
+/*정렬 버튼 포커스시 보라색 테두리 강조 */
+.search-sort-button:focus {
+  border-color: #5f42f0;
+  outline: none;
+}
+/* 버튼 테두리 색상 부드럽게 전환 */
+.dropdown-button,
+.search-sort-button {
+  transition: border-color 0.3s ease;
+}
+/* 마우스 오버시 연보라색 테두리 강조 */
+.dropdown-button:hover,
+.search-sort-button:hover {
+  border-color: #aa9af7;
+}
+
+/*클릭 시 보라색 테두리 페이드 애니*/
+.dropdown-button:active,
+.search-sort-button:active {
+  animation: purple-border-fade 0.8s ease;
+}
+
+@keyframes purple-border-fade {
+  0% {
+    border-color: #5f42f0;
+  }
+  100% {
+    border-color: #e0e5eb;
+  }
 }
 
 .add-task-button {
@@ -195,6 +231,15 @@ button {
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  background-color: 0.2s ease;
+}
+.add-task-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #4b32c3;
 }
 
 .search-sort-reset-container {
