@@ -36,6 +36,7 @@ button {
   align-items: center;
   gap: 20px;
 }
+
 .search-block {
   width: 70%;
   display: flex;
@@ -484,7 +485,7 @@ button {
 .greeting-date {
   font-size: 14.4px;
   font-weight: 400;
-  color: #5c6f8a;
+  color: rgba(92, 111, 138, 1);
 }
 
 .greeting-theme-toggle-container {
@@ -508,10 +509,7 @@ button {
   border: 1px solid #e0e5eb;
   background: #fff;
 
-  transition:
-    background-color 0.3s,
-    border 0.3s,
-    color 0.3s;
+  transition: 0.3s;
 }
 
 /* hover color change*/
@@ -520,7 +518,9 @@ button {
   border: 1px solid rgba(95, 66, 240, 1);
   color: rgba(95, 66, 240, 1);
 }
-
+.greeting-theme-toggle:hover path {
+  fill: rgba(95, 66, 240, 1);
+}
 /* 컨테이너 스타일 */
 .todo-statistics-container {
   display: flex;
@@ -856,6 +856,12 @@ button {
   .add-block {
     margin-top: 12px;
   }
+}
+.achieve .card-count {
+  color: rgba(46, 57, 184, 1);
+}
+/* 태블릿 구간 (768px ~ 1199px) total 박스 */
+@media screen and (min-width: 768px) and (max-width: 1199px) {
   /* 컨테이너 설정 */
   .todo-statistics-container {
     flex-wrap: wrap;
@@ -967,4 +973,117 @@ button {
     max-width: 100%;
     box-sizing: border-box;
   }
+}
+/* 다크모드 */
+body.dark {
+  background-color: rgba(19, 24, 32, 1);
+}
+body.dark .greeting-theme-toggle {
+  background-color: rgba(23, 29, 38, 1);
+  border-color: rgba(38, 49, 64, 1);
+}
+body.dark .greeting-theme-toggle:hover {
+  background-color: rgba(23, 29, 38, 1);
+  border: 1px solid rgba(118, 94, 237, 1);
+  color: rgba(118, 94, 237, 1);
+}
+
+body.dark .greeting-container {
+  background-color: rgba(23, 29, 38, 1);
+  border-color: rgba(38, 49, 64, 1);
+}
+body.dark .greeting,
+body.dark .greeting-message {
+  color: rgba(241, 242, 244, 1);
+}
+body.dark .greeting-nickname {
+  color: rgba(118, 94, 237, 1);
+}
+body.dark .greeting-date {
+  color: rgba(171, 177, 186, 1);
+}
+body.dark .achieve .card-count {
+  color: rgba(46, 57, 184, 1);
+}
+body.dark .todo-statistics-card {
+  background-color: rgba(19, 24, 32, 1);
+  border-color: rgba(38, 49, 64, 1);
+}
+body.dark .card-title {
+  color: rgba(171, 177, 186, 1);
+}
+body.dark .card-count {
+  color: rgba(241, 242, 244, 1);
+}
+body.dark .search-container {
+  background-color: rgba(19, 24, 32, 1);
+  color: white;
+}
+body.dark .greeting-theme-toggle:hover {
+  border-color: rgba(118, 94, 237, 1);
+}
+body.dark .footer {
+  color: rgba(171, 177, 186, 1);
+  border-top: 1.11px solid rgba(38, 49, 64, 1);
+}
+body.dark .search-block-wrapper {
+  background-color: rgba(23, 29, 38, 1);
+  border: 0.999px solid rgba(38, 49, 64, 1);
+}
+
+body.dark .add-task-button {
+  background-color: rgba(118, 94, 237, 1);
+}
+body.dark input {
+  background-color: transparent;
+}
+/* 전체 기간 / 전체 우선순위 버튼 */
+body.dark .dropdown-button {
+  background-color: #171d26;
+  color: #f1f2f4;
+  border-color: #263140;
+}
+body.dark .search-input-container {
+  border: 0.999px solid rgba(38, 49, 64, 1);
+}
+body.dark .dropdown-button {
+  color: #666666;
+}
+body.dark .search-sort-button {
+  color: #666666;
+  background-color: transparent;
+  border: 0.999px solid rgba(38, 49, 64, 1);
+}
+body.dark .dropdown-menu {
+  background-color: #171d26;
+  border: 0.999px solid rgba(38, 49, 64, 1);
+}
+body.dark .search-sort-info {
+  background-color: rgba(31, 39, 51, 1);
+  border-color: rgba(38, 49, 64, 1);
+}
+body.dark .board-todo-board,
+body.dark .board-doing-board,
+body.dark .board-done-board {
+  background-color: rgb(24, 29, 36);
+}
+body.dark .board-todo-title,
+body.dark .board-doing-title,
+body.dark .board-done-title {
+  color: #abb1ba;
+}
+body.dark .board-todo-count,
+body.dark .board-doing-count,
+body.dark .board-done-count {
+  background-color: #1f2733;
+  color: #f1f2f4;
+}
+body.dark .board-header.board-doing-header {
+  border-bottom: 1px solid #765eed;
+}
+body.dark .sort-title {
+  color: #abb1ba;
+}
+body.dark .search-sort-info {
+  color: rgb(137, 117, 236);
 }
