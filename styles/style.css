@@ -96,6 +96,11 @@ button {
 .dropdown-button:hover {
   background-color: #f8fafc;
 }
+/* 클릭 시 테두리를 보라색으로 변경 */
+.dropdown-button:focus {
+  border-color: #5f42f0;
+  outline: none;
+}
 .arrow-icon svg {
   width: 12px;
   height: 12px;
@@ -173,6 +178,37 @@ button {
   line-height: normal;
   text-align: center;
   min-width: 150px;
+  transition: border-color 0.3s ease;
+}
+/*정렬 버튼 포커스시 보라색 테두리 강조 */
+.search-sort-button:focus {
+  border-color: #5f42f0;
+  outline: none;
+}
+/* 버튼 테두리 색상 부드럽게 전환 */
+.dropdown-button,
+.search-sort-button {
+  transition: border-color 0.3s ease;
+}
+/* 마우스 오버시 연보라색 테두리 강조 */
+.dropdown-button:hover,
+.search-sort-button:hover {
+  border-color: #aa9af7;
+}
+
+/*클릭 시 보라색 테두리 페이드 애니*/
+.dropdown-button:active,
+.search-sort-button:active {
+  animation: purple-border-fade 0.8s ease;
+}
+
+@keyframes purple-border-fade {
+  0% {
+    border-color: #5f42f0;
+  }
+  100% {
+    border-color: #e0e5eb;
+  }
 }
 
 .add-task-button {
@@ -195,6 +231,15 @@ button {
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  background-color: 0.2s ease;
+}
+.add-task-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #4b32c3;
 }
 
 .search-sort-reset-container {
@@ -232,6 +277,11 @@ button {
   color: #c33;
   border: none;
   background-color: transparent;
+}
+.reset-data-button:hover {
+  background-color: #651fff;
+  color: #fff;
+  border-radius: 10px;
 }
 
 /* 컨테이너 스타일 */
@@ -466,6 +516,18 @@ button {
   border: 1px solid #e0e5eb;
   background: #fff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  /* ... 기존 속성들 ... */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+
+  /* 카드 애니매이션 움직임추가  */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+/*카드 호버 시 애니메이션 효과 */
+.todo-statistics-card:hover {
+  transform: translateY(-7px); /* 위로 이동 */
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.3); /* 그림자 */
 }
 
 /* 제목 스타일 */
@@ -512,13 +574,10 @@ button {
   justify-content: center;
 }
 
-/*태블릿: 768px ~ 1199px */
-@media (max-width: 1199px) {
-  .container {
-    max-width: 700px;
-  }
-
+/*태블릿: 768px ~ 1099px */
+@media (max-width: 1099px) {
   .search-container {
+    max-width: 926px;
     margin: auto 0;
     box-sizing: border-box;
   }
@@ -565,7 +624,10 @@ button {
   .add-block {
     margin-top: 12px;
   }
+}
 
+/* 태블릿 구간 (768px ~ 1199px) total 박스 */
+@media screen and (min-width: 768px) and (max-width: 1199px) {
   /* 컨테이너 설정 */
   .todo-statistics-container {
     flex-wrap: wrap;
@@ -609,6 +671,12 @@ button {
   }
 }
 
+/* hover color change*/
+.greeting-theme-toggle:hover {
+  background-color: #f8fafc;
+  border: 1px solid rgba(95, 66, 240, 1);
+  color: rgba(95, 66, 240, 1);
+}
 /*미디어 쿼리 모바일*/
 @media screen and (min-width: 320px) and (max-width: 767px) {
   .greeting-container {
