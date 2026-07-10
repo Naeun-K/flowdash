@@ -1058,6 +1058,11 @@ body.dark .dropdown-menu {
   background-color: #171d26;
   border: 0.999px solid rgba(38, 49, 64, 1);
 }
+/* 다크모드 드롭다운 hover */
+body.dark .dropdown-item:hover {
+  background-color: #263140;
+  color: #f1f2f4;
+}
 body.dark .search-sort-info {
   background-color: rgba(31, 39, 51, 1);
   border-color: rgba(38, 49, 64, 1);
@@ -1086,4 +1091,61 @@ body.dark .sort-title {
 }
 body.dark .search-sort-info {
   color: rgb(137, 117, 236);
+}
+/* ==================== 다크모드 모달 ==================== */
+
+/* 모달 배경 */
+body.dark .modal-content {
+  background-color: #171d26;
+}
+
+/* 제목 */
+body.dark .modal-title {
+  color: #f1f2f4;
+}
+
+/* 라벨 */
+body.dark .modal-label {
+  color: #f1f2f4;
+}
+
+/* 입력창 */
+body.dark .modal-input {
+  background-color: #1b2432;
+  border-color: #263140;
+  color: #f1f2f4;
+}
+
+/* 입력창 placeholder */
+body.dark .modal-input::placeholder {
+  color: #7b8ba3;
+}
+
+/* 상태 선택 버튼 */
+body.dark .modal-status-button {
+  background-color: #1b2432;
+  border-color: #263140;
+  color: #f1f2f4;
+}
+
+/* 상태 드롭다운 메뉴 */
+body.dark .modal-status-menu {
+  background-color: #171d26;
+  border-color: #263140;
+}
+
+/* 드롭다운 항목 */
+body.dark .modal-status-item {
+  color: #f1f2f4;
+}
+
+/* 드롭다운 hover */
+body.dark .modal-status-item:hover {
+  background-color: #263140;
+}
+
+/* 취소 버튼 */
+body.dark .modal-close-button {
+  color: #9aa8bb;
+  background-color: transparent;
 }
