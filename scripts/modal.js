@@ -13,8 +13,11 @@ const dropdownToggle = document.querySelector(".modal-status-button");
 const dropdownItems = document.querySelectorAll(".modal-status-item");
 const priorityInputs = document.querySelectorAll(".task-priority");
 const priorityLabels = document.querySelectorAll(".modal-radio-label");
+const modalTitle = document.querySelector(".modal-title");
+const modalSubmitButton = document.querySelector(".modal-submit-button");
 
 let currentSelectedStatus = "TODO"; // internal status: TODO, DOING, DONE
+let editingTaskId = null;
 
 function mapStatusLabelToInternal(text) {
   if (!text) return "TODO";
@@ -42,15 +45,56 @@ function setDefaultModalState() {
 
   const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
   if (statusLabel) statusLabel.textContent = "할 일";
+  if (modalTitle) modalTitle.textContent = "새 할 일";
+  if (modalSubmitButton) modalSubmitButton.textContent = "저장하기";
   currentSelectedStatus = "TODO";
+  editingTaskId = null;
 }
 
-function openModal() {
+function populateModal(task) {
+  if (!task) {
+    setDefaultModalState();
+    return;
+  }
+
+  if (titleInput) titleInput.value = sanitize(task.title);
+  if (descInput) descInput.value = sanitize(task.content);
+
+  const targetPriorityValue = getPriorityValue(task.priority);
+
+  priorityInputs.forEach((input) => {
+    input.checked = input.value.toUpperCase() === targetPriorityValue;
+  });
+  priorityLabels.forEach((label) => label.classList.remove("active"));
+
+  const matchedInput = Array.from(priorityInputs).find(
+    (input) => input.value.toUpperCase() === targetPriorityValue,
+  );
+  const matchedLabel = matchedInput
+    ? document.querySelector(`label[for="${matchedInput.id}"]`)
+    : document.querySelector('label[for="task-priority-mid"]');
+  matchedLabel?.classList.add("active");
+
+  const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
+  if (statusLabel)
+    statusLabel.textContent =
+      task.status === "DOING"
+        ? "진행중"
+        : task.status === "DONE"
+          ? "완료"
+          : "할 일";
+  currentSelectedStatus = mapStatusLabelToInternal(task.status || "TODO");
+  if (modalTitle) modalTitle.textContent = "할 일 수정";
+  if (modalSubmitButton) modalSubmitButton.textContent = "수정하기";
+  editingTaskId = String(task.id);
+}
+
+function openModal(task = null) {
   if (!modal) return;
   modal.hidden = false;
   modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
-  setDefaultModalState();
+  populateModal(task);
   requestAnimationFrame(() => titleInput?.focus());
 }
 
@@ -59,7 +103,7 @@ function closeModal() {
   modal.hidden = true;
   modal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
-  form?.reset();
+  setDefaultModalState();
 }
 
 function getTasks() {
@@ -73,6 +117,14 @@ function saveTasks(tasks) {
 
 function sanitize(text) {
   return text == null ? "" : String(text);
+}
+
+function getPriorityValue(priorityText) {
+  const normalized = sanitize(priorityText).trim().toLowerCase();
+  if (normalized.includes("높음") || normalized.includes("high")) return "HIGH";
+  if (normalized.includes("중간") || normalized.includes("mid")) return "MID";
+  if (normalized.includes("낮음") || normalized.includes("low")) return "LOW";
+  return "MID";
 }
 
 function getPriorityClass(priority) {
@@ -102,9 +154,8 @@ function saveData(e) {
   const content = sanitize(descInput?.value).trim();
 
   if (!title) {
-    // accessible alert
     window.alert("제목을 입력해주세요.");
-    return;
+    return false;
   }
 
   const selectedRadio = document.querySelector(
@@ -117,7 +168,7 @@ function saveData(e) {
   }
 
   const taskData = {
-    id: Date.now(),
+    id: editingTaskId ? Number(editingTaskId) : Date.now(),
     title,
     content,
     priority,
@@ -125,12 +176,32 @@ function saveData(e) {
   };
 
   const tasks = getTasks();
-  tasks.push(taskData);
+  if (editingTaskId) {
+    const index = tasks.findIndex(
+      (task) => String(task.id) === String(editingTaskId),
+    );
+    if (index >= 0) {
+      tasks[index] = { ...tasks[index], ...taskData };
+    } else {
+      tasks.push(taskData);
+    }
+  } else {
+    tasks.push(taskData);
+  }
+
   saveTasks(tasks);
   renderTodos(tasks);
+  return true;
 }
 
-openButton?.addEventListener("click", openModal);
+function handleModalSubmit(event) {
+  if (event) event.preventDefault();
+  const saved = saveData(event);
+  if (!saved) return;
+  closeModal();
+}
+
+openButton?.addEventListener("click", () => openModal());
 closeButton?.addEventListener("click", closeModal);
 
 modal?.addEventListener("click", (event) => {
@@ -141,16 +212,11 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !modal?.hidden) closeModal();
 });
 
-saveButton?.addEventListener("click", () => {
-  saveData();
-  setDefaultModalState();
-  closeModal();
-});
+form?.addEventListener("submit", handleModalSubmit);
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter" && !modal?.hidden) {
-    saveData();
-    closeModal();
+    handleModalSubmit(event);
   }
 });
 
@@ -174,12 +240,52 @@ priorityInputs.forEach((input) => {
   });
 });
 
+function closeAllDropdowns(excludingDropdown = null) {
+  document.querySelectorAll(".dropdown").forEach((dropdown) => {
+    if (dropdown === excludingDropdown) return;
+    dropdown.classList.remove("is-open");
+    const button = dropdown.querySelector(".dropdown-button");
+    button?.setAttribute("aria-expanded", "false");
+  });
+}
+
+function toggleDropdown(dropdown) {
+  const button = dropdown.querySelector(".dropdown-button");
+  const isOpen = dropdown.classList.contains("is-open");
+  closeAllDropdowns(dropdown);
+  if (!isOpen) {
+    dropdown.classList.add("is-open");
+    button?.setAttribute("aria-expanded", "true");
+  } else {
+    button?.setAttribute("aria-expanded", "false");
+  }
+}
+
+document.querySelectorAll(".dropdown").forEach((dropdown) => {
+  const button = dropdown.querySelector(".dropdown-button");
+  button?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    toggleDropdown(dropdown);
+  });
+
+  dropdown.querySelectorAll(".dropdown-menu .dropdown-item").forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeAllDropdowns(dropdown);
+    });
+  });
+});
+
+document.addEventListener("click", () => closeAllDropdowns());
+
 dropdownItems.forEach((item) => {
-  item.addEventListener("click", () => {
+  item.addEventListener("click", (event) => {
+    event.stopPropagation();
     const statusText = item.textContent.trim();
     const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
     if (statusLabel) statusLabel.textContent = statusText;
     currentSelectedStatus = mapStatusLabelToInternal(statusText);
+    closeAllDropdowns(item.closest(".dropdown"));
   });
 });
 
@@ -259,17 +365,99 @@ function createTodoElement(todo) {
 
     cloned.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
 
-    const deleteButtonSvg = cloned.querySelector(".bi-x");
-    if (deleteButtonSvg) {
-      deleteButtonSvg.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const closestCard = deleteButtonSvg.closest(".todo-container");
-        const taskId = closestCard?.dataset.id;
-        if (taskId) {
-          deleteTaskById(taskId);
+    const closeIcon = cloned.querySelector(".todo-close-icon");
+    if (closeIcon) {
+      const showCloseIcon = () => {
+        closeIcon.removeAttribute("hidden");
+        closeIcon.setAttribute("aria-hidden", "false");
+      };
+      const hideCloseIcon = () => {
+        closeIcon.setAttribute("hidden", "");
+        closeIcon.setAttribute("aria-hidden", "true");
+      };
+
+      cloned.addEventListener("mouseenter", showCloseIcon);
+      cloned.addEventListener("mouseleave", hideCloseIcon);
+      cloned.addEventListener("focusin", showCloseIcon);
+      cloned.addEventListener("focusout", (event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          hideCloseIcon();
         }
       });
+
+      closeIcon.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (closeIcon.hasAttribute("hidden")) return;
+
+        const existingOverlay = document.querySelector(".delete-modal-overlay");
+        if (existingOverlay) existingOverlay.remove();
+
+        const deleteModal = document.createElement("div");
+        deleteModal.classList.add("reset-modal-overlay");
+        const deleteModalContent = document.querySelector(
+          ".reset-modal-content",
+        );
+        const deletModalTitle = document.querySelector("#reset-modal-title");
+        const deletModalDesc = document.querySelector(
+          ".reset-modal-description",
+        );
+        const cancelDeleteBtn = document.querySelector(".reset-modal-cancel");
+        const doDeleteBtn = document.querySelector(".reset-modal-confirm");
+        if (deleteModalContent) {
+          deleteModalContent.removeAttribute("hidden");
+          deletModalTitle.textContent = "할 일 삭제";
+          deletModalDesc.textContent =
+            "이 할 일을 정말로 삭제하시겠습니까?\n삭제된 할 일은 복구할 수 없습니다.";
+          doDeleteBtn.textContent = "삭제";
+        }
+
+        deleteModal.append(deleteModalContent);
+        //생성한 모달을 화면에 추가
+        document.body.append(deleteModal);
+
+        //모달이 열려 있는 도앙나 뒤족 화면 스크롤 방지
+        document.body.style.overflow = "hidden";
+
+        //취소 버튼 클릭 시 모달 닫기
+        cancelDeleteBtn?.addEventListener("click", () => {
+          closeResetModal(deleteModal);
+        });
+
+        //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
+        doDeleteBtn?.addEventListener("click", () => {
+          deleteTask();
+          closeResetModal(deleteModal);
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && !deleteModal?.hidden) {
+            closeResetModal(deleteModal);
+          }
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" && !deleteModal?.hidden) {
+            deleteTask();
+            closeResetModal(deleteModal);
+          }
+        });
+        //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
+        deleteModal.addEventListener("click", (event) => {
+          if (event.target === deleteModal) {
+            closeResetModal(deleteModal);
+          }
+        });
+      });
     }
+    function deleteTask() {
+      const closestCard = closeIcon.closest(".todo-container");
+      const taskId = closestCard?.dataset.id;
+      if (taskId) {
+        deleteTaskById(taskId);
+      }
+    }
+    cloned.addEventListener("click", (event) => {
+      if (event.target.closest(".todo-close-icon")) return;
+      openModal(todo);
+    });
 
     li.appendChild(cloned);
   } else {
@@ -301,39 +489,22 @@ function renderTodos(todoList) {
 const resetButton = document.querySelector(".reset-data-button");
 
 function openResetModal() {
-  //전체 초기화 확인 모달 열기
+  const existingOverlay = document.querySelector(".reset-modal-overlay");
+  if (existingOverlay) existingOverlay.remove();
+
   const resetModal = document.createElement("div");
   resetModal.classList.add("reset-modal-overlay");
+  const resetModalContent = document.querySelector(".reset-modal-content");
+  const resetModalDesc = document.querySelector(".reset-modal-description");
+  if (resetModalContent) {
+    resetModalContent.removeAttribute("hidden");
+    resetModalDesc.textContent =
+      "정말로 모든 데이터를 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.";
+  } else {
+    resetModalContent.setAttribute("hidden");
+  }
 
-  //모달 내부 구조 생성
-  resetModal.innerHTML = `
-    <div 
-      class = "reset-modal-content"
-      role = "dialog"
-      aria-modal = "true"
-      aria-labelledby = "reset-modal-title"
-    >
-
-    <h2 id = "reset-modal-title" class="modal-title">
-      데이터 초기화
-    </h2>
-
-    <p class="reset-modal-description">
-      정말로 모든 데이터를 초기화하시겠습니까?<br /> 
-      이 작업은 되돌릴 수 없습니다.
-    </p>
-
-  <div class="reset-modal-buttons">
-    <button type="button" class="reset-modal-cancel">
-    취소
-    </button>
-
-    <button type="button" class="reset-modal-confirm">
-    전체 삭제
-    </button>
-  </div>
-</div>
-`;
+  resetModal.append(resetModalContent);
   //생성한 모달을 화면에 추가
   document.body.append(resetModal);
 
@@ -354,6 +525,18 @@ function openResetModal() {
     resetAllTasks();
     closeResetModal(resetModal);
   });
+  //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !resetModal?.hidden) {
+      closeResetModal(resetModal);
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !resetModal?.hidden) {
+      resetAllTasks();
+      closeResetModal(resetModal);
+    }
+  });
   //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
   resetModal.addEventListener("click", (event) => {
     if (event.target === resetModal) {
@@ -364,15 +547,25 @@ function openResetModal() {
 
 // 전체 초기화 확인 모달 닫기 (닫기 애니메이션 적용)
 function closeResetModal(resetModal) {
-  // 닫기 애니메이션 클래스 추가
+  if (!resetModal) return;
+
+  // 1. 닫기 애니메이션 클래스 추가
   resetModal.classList.add("closing");
 
-  // 애니메이션이 끝난 후 모달 제거
+  // 2. 애니메이션 시간(0.2초 = 200ms) 뒤에 한 번에 처리
   setTimeout(() => {
+    const resetModalContent = resetModal.querySelector(".reset-modal-content");
+
+    if (resetModalContent) {
+      // 콘텐츠 숨기고 body로 안전하게 대피 복구
+      resetModalContent.setAttribute("hidden", "true");
+      document.body.append(resetModalContent);
+    }
+
+    // 대피 시킨 후 오버레이 삭제 및 스크롤 복구
     resetModal.remove();
-    // 막아두었던 화면 스크롤 다시 허용
     document.body.style.overflow = "";
-  }, 200);
+  }, 200); // 👈 사용 중인 CSS 닫기 애니메이션 시간에 맞추세요 (0.3초면 300)
 }
 
 // 저장된 모든 할 일 데이터 초기화
