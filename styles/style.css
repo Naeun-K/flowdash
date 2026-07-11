@@ -76,20 +76,20 @@ button {
 .search-input-button {
   border: none;
   background-color: transparent;
+  flex-shrink: 0;
 }
 
 .search-input-button svg {
   width: 15.99px;
   height: 15.99px;
-  flex-shrink: 0;
   color: #919295;
+  vertical-align: middle;
 }
 
 .dropdown {
   display: inline-block;
   height: 46.22px;
   position: relative;
-  /* width: 100%; */
 }
 
 .dropdown-button {
@@ -104,8 +104,13 @@ button {
   transition: background-color 0.3s ease;
   overflow: hidden;
 }
+.dropdown-button svg {
+  margin-left: 5px;
+  vertical-align: middle;
+}
 
-.dropdown-button:hover {
+.dropdown-button:checked,
+.dropdown-button.active {
   background-color: #f8fafc;
 }
 /* 클릭 시 테두리를 보라색으로 변경 */
@@ -193,6 +198,10 @@ button {
   text-align: center;
   min-width: 150px;
   transition: border-color 0.3s ease;
+  gap: 5px;
+}
+.search-sort-button svg {
+  vertical-align: middle;
 }
 /*정렬 버튼 포커스시 보라색 테두리 강조 */
 .search-sort-button:focus {
@@ -381,17 +390,44 @@ button {
   width: 100%;
   margin: 24px auto 0;
 }
+
+/* Allow horizontal scrolling when boards overflow the container. Use scroll-snap
+   so users can move between boards smoothly while preserving existing layout */
+.board-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+
+.board-container > div {
+  scroll-snap-align: start;
+}
 /*할일 진행중 완료 보드 공통 스타일*/
 .board-todo-board,
 .board-doing-board,
 .board-done-board {
   flex: 1;
-  min-width: 0;
+  /* enforce a minimum width so when viewport is narrow the boards become
+     scrollable horizontally instead of squishing the content */
+  min-width: 320px;
   min-height: 360px;
   padding: 16px;
   border-radius: 16px;
   background: var(--color-black-2, rgba(0, 0, 0, 0.02));
   box-sizing: border-box;
+}
+
+/* Make each board's list vertically scrollable when its content grows too tall */
+.todo-list,
+.doing-list,
+.done-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: calc(100vh - 520px);
+  overflow-y: auto;
+  padding: 8px 0;
 }
 /*보드 헤더 스타일*/
 .board-header {
@@ -719,7 +755,8 @@ button {
 
   border-radius: 20px;
   border: 1px solid #e0e5eb;
-  background: #fff;
+  background-color: #fff;
+  cursor: pointer;
 
   transition:
     background-color 0.3s,
@@ -727,26 +764,25 @@ button {
 }
 .radio-high {
   color: #f25a5a;
-  border: solid 1px #f25a5a;
 }
-.radio-high:hover {
-  background-color: #f25a5a;
-  color: #000;
-}
-
 .radio-mid {
   color: #f49d25;
-  border: solid 1px #f49d25;
-}
-.radio-mid:hover {
-  background-color: #f49d25;
-  color: #000;
 }
 .radio-low {
   color: #29a366;
-  border: solid 1px #29a366;
 }
-.radio-low:hover {
+.radio-high:hover,
+.radio-high.active {
+  background-color: #f25a5a;
+  color: #000;
+}
+.radio-mid:hover,
+.radio-mid.active {
+  background-color: #f49d25;
+  color: #000;
+}
+.radio-low:hover,
+.radio-low.active {
   background-color: #29a366;
   color: #000;
 }
@@ -801,6 +837,129 @@ button {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
 /* ---------------------------------------------------- 모달 스타일 끄읕 ------------------------------------ */
+/* ------------------------------------------할 일 리스트 카드 시이자악------------------------------------------------ */
+.todo-container {
+  min-height: 180px;
+  width: 100%;
+  padding: 22px;
+  border-radius: 12px;
+  border: 1px solid #e0e5eb;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.todo-container.completed-task {
+  opacity: 0.7;
+  background-color: #f6f7f9;
+}
+.todo-container[hidden] {
+  display: none;
+}
+.todo-icon-container {
+  display: flex;
+  width: 100%;
+  padding-right: 0;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
+  height: 22px;
+}
+.todo-priority-icon {
+  padding: 2.4px 8px;
+  border-radius: 4px;
+  background: #ffebeb;
+
+  color: #f25a5a;
+  background-color: #ffebeb;
+  font-size: 11.2px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16.8px; /* 150% */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.todo-close-icon {
+  height: fit-content;
+  aspect-ratio: 1 / 1;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 999px;
+  padding: 5px;
+
+  flex-shrink: 0;
+  flex-grow: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.todo-close-icon svg {
+  display: block;
+}
+.todo-title-desc-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.todo-title {
+  color: #5c6f8a;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22.4px; /* 140% */
+}
+.todo-desc {
+  color: #5c6f8a;
+  font-size: 14.4px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21.6px; /* 150% */
+}
+.two-update-time-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.update-time-container {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.update-time-icon {
+  width: 13.99px;
+  height: 13.99px;
+
+  opacity: 0.8;
+  margin-right: 6px;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+.update-time-icon svg {
+  vertical-align: middle;
+}
+.update-time {
+  vertical-align: middle;
+  color: #98a4b3;
+  font-size: 12.8px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 12.8px; /* 100% */
+}
+.done-time[hidden] {
+  display: none;
+}
+.done-time {
+  display: none;
+}
+.todo-container.completed-task .todo-title {
+  text-decoration-line: line-through;
+}
+.todo-container.completed-task .done-time {
+  display: flex;
+}
+/* ------------------------------------------할 일 리스트 카드 끄읕------------------------------------------------ */
 /*태블릿: 768px ~ 1199px */
 /* min-width를 따로 두지 않고 모바일까지 사용할 수 있게 적용 */
 @media (max-width: 1199px) {
@@ -856,12 +1015,10 @@ button {
   .add-block {
     margin-top: 12px;
   }
-}
-.achieve .card-count {
-  color: rgba(46, 57, 184, 1);
-}
-/* 태블릿 구간 (768px ~ 1199px) total 박스 */
-@media screen and (min-width: 768px) and (max-width: 1199px) {
+  .achieve .card-count {
+    color: rgba(46, 57, 184, 1);
+  }
+
   /* 컨테이너 설정 */
   .todo-statistics-container {
     flex-wrap: wrap;
@@ -885,10 +1042,7 @@ button {
     font-size: 30px;
     line-height: 30px;
   }
-}
 
-/* 태블릿 구간 (768px ~ 1199px) 할일,진행중,완료 일렬로 정렬*/
-@media screen and (max-width: 1199px) {
   .board-container {
     display: flex;
     flex-direction: column;
@@ -1092,6 +1246,16 @@ body.dark .sort-title {
 body.dark .search-sort-info {
   color: rgb(137, 117, 236);
 }
+.priority-high {
+  color: #f25a5a;
+}
+.priority-mid {
+  color: #f49d25;
+}
+.priority-low {
+  color: #29a366;
+}
+
 /* ==================== 다크모드 모달 ==================== */
 
 /* 모달 배경 */
@@ -1148,4 +1312,22 @@ body.dark .modal-status-item:hover {
 body.dark .modal-close-button {
   color: #9aa8bb;
   background-color: transparent;
+}
+
+/* 우선순위 버튼  */
+body.dark .modal-radio-label {
+  background-color: #171d26;
+  border-color: #263140;
+}
+body.dark .radio-high.active,
+body.dark .radio-high:hover {
+  background-color: #f25a5a;
+}
+body.dark .radio-mid.active,
+body.dark .radio-mid:hover {
+  background-color: #f49d25;
+}
+body.dark .radio-low.active,
+body.dark .radio-low:hover {
+  background-color: #29a366;
 }

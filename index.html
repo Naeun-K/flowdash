@@ -59,23 +59,23 @@
         <h2 class="sr-only">할 일 리스트 통계 보드</h2>
         <div class="todo-statistics-card total">
           <span class="card-title">Total Tasks</span>
-          <span class="card-count">0</span>
+          <span class="card-count card-count-total">0</span>
         </div>
         <div class="todo-statistics-card todo">
           <span class="card-title">To Do</span>
-          <span class="card-count">0</span>
+          <span class="card-count todo-count">0</span>
         </div>
         <div class="todo-statistics-card doing">
           <span class="card-title">In Progress</span>
-          <span class="card-count">0</span>
+          <span class="card-count doing-count">0</span>
         </div>
         <div class="todo-statistics-card done">
           <span class="card-title"> Done </span>
-          <span class="card-count"> 0 </span>
+          <span class="card-count done-count"> 0 </span>
         </div>
         <div class="todo-statistics-card achieve">
           <span class="card-title">Achieved</span>
-          <span class="card-count"> 0% </span>
+          <span class="card-count achieved-rate"> 0% </span>
         </div>
       </section>
       <section class="search-container">
@@ -84,6 +84,8 @@
           <div class="search-block">
             <div class="search-input-container">
               <input
+                id="searchDataName"
+                name="searchDataName"
                 class="search-input"
                 type="text"
                 placeholder="할 일 검색..."
@@ -248,7 +250,7 @@
         <div class="board-todo-board">
           <div class="board-header board-todo-header">
             <span class="board-title board-todo-title">할일</span>
-            <span class="board-count board-todo-count">0</span>
+            <span class="board-count todo-count">0</span>
           </div>
 
           <div class="todo-list-container">
@@ -259,7 +261,7 @@
         <div class="board-doing-board">
           <div class="board-header board-doing-header">
             <span class="board-title board-doing-title">진행중</span>
-            <span class="board-count board-doing-count">0</span>
+            <span class="board-count doing-count">0</span>
           </div>
 
           <div class="doing-list-container">
@@ -270,11 +272,11 @@
         <div class="board-done-board">
           <div class="board-header board-done-header">
             <span class="board-title board-done-title">완료</span>
-            <span class="board-count board-done-count">0</span>
+            <span class="board-count done-count">0</span>
           </div>
 
           <div class="done-list-container">
-            <ul class="doing-list"></ul>
+            <ul class="done-list"></ul>
           </div>
         </div>
       </section>
@@ -290,7 +292,7 @@
       hidden
     >
       <div class="modal-content">
-        <h2 id="new-task-modal-title" class="modal-title">새 할 일</h2>
+        <h2 class="modal-title">새 할 일</h2>
         <form class="modal-form">
           <div class="label-input-container">
             <label for="task-title" class="modal-label">제목 *</label>
@@ -313,14 +315,14 @@
           </div>
           <div class="modal-radio-select-container">
             <div class="modal-priority modal-radio-select-group">
-              <label for="task-priority" class="modal-label">우선순위</label>
+              <p class="modal-label">우선순위</p>
               <div class="label-input-container radio-container">
                 <input
                   type="radio"
                   id="task-priority-high"
-                  name="task-priority"
+                  name="priority"
                   value="HIGH"
-                  class="modal-input"
+                  class="modal-input task-priority"
                   required
                 />
                 <label
@@ -331,9 +333,9 @@
                 <input
                   type="radio"
                   id="task-priority-mid"
-                  name="task-priority"
+                  name="priority"
                   value="MID"
-                  class="modal-input"
+                  class="modal-input task-priority"
                   required
                 />
                 <label
@@ -344,9 +346,9 @@
                 <input
                   type="radio"
                   id="task-priority-low"
-                  name="task-priority"
+                  name="priority"
                   value="LOW"
-                  class="modal-input"
+                  class="modal-input task-priority"
                   required
                 />
                 <label
@@ -359,7 +361,7 @@
             <div
               class="label-input-container task-status-container modal-radio-select-group"
             >
-              <label for="task-status" class="modal-label">상태</label>
+              <p class="modal-label">상태</p>
               <div class="dropdown modal-status">
                 <button
                   type="button"
@@ -414,10 +416,83 @@
         </form>
       </div>
     </div>
-    <script src="./scripts/modal.js"></script>
+    <!-- 할 일 리스트 카드 요소 구조  -->
+    <div
+      id="hidden-card"
+      class="todo-container"
+      aria-modal="true"
+      aria-labelledby="todo-container"
+      aria-hidden="true"
+      hidden
+    >
+      <div class="todo-icon-container">
+        <div class="todo-priority-icon">중간</div>
+        <div class="todo-close-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-x"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="todo-title-desc-container">
+        <h2 class="todo-title"></h2>
+        <p class="todo-desc"></p>
+      </div>
+      <div class="two-update-time-container">
+        <p class="update-time-container todo-time">
+          <span class="update-time-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-calendar-date"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M6.445 11.688V6.354h-.633A13 13 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23"
+              />
+              <path
+                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
+              />
+            </svg>
+          </span>
+          <time class="update-time" id="update-todo-time" datetime=""> </time>
+        </p>
+        <p class="update-time-container done-time" hidden>
+          <span class="update-time-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-check2-square"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5z"
+              />
+              <path
+                d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0"
+              />
+            </svg>
+          </span>
+          <time class="update-time" id="update-done-time" datetime=""> </time>
+        </p>
+      </div>
+    </div>
+    <script type="module" src="./scripts/modal.js"></script>
     <script src="./scripts/dom.js"></script>
     <script src="./scripts/icon.js"></script>
     <script type="module" src="./scripts/nickname.js"></script>
-    <!-- <script type="module" src="./scripts/todolist.js"></script> -->
+    <script type="module" src="./scripts/todolist.js"></script>
   </body>
 </html>
