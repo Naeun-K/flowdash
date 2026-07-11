@@ -278,9 +278,7 @@ button {
   background-color: transparent;
   border-radius: 10px;
 
-  transition:
-    background-color 0.3s,
-    color 0.3s;
+  transition: 0.3s;
 }
 
 /* 컨테이너 스타일 */
@@ -1350,4 +1348,195 @@ body.dark .radio-mid:hover {
 body.dark .radio-low.active,
 body.dark .radio-low:hover {
   background-color: #29a366;
+}
+.reset-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  animation: resetOverlayOpen 0.2s ease;
+}
+.reset-modal-content {
+  width: 100%;
+  max-width: 520px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 40px 36px;
+  border-radius: 20px;
+  background: #fff;
+  animation: resetModalOpen 0.25s ease;
+}
+
+/* ========================= */
+/* 모달 열릴 때 애니메이션 */
+/* ========================= */
+
+@keyframes resetOverlayOpen {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes resetModalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================= */
+/* 모달 닫힐 때 애니메이션 */
+/* ========================= */
+
+.reset-modal-overlay.closing {
+  animation: resetOverlayClose 0.2s ease forwards;
+}
+
+.reset-modal-overlay.closing .reset-modal-content {
+  animation: resetModalClose 0.2s ease forwards;
+}
+
+/* 배경이 서서히 사라지는 효과 */
+@keyframes resetOverlayClose {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* 모달이 위로 살짝 올라가며 사라지는 효과 */
+@keyframes resetModalClose {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+}
+.reset-modal-description {
+  margin-top: 12px;
+  margin-bottom: 32px;
+
+  line-height: 1.6;
+}
+여기 아래 붙여주시면 돼요 body.dark .reset-modal-overlay {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+body.dark .reset-modal-content {
+  background: #171d26;
+  border: 1px solid #263140;
+}
+
+body.dark .reset-modal-content .modal-title {
+  color: #f1f2f4;
+}
+
+body.dark .reset-modal-description {
+  color: #abb1ba;
+}
+
+body.dark .reset-modal-cancel {
+  background: transparent;
+  color: #abb1ba;
+}
+
+body.dark .reset-modal-cancel:hover {
+  background: #263140;
+  color: #f1f2f4;
+}
+
+body.dark .reset-modal-confirm {
+  background: transparent;
+  border-color: #f97066;
+  color: #f97066;
+}
+
+body.dark .reset-modal-confirm:hover {
+  background: rgba(249, 112, 102, 0.15);
+  border-color: #f97066;
+  color: #ff8a80;
+}
+
+.reset-modal-buttons {
+  /* 취소 / 삭제 버튼 영역 */
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  margin-top: auto;
+  padding-top: 48px;
+}
+
+/* 전체 삭제 버튼 */
+.reset-modal-confirm {
+  padding: 8px 14px;
+
+  border: 1px solid #f04438;
+  border-radius: 8px;
+
+  background: #fff;
+  color: #f04438;
+
+  cursor: pointer;
+}
+
+/* 전체 삭제 버튼 Hover */
+.reset-modal-confirm:hover {
+  background: #fef3f2;
+  color: #b6190e;
+}
+
+/* 취소 버튼 */
+.reset-modal-cancel {
+  padding: 8px 12px;
+
+  border: 0;
+  background: transparent;
+  color: #667085;
+
+  cursor: pointer;
+}
+
+/* 취소 버튼 Hover */
+.reset-modal-cancel:hover {
+  background: #f2f4f7;
+  border-radius: 8px;
+  color: #16191f;
+}
+
+/* 모달 설명 문구 */
+.reset-modal-description {
+  margin-top: 12px;
+  margin-bottom: 32px;
+
+  line-height: 1.6;
 }
