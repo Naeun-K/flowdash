@@ -302,9 +302,7 @@ button {
   background-color: transparent;
   border-radius: 10px;
 
-  transition:
-    background-color 0.3s,
-    color 0.3s;
+  transition: 0.3s;
 }
 
 /* 컨테이너 스타일 */
@@ -1483,8 +1481,53 @@ body.dark .radio-low:hover {
     transform: translateY(-8px) scale(0.96);
   }
 }
-/* 취소 / 삭제 버튼 영역 */
+.reset-modal-description {
+  margin-top: 12px;
+  margin-bottom: 32px;
+
+  line-height: 1.6;
+}
+여기 아래 붙여주시면 돼요 body.dark .reset-modal-overlay {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+body.dark .reset-modal-content {
+  background: #171d26;
+  border: 1px solid #263140;
+}
+
+body.dark .reset-modal-content .modal-title {
+  color: #f1f2f4;
+}
+
+body.dark .reset-modal-description {
+  color: #abb1ba;
+}
+
+body.dark .reset-modal-cancel {
+  background: transparent;
+  color: #abb1ba;
+}
+
+body.dark .reset-modal-cancel:hover {
+  background: #263140;
+  color: #f1f2f4;
+}
+
+body.dark .reset-modal-confirm {
+  background: transparent;
+  border-color: #f97066;
+  color: #f97066;
+}
+
+body.dark .reset-modal-confirm:hover {
+  background: rgba(249, 112, 102, 0.15);
+  border-color: #f97066;
+  color: #ff8a80;
+}
+
 .reset-modal-buttons {
+  /* 취소 / 삭제 버튼 영역 */
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -1505,6 +1548,7 @@ body.dark .radio-low:hover {
 
   cursor: pointer;
 }
+
 /* 전체 삭제 버튼 Hover */
 .reset-modal-confirm:hover {
   background: #fef3f2;
