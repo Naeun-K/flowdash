@@ -1334,3 +1334,145 @@ body.dark .radio-low.active,
 body.dark .radio-low:hover {
   background-color: #29a366;
 }
+/* 전체 화면을 덮는 모달 배경 */
+.reset-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  z-index: 9999;
+
+  background: rgba(0, 0, 0, 0.45);
+  animation: resetOverlayOpen 0.2s ease;
+}
+/* 초기화 확인 모달 */
+.reset-modal-content {
+  width: 100%;
+  max-width: 520px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 40px 36px;
+  border-radius: 20px;
+  background: #fff;
+  animation: resetModalOpen 0.25s ease;
+}
+/* ========================= */
+/* 모달 열릴 때 애니메이션 */
+/* ========================= */
+
+@keyframes resetOverlayOpen {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes resetModalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================= */
+/* 모달 닫힐 때 애니메이션 */
+/* ========================= */
+.reset-modal-overlay.closing {
+  animation: resetOverlayClose 0.2s ease forwards;
+}
+
+.reset-modal-overlay.closing .reset-modal-content {
+  animation: resetModalClose 0.2s ease forwards;
+}
+
+/* 배경이 서서히 사라지는 효과 */
+@keyframes resetOverlayClose {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* 모달이 위로 살짝 올라가며 사라지는 효과 */
+@keyframes resetModalClose {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+}
+/* 취소 / 삭제 버튼 영역 */
+.reset-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  margin-top: auto;
+  padding-top: 48px;
+}
+
+/* 전체 삭제 버튼 */
+.reset-modal-confirm {
+  padding: 8px 14px;
+
+  border: 1px solid #f04438;
+  border-radius: 8px;
+
+  background: #fff;
+  color: #f04438;
+
+  cursor: pointer;
+}
+/* 전체 삭제 버튼 Hover */
+.reset-modal-confirm:hover {
+  background: #fef3f2;
+  color: #b6190e;
+}
+
+/* 취소 버튼 */
+.reset-modal-cancel {
+  padding: 8px 12px;
+
+  border: 0;
+  background: transparent;
+  color: #667085;
+
+  cursor: pointer;
+}
+
+/* 취소 버튼 Hover */
+.reset-modal-cancel:hover {
+  background: #f2f4f7;
+  border-radius: 8px;
+  color: #16191f;
+}
+
+/* 모달 설명 문구 */
+.reset-modal-description {
+  margin-top: 12px;
+  margin-bottom: 32px;
+
+  line-height: 1.6;
+}

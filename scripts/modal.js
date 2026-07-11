@@ -297,6 +297,93 @@ function renderTodos(todoList) {
 
   updateCounts(tasks);
 }
+// 전체 데이터 초기화
+const resetButton = document.querySelector(".reset-data-button");
+
+function openResetModal() {
+  //전체 초기화 확인 모달 열기
+  const resetModal = document.createElement("div");
+  resetModal.classList.add("reset-modal-overlay");
+
+  //모달 내부 구조 생성
+  resetModal.innerHTML = `
+    <div 
+      class = "reset-modal-content"
+      role = "dialog"
+      aria-modal = "true"
+      aria-labelledby = "reset-modal-title"
+    >
+
+    <h2 id = "reset-modal-title" class="modal-title">
+      데이터 초기화
+    </h2>
+
+    <p class="reset-modal-description">
+      정말로 모든 데이터를 초기화하시겠습니까?<br /> 
+      이 작업은 되돌릴 수 없습니다.
+    </p>
+
+  <div class="reset-modal-buttons">
+    <button type="button" class="reset-modal-cancel">
+    취소
+    </button>
+
+    <button type="button" class="reset-modal-confirm">
+    전체 삭제
+    </button>
+  </div>
+</div>
+`;
+  //생성한 모달을 화면에 추가
+  document.body.append(resetModal);
+
+  //모달이 열려 있는 도앙나 뒤족 화면 스크롤 방지
+  document.body.style.overflow = "hidden";
+
+  // 방금 만든 모달 안에서 버튼 찾기
+  const cancelButton = resetModal.querySelector(".reset-modal-cancel");
+  const confirmButton = resetModal.querySelector(".reset-modal-confirm");
+
+  //취소 버튼 클릭 시 모달 닫기
+  cancelButton?.addEventListener("click", () => {
+    closeResetModal(resetModal);
+  });
+
+  //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
+  confirmButton?.addEventListener("click", () => {
+    resetAllTasks();
+    closeResetModal(resetModal);
+  });
+  //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
+  resetModal.addEventListener("click", (event) => {
+    if (event.target === resetModal) {
+      closeResetModal(resetModal);
+    }
+  });
+}
+
+// 전체 초기화 확인 모달 닫기 (닫기 애니메이션 적용)
+function closeResetModal(resetModal) {
+  // 닫기 애니메이션 클래스 추가
+  resetModal.classList.add("closing");
+
+  // 애니메이션이 끝난 후 모달 제거
+  setTimeout(() => {
+    resetModal.remove();
+    // 막아두었던 화면 스크롤 다시 허용
+    document.body.style.overflow = "";
+  }, 200);
+}
+
+// 저장된 모든 할 일 데이터 초기화
+function resetAllTasks() {
+  // 로컬스토리지의 tasks 값을 빈 배열로 변경
+  saveTasks([]);
+  //화면의 할 일 목록과 통계도 빈 배열 기준을 다시 렌더링
+  renderTodos([]);
+}
+// 전체 데이터 초기화 버튼 클릭 시  확인 모달 열기;
+resetButton?.addEventListener("click", openResetModal);
 
 // 초기 렌더
 renderTodos(getTasks());
