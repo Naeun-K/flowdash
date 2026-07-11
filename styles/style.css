@@ -1248,12 +1248,15 @@ body.dark .search-sort-info {
 }
 .priority-high {
   color: #f25a5a;
+  background-color: #fee3e3;
 }
 .priority-mid {
   color: #f49d25;
+  background-color: #fcf0e0;
 }
 .priority-low {
   color: #29a366;
+  background-color: #defded;
 }
 
 /* ==================== 다크모드 모달 ==================== */
