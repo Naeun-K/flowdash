@@ -427,7 +427,7 @@
     >
       <div class="todo-icon-container">
         <div class="todo-priority-icon">중간</div>
-        <div class="todo-close-icon">
+        <div class="todo-close-icon" aria-hidden="true" hidden>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -489,6 +489,25 @@
         </p>
       </div>
     </div>
+
+    <div
+      class="reset-modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reset-modal-title"
+      hidden
+    >
+      <h2 id="reset-modal-title" class="modal-title">데이터 초기화</h2>
+
+      <p class="reset-modal-description"></p>
+
+      <div class="reset-modal-buttons">
+        <button type="button" class="reset-modal-cancel">취소</button>
+
+        <button type="button" class="reset-modal-confirm">전체 삭제</button>
+      </div>
+    </div>
+
     <script type="module" src="./scripts/modal.js"></script>
     <script src="./scripts/dom.js"></script>
     <script src="./scripts/icon.js"></script>
