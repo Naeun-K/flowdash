@@ -304,7 +304,24 @@ button {
 
   transition: 0.3s;
 }
-
+body.dark .board-count {
+  background-color: #b6b6b6;
+}
+.reset-data-button:hover {
+  background-color: #eee;
+}
+.dark .reset-data-button:hover {
+  background-color: #5f42f0;
+  color: #fef3f2;
+}
+@media (prefers-color-scheme: dark) {
+  .reset-data-button {
+    color: #fff;
+  }
+  .reset-data-button:active {
+    background-color: #444;
+  }
+}
 /* 컨테이너 스타일 */
 .todo-statistics-container {
   display: flex;
@@ -798,6 +815,7 @@ button {
   top: 100%; /* 버튼 바로 아래 위치 */
   left: 0;
 }
+
 .modal-button-container {
   display: flex;
   padding-top: 8.99px;
@@ -849,6 +867,15 @@ button {
     box-shadow 0.3s ease,
     border-color 0.3s ease;
 }
+/*todo-container 다크모드*/
+body.dark .todo-container {
+  background-color: rgba(23, 29, 38, 1);
+  border-color: rgba(38, 49, 64, 1);
+}
+body.dark .todo-container .update-time-icon svg {
+  color: rgba(255, 255, 255, 0.8);
+}
+/*todo-container 호버*/
 .todo-container:hover {
   transform: translateY(-5px); /* 위로 이동 */
   box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.3); /* 그림자 */
@@ -887,6 +914,9 @@ button {
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+body.dark .todo-priority-icon {
+  background-color: rgba(242, 90, 90, 0.1);
+}
 .todo-close-icon {
   height: fit-content;
   aspect-ratio: 1 / 1;
@@ -904,6 +934,9 @@ button {
 .todo-close-icon svg {
   display: block;
 }
+body.dark .todo-close-icon svg {
+  color: rgba(255, 255, 255, 0.8);
+}
 .todo-title-desc-container {
   display: flex;
   flex-direction: column;
@@ -915,6 +948,9 @@ button {
   font-style: normal;
   font-weight: 600;
   line-height: 22.4px; /* 140% */
+}
+body.dark .todo-title {
+  color: #fff;
 }
 .todo-desc {
   color: #5c6f8a;
@@ -1179,7 +1215,9 @@ body.dark .greeting-theme-toggle:hover {
   border: 1px solid rgba(118, 94, 237, 1);
   color: rgba(118, 94, 237, 1);
 }
-
+body.dark .search-input {
+  color: #fff;
+}
 body.dark .greeting-container {
   background-color: rgba(23, 29, 38, 1);
   border-color: rgba(38, 49, 64, 1);
