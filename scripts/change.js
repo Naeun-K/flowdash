@@ -72,3 +72,34 @@ sortButton.addEventListener("click", () => {
     });
   });
 });
+//모바일 미디어 쿼리 서비스
+const sections = document.querySelectorAll("#top, #list, #board, #done");
+const navLinks = document.querySelectorAll(".nav-link");
+
+window.addEventListener("scroll", () => {
+  let current = "";
+
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop - 80;
+
+    if (window.scrollY >= sectionTop) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  // 완료 영역 처리
+  if (
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight - 50
+  ) {
+    current = "done";
+  }
+
+  navLinks.forEach((link) => {
+    link.classList.remove("active");
+
+    if (link.getAttribute("href") === `#${current}`) {
+      link.classList.add("active");
+    }
+  });
+});
