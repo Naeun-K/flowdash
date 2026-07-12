@@ -8,7 +8,14 @@
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
-    <div class="container">
+    <!--모바일 미디어쿼리 만 적용되는 서비스-->
+    <nav class="mobile-section-nav">
+      <a href="#top" class="nav-link">현황</a>
+      <a href="#list" class="nav-link">목록</a>
+      <a href="#board" class="nav-link">진행중</a>
+      <a href="#done" class="nav-link">완료</a>
+    </nav>
+    <div id="top" class="container">
       <header class="greeting-container">
         <div class="greeting-content">
           <p class="greeting">
@@ -78,7 +85,7 @@
           <span class="card-count achieved-rate"> 0% </span>
         </div>
       </section>
-      <section class="search-container">
+      <section id="list" class="search-container">
         <h2 class="sr-only">검색 및 조회 그리고 할 일을 추가할 수 있는 섹션</h2>
         <div class="search-block-wrapper">
           <div class="search-block">
@@ -253,7 +260,7 @@
           </button>
         </div>
       </section>
-      <section class="board-container">
+      <section id="board" class="board-container">
         <h2 class="sr-only">
           할 일 리스트 / 진행 중인 리스트 / 완료된 업무 리스트
         </h2>
@@ -279,7 +286,7 @@
           </div>
         </div>
 
-        <div class="board-done-board">
+        <div id="done" class="board-done-board">
           <div class="board-header board-done-header">
             <span class="board-title board-done-title">완료</span>
             <span class="board-count done-count">0</span>
