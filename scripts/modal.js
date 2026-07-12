@@ -113,6 +113,7 @@ export function getTasks() {
 
 function saveTasks(tasks) {
   flowdashTodos.set("tasks", tasks);
+  console.log(flowdashTodos);
 }
 
 function sanitize(text) {
@@ -146,17 +147,34 @@ function deleteTaskById(taskId) {
   saveTasks(nextTasks);
   renderTodos(nextTasks);
 }
+// function nullData() {
+//   const todoList = document.querySelector(".todo-list");
+//   const doingList = document.querySelector(".doing-list");
+//   const doneList = document.querySelector(".done-list");
+//   if (flowdashTodos === []) {
+//     const li = document.createElement("li");
+//     const nullP = document.createElement("p");
+//     nullP?.classList.add("nullBox");
+//     if (todoList === null) {
+//       nullP.textContent = "할 일이 없습니다";
+//     } else if (doingList === null) {
+//       nullP.textContent = "진행 중인 일이 없습니다";
+//     } else if (doneList === null) {
+//       nullP.textContent = "완료된 일이 없습니다";
+//     } else {
+//       console.log(`안되니까 다시 확인 ㄱㄱ`);
+//     }
+//     li.append(nullP);
+//     todoList.append(li);
+//   }
+// }
 
 function saveData(e) {
   if (e) e.preventDefault();
+  const title = titleInput?.value.trim();
+  const content = descInput?.value.trim();
 
-  const title = sanitize(titleInput?.value).trim();
-  const content = sanitize(descInput?.value).trim();
-
-  if (!title) {
-    window.alert("제목을 입력해주세요.");
-    return false;
-  }
+  if (!title) return;
 
   const selectedRadio = document.querySelector(
     'input[name="priority"]:checked',
@@ -166,20 +184,50 @@ function saveData(e) {
     const label = document.querySelector(`label[for="${selectedRadio.id}"]`);
     priority = (label?.textContent || selectedRadio.value || priority).trim();
   }
+  const tasks = getTasks() || [];
+  const prevTask = editingTaskId
+    ? (tasks || []).find((task) => Number(task.id) === Number(editingTaskId))
+    : null;
+  // 3. [해결] 블록 외부에서 먼저 모든 타임스탬프 기본값을 선언합니다 (스코프 문제 해결).
+  let createdAt = prevTask?.createdAt || null;
+  let updatedAt = prevTask?.updatedAt || null;
+  let completedAt = prevTask?.completedAt || null;
 
+  const now = Date.now();
+
+  // 4. [해결] 드롭다운 상태 값에 맞춰 해당되는 타임스탬프만 '그때그때' 갱신
+  switch (currentSelectedStatus) {
+    case "TODO":
+      // 기존에 없었을 때만 최초 생성 시간을 기록합니다.
+      if (!createdAt) createdAt = now;
+      break;
+    case "DOING":
+      if (!createdAt) createdAt = now;
+      updatedAt = now;
+      break;
+    case "DONE":
+      if (!createdAt) createdAt = now;
+      if (!updatedAt) updatedAt = now;
+      completedAt = now;
+      break;
+  }
   const taskData = {
     id: editingTaskId ? Number(editingTaskId) : Date.now(),
     title,
     content,
     priority,
     status: currentSelectedStatus,
+    createdAt,
+    updatedAt,
+    completedAt,
   };
 
-  const tasks = getTasks();
+  // const tasks = getTasks();
   if (editingTaskId) {
     const index = tasks.findIndex(
       (task) => String(task.id) === String(editingTaskId),
     );
+
     if (index >= 0) {
       tasks[index] = { ...tasks[index], ...taskData };
     } else {
@@ -289,12 +337,42 @@ dropdownItems.forEach((item) => {
   });
 });
 
+const nullItem = document.querySelectorAll("list-item");
 // Render helpers
 function clearBoardLists() {
   document
     .querySelectorAll(".todo-list, .doing-list, .done-list")
     .forEach((ul) => {
       ul.textContent = "";
+
+      // 2. 각 클래스에 맞는 텍스트 메시지 분기
+      let messageText = "";
+      let specificClass = "";
+
+      if (ul.classList.contains("todo-list")) {
+        messageText = "할 일이 없습니다";
+        specificClass = "todo-null-data";
+      } else if (ul.classList.contains("doing-list")) {
+        messageText = "진행 중인 일이 없습니다";
+        specificClass = "doing-null-data";
+      } else if (ul.classList.contains("done-list")) {
+        messageText = "완료된 일이 없습니다";
+        specificClass = "done-null-data";
+      }
+
+      // 3. DOM 메서드를 이용해 안전하게 태그 생성 및 조립
+      const li = document.createElement("li");
+      li.className = "list-item";
+      // 초기 상태로 화면에 보여야 하므로 hidden 속성은 넣지 않거나 false로 설정합니다.
+
+      const p = document.createElement("p");
+      // 기존 마크업의 클래스 구조 반영 (.null-data와 고유 클래스)
+      p.className = `${specificClass} null-data`;
+      p.textContent = messageText; // 💡 textContent를 사용하여 XSS 완벽 방어
+
+      // 4. 구조 결합 후 ul에 추가
+      li.appendChild(p);
+      ul.appendChild(li);
     });
 }
 
@@ -322,8 +400,28 @@ function updateCounts(tasks) {
   const achievedEl = document.querySelector(".achieved-rate");
   if (achievedEl) achievedEl.textContent = `${achieved}%`;
 }
+function formatDate(ms) {
+  const date = new Date(ms);
+
+  const year = date.getFullYear();
+  // padStart를 사용하면 1자리 수일 때 앞에 0을 붙여줄 수 있습니다 (예: 04월, 08일)
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  // const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${year}. ${month}. ${day} ${hours}:${minutes}`;
+  // 출력 예시: 2025-04-08 15:10:00
+}
 
 function createTodoElement(todo) {
+  document
+    .querySelectorAll(".todo-list, .doing-list, .done-list")
+    .forEach((ul) => {
+      ul.textContent = "";
+    });
+
   const li = document.createElement("li");
   li.className = "board-item";
 
@@ -350,16 +448,28 @@ function createTodoElement(todo) {
 
     const updateTodoTime = cloned.querySelector("#update-todo-time");
     const updateDoneTime = cloned.querySelector("#update-done-time");
-    const when = new Date(todo.id);
-    const whenText = `${when.getFullYear()}. ${String(when.getMonth() + 1).padStart(2, "0")}. ${String(when.getDate()).padStart(2, "0")} ${String(when.getHours()).padStart(2, "0")}:${String(when.getMinutes()).padStart(2, "0")}`;
-    if (updateTodoTime) updateTodoTime.textContent = whenText;
-    if (updateDoneTime) updateDoneTime.textContent = whenText;
+    const updateUpdateTime = cloned.querySelector("#update-update-time");
+    if (updateTodoTime)
+      updateTodoTime.textContent = sanitize(formatDate(todo.createdAt));
 
+    if (todo.status === "DOING") {
+      cloned.classList.add("update-task");
+      const updateTimeContainer = cloned.querySelector(".update-time");
+      if (updateTimeContainer) {
+        if (updateUpdateTime) {
+          updateUpdateTime.textContent = sanitize(formatDate(todo.updatedAt));
+          updateTimeContainer.removeAttribute("hidden");
+        }
+      }
+    }
     if (todo.status === "DONE") {
       cloned.classList.add("completed-task");
       const doneTimeContainer = cloned.querySelector(".done-time");
       if (doneTimeContainer) {
-        doneTimeContainer.removeAttribute("hidden");
+        if (updateDoneTime) {
+          updateDoneTime.textContent = sanitize(formatDate(todo.completedAt));
+          doneTimeContainer.removeAttribute("hidden");
+        }
       }
     }
 

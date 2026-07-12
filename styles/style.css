@@ -327,7 +327,7 @@ body.dark .board-count {
   color: #fef3f2;
 }
 @media (prefers-color-scheme: dark) {
-  .reset-data-button {
+  .reset-data-button.hover {
     color: #fff;
   }
   .reset-data-button:active {
@@ -492,7 +492,9 @@ body.dark .board-count {
 .done-list-container {
   margin-top: 16px;
 }
-
+.list-item[hidden] {
+  display: none;
+}
 .greeting-container {
   display: flex;
   justify-content: space-between;
@@ -1005,13 +1007,17 @@ body.dark .todo-title {
 .done-time[hidden] {
   display: none;
 }
-.done-time {
+.update-time[hidden] {
   display: none;
 }
+
 .todo-container.completed-task .todo-title {
   text-decoration-line: line-through;
 }
 .todo-container.completed-task .done-time {
+  display: flex;
+}
+.todo-container.update-task .update-time {
   display: flex;
 }
 /* ------------------------------------------할 일 리스트 카드 끄읕------------------------------------------------ */
