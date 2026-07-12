@@ -139,21 +139,21 @@
                 <li
                   class="search-period-dropdown-item dropdown-item"
                   role="option"
-                  data-value="option1"
+                  data-value="all-days"
                 >
                   전체 기간
                 </li>
                 <li
                   class="search-period-dropdown-item dropdown-item"
                   role="option"
-                  data-value="option2"
+                  data-value="today"
                 >
                   오늘
                 </li>
                 <li
                   class="search-period-dropdown-item dropdown-item"
                   role="option"
-                  data-value="option3"
+                  data-value="seven-days"
                 >
                   최근 7일
                 </li>
@@ -191,21 +191,29 @@
                 <li
                   class="search-priority-dropdown-item dropdown-item"
                   role="option"
-                  data-value="option1"
+                  data-value="all-priority"
+                >
+                  전체 우선순위
+                </li>
+
+                <li
+                  class="search-priority-dropdown-item dropdown-item"
+                  role="option"
+                  data-value="HIGH"
                 >
                   HIGH (높음)
                 </li>
                 <li
                   class="search-priority-dropdown-item dropdown-item"
                   role="option"
-                  data-value="option2"
+                  data-value="MID"
                 >
                   MID (중간)
                 </li>
                 <li
                   class="search-priority-dropdown-item dropdown-item"
                   role="option"
-                  data-value="option3"
+                  data-value="LOW"
                 >
                   LOW (낮음)
                 </li>
@@ -235,9 +243,11 @@
           </div>
         </div>
         <div class="search-sort-reset-container">
-          <p class="search-sort-info">
-            <span class="sort-title">정렬: </span> 오름차순
-          </p>
+          <div class="filter-info-list">
+            <p class="search-sort-info">
+              <span class="sort-title">정렬: </span> 오름차순
+            </p>
+          </div>
           <button type="button" class="reset-data-button">
             전체 데이터 초기화
           </button>
@@ -513,5 +523,6 @@
     <script src="./scripts/icon.js"></script>
     <script type="module" src="./scripts/nickname.js"></script>
     <script type="module" src="./scripts/change.js"></script>
+    <script type="module" src="./scripts/filter.js"></script>
   </body>
 </html>

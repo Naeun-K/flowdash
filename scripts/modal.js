@@ -106,7 +106,7 @@ function closeModal() {
   setDefaultModalState();
 }
 
-function getTasks() {
+export function getTasks() {
   const stored = flowdashTodos.get("tasks");
   return Array.isArray(stored) ? stored : [];
 }
@@ -469,7 +469,7 @@ function createTodoElement(todo) {
   return li;
 }
 
-function renderTodos(todoList) {
+export function renderTodos(todoList) {
   const tasks = Array.isArray(todoList) ? todoList : getTasks();
   clearBoardLists();
 
@@ -581,6 +581,3 @@ resetButton?.addEventListener("click", openResetModal);
 
 // 초기 렌더
 renderTodos(getTasks());
-
-// XSS 방지 위해 textContent 만 사용
-export {};
