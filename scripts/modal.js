@@ -403,6 +403,7 @@ function createTodoElement(todo) {
         );
         const cancelDeleteBtn = document.querySelector(".reset-modal-cancel");
         const doDeleteBtn = document.querySelector(".reset-modal-confirm");
+
         if (deleteModalContent) {
           deleteModalContent.removeAttribute("hidden");
           deletModalTitle.textContent = "할 일 삭제";
@@ -496,12 +497,16 @@ function openResetModal() {
   resetModal.classList.add("reset-modal-overlay");
   const resetModalContent = document.querySelector(".reset-modal-content");
   const resetModalDesc = document.querySelector(".reset-modal-description");
+  const resetModalTitle = document.querySelector("#reset-modal-title");
+  const cancelButton = document.querySelector(".reset-modal-cancel");
+  const confirmResetButton = document.querySelector(".reset-modal-confirm");
+
   if (resetModalContent) {
     resetModalContent.removeAttribute("hidden");
+    resetModalTitle.textContent = "데이터 초기화";
     resetModalDesc.textContent =
       "정말로 모든 데이터를 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.";
-  } else {
-    resetModalContent.setAttribute("hidden");
+    confirmResetButton.textContent = "전체 삭제";
   }
 
   resetModal.append(resetModalContent);
@@ -511,17 +516,13 @@ function openResetModal() {
   //모달이 열려 있는 도앙나 뒤족 화면 스크롤 방지
   document.body.style.overflow = "hidden";
 
-  // 방금 만든 모달 안에서 버튼 찾기
-  const cancelButton = resetModal.querySelector(".reset-modal-cancel");
-  const confirmButton = resetModal.querySelector(".reset-modal-confirm");
-
   //취소 버튼 클릭 시 모달 닫기
   cancelButton?.addEventListener("click", () => {
     closeResetModal(resetModal);
   });
 
   //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
-  confirmButton?.addEventListener("click", () => {
+  confirmResetButton?.addEventListener("click", () => {
     resetAllTasks();
     closeResetModal(resetModal);
   });

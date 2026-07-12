@@ -1247,6 +1247,7 @@ body.dark .dropdown-button.is-touch-active {
 body.dark .search-input-container {
   border: 0.999px solid rgba(38, 49, 64, 1);
 }
+
 body.dark .dropdown-button {
   color: #666666;
 }
@@ -1487,7 +1488,7 @@ body.dark .radio-low:hover {
 
   line-height: 1.6;
 }
-여기 아래 붙여주시면 돼요 body.dark .reset-modal-overlay {
+body.dark .reset-modal-overlay {
   background: rgba(0, 0, 0, 0.65);
 }
 
