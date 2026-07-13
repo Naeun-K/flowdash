@@ -147,27 +147,6 @@ function deleteTaskById(taskId) {
   saveTasks(nextTasks);
   renderTodos(nextTasks);
 }
-// function nullData() {
-//   const todoList = document.querySelector(".todo-list");
-//   const doingList = document.querySelector(".doing-list");
-//   const doneList = document.querySelector(".done-list");
-//   if (flowdashTodos === []) {
-//     const li = document.createElement("li");
-//     const nullP = document.createElement("p");
-//     nullP?.classList.add("nullBox");
-//     if (todoList === null) {
-//       nullP.textContent = "할 일이 없습니다";
-//     } else if (doingList === null) {
-//       nullP.textContent = "진행 중인 일이 없습니다";
-//     } else if (doneList === null) {
-//       nullP.textContent = "완료된 일이 없습니다";
-//     } else {
-//       console.log(`안되니까 다시 확인 ㄱㄱ`);
-//     }
-//     li.append(nullP);
-//     todoList.append(li);
-//   }
-// }
 
 function saveData(e) {
   if (e) e.preventDefault();
@@ -337,7 +316,6 @@ dropdownItems.forEach((item) => {
   });
 });
 
-const nullItem = document.querySelectorAll("list-item");
 // Render helpers
 function clearBoardLists() {
   document
@@ -409,18 +387,30 @@ function formatDate(ms) {
   const day = String(date.getDate()).padStart(2, "0");
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
-  // const seconds = String(date.getSeconds()).padStart(2, "0");
 
   return `${year}. ${month}. ${day} ${hours}:${minutes}`;
-  // 출력 예시: 2025-04-08 15:10:00
 }
 
 function createTodoElement(todo) {
-  document
-    .querySelectorAll(".todo-list, .doing-list, .done-list")
-    .forEach((ul) => {
-      ul.textContent = "";
+  // 1. 상태(status)에 맞는 '데이터 없음' 안내 문구만 선택해서 숨깁니다.
+  let targetNullClass = "";
+  if (todo.status === "TODO") {
+    targetNullClass = ".todo-null-data";
+  } else if (todo.status === "DOING") {
+    targetNullClass = ".doing-null-data";
+  } else if (todo.status === "DONE") {
+    targetNullClass = ".done-null-data";
+  } else {
+    console.log("data가 null일때 나오는 문구 삭제안됨 >>> 가서 버그잡아라~");
+  }
+
+  if (targetNullClass) {
+    const nullItems = document.querySelectorAll(targetNullClass);
+    // NodeList 내부의 각 요소에 hidden 속성을 안전하게 부여합니다.
+    nullItems.forEach((item) => {
+      item.hidden = true;
     });
+  }
 
   const li = document.createElement("li");
   li.className = "board-item";
