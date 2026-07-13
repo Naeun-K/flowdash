@@ -30,27 +30,28 @@ button {
   background-color: #fff;
   border-radius: 16px;
   border: 1px solid #e0e5eb;
-
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
 }
-
+/*검색창*/
 .search-block {
   width: 70%;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: stretch;
   gap: 10px;
 }
 .add-block {
   flex: 1;
+  width: 30%;
   align-items: stretch;
 }
 .search-input-container {
   display: flex;
   height: 46.22px;
+  width: 40%; /*검색창너비*/
   padding: 8px 10px;
   gap: 8px;
   border-radius: 8px;
@@ -91,6 +92,10 @@ button {
   height: 46.22px;
   position: relative;
 }
+.dropdown_zip {
+  display: flex;
+  gap: 10px;
+}
 
 .dropdown-button {
   width: 100%;
@@ -120,7 +125,25 @@ button {
   flex-shrink: 0;
   vertical-align: middle;
 }
+.search-period-dropdown,
+.search-priority-dropdown {
+  width: 120px;
+  /*수 정*/
+  /* 2. 내용이 넘칠 때 숨기고 말줄임표 처리 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 0 0 auto; /* 부모 공간을 1:1로 동일하게 */
+  min-width: 0; /* 레이아웃 깨짐 방지 */
+  text-align: center;
+}
 /* 드롭다운 메뉴 (ul) 기본 숨김 및 스타일링 */
+/*
+.search-period-dropdown,
+.search-priority-dropdown {
+  min-width: 0;
+  width: 100%;
+}*/
 .dropdown-menu {
   position: absolute;
   overflow: hidden;
@@ -1035,7 +1058,7 @@ body.dark .todo-title {
 
   .search-block-wrapper {
     display: block;
-    width: 100%;
+    width: 30%;
   }
 
   .search-block {
