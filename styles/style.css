@@ -114,7 +114,7 @@ button {
   justify-content: center;
 }
 .dropdown-button svg {
-  margin-left: 5px;
+  margin-left: 10px;
   vertical-align: middle;
 }
 
@@ -193,6 +193,122 @@ button {
   border-color: #aa9af7;
   background-color: #f8fafc;
 }
+
+/* 1. 메뉴의 기본 상태 (닫혀있을 때) */
+.dropdown-menu {
+  display: block; /* display: none을 쓰지 않습니다! */
+  visibility: hidden;
+  opacity: 0;
+
+  /* 높이를 0으로 만들어 닫아버리는 핵심 기술 */
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(-10px);
+
+  /* 모든 변화를 0.25초 동안 부드럽게 처리 */
+  transition:
+    max-height 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s;
+}
+
+/* 2. details가 열렸을 때 (open 속성이 들어왔을 때) */
+.dropdown[open] .dropdown-menu {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+
+  /* 메뉴가 열렸을 때의 넉넉한 최대 높이 설정 (메뉴 크기에 맞게 조절 가능) */
+  max-height: 200px;
+}
+
+/* 3. 화살표 시계 반대 방향 회전 (기존 코드 유지) */
+.arrow-icon {
+  display: inline-block;
+  transform: rotate(0deg);
+  margin-left: 8px;
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.dropdown[open] .arrow-icon {
+  transform: rotate(-180deg);
+}
+
+/* 1. 기본 메뉴 스타일 (닫혀있을 때 기본값 설정 및 부드러운 전환 효과 준비) */
+/* .dropdown-menu {
+  기존 스타일 유지...
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+2. details가 열렸을 때 (open 속성이 들어왔을 때)
+.dropdown[open] .dropdown-menu {
+  display: block;
+  브라우저가 요소를 그리도록 지시
+
+  최신 브라우저를 위한 애니메이션 처리
+  animation: slideDown 0.25s ease forwards;
+}
+
+3. 부드럽게 내려오는 서서히 나타나는 효과 애니메이션 정의
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    위에서 10px 위치에서 시작
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    원래 제자리로
+  }
+}
+
+1. 메뉴의 기본 상태 및 닫힐 때의 애니메이션 정의
+.dropdown-menu {
+  display: none; 
+  평소에는 숨김
+  opacity: 0;
+  transform: translateY(-10px);
+
+  핵심 스타일: display 전환도 부드럽게 처리하도록 브라우저에 지시
+  transition:
+    display 0.25s allow-discrete,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+2. details가 열렸을 때 (open 속성이 들어왔을 때)
+.dropdown[open] .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+3. 중요: 메뉴가 display: none에서 block으로 '막 켜지는 순간'의 시작점 정의
+@starting-style {
+  .dropdown[open] .dropdown-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+} */
+/* 화살표 기본 상태
+.arrow-icon {
+  transition: transform 0.25s ease;
+  display: inline-block; /* 회전 애니메이션이 먹히려면 필요합니다 */
+/* transform: rotate(0deg); */
+/* transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+/* } */
+
+/* 드롭다운이 열렸을 때 화살표 180도 회전 */
+/* .dropdown[open] .arrow-icon { */
+/* transform: rotate(-180deg); */
+/* }  */
 .search-sort-button {
   height: 46.22px;
   padding: 10px 20px;
@@ -1134,10 +1250,14 @@ body.dark .todo-title {
     width: 100%;
     flex: none;
   }
+  .todo-close-icon[hidden] {
+    display: block;
+    visibility: visible;
+  }
 }
 
 /* 모바일 */
-@media screen and (min-width: 320px) and (max-width: 767px) {
+@media (min-width: 320px) and (max-width: 767px) {
   .greeting-container {
     height: auto;
     padding: 16px;
@@ -1218,6 +1338,10 @@ body.dark .todo-title {
     max-width: 100%;
     box-sizing: border-box;
   }
+  /* .todo-close-icon[hidden] {
+    display: block;
+    visibility: visible;
+  } */
 }
 
 /* 다크모드 정렬 버튼 */
