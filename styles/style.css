@@ -379,16 +379,17 @@ body.dark .board-count {
   line-height: 32px;
 }
 
+/* 푸터 영역 */
 .footer {
-  /* 기존 레이아웃 코드 */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   align-self: stretch;
+
   padding: 30.999px 0 31.99px 0;
   border-top: 1.111px solid #e0e5eb;
 
-  /* 텍스트 스타일 적용 */
   color: #5c6f8a;
   text-align: center;
   font-family: "Pretendard", sans-serif;
@@ -396,12 +397,6 @@ body.dark .board-count {
   font-style: normal;
   font-weight: 400;
   line-height: 21.6px;
-}
-
-/*텍스트 위치 중앙설정*/
-.footer {
-  align-items: center;
-  justify-content: center;
 }
 
 /*보드 전체 레이아웃*/
@@ -1291,6 +1286,16 @@ body.dark .dropdown-button {
   color: #f1f2f4;
   border-color: #263140;
 }
+
+/* 다크모드 드롭다운 열림 및 선택 상태 */
+body.dark .dropdown.is-open .dropdown-button,
+body.dark .dropdown:hover .dropdown-button,
+body.dark .dropdown-button.active {
+  background-color: #171d26;
+  border-color: #765eed;
+  color: #f1f2f4;
+}
+
 body.dark .dropdown-button:hover,
 body.dark .dropdown-button:focus,
 body.dark .dropdown-button:focus-visible,
@@ -1711,3 +1716,18 @@ body.dark .reset-modal-confirm:hover {
 body.dark .null-data {
   color: #737d8c;
 }
+/* 검색·기간·우선순위·정렬이 공간을 균등하게 사용
+body.dark .search-input-container,
+body.dark .search-period-dropdown,
+body.dark .search-priority-dropdown,
+body.dark .search-sort-button {
+  flex: 1;
+  min-width: 0;
+}
+
+다크모드 검색·필터 요소 간격
+body.dark .search-block {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+} */
