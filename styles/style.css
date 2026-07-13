@@ -492,7 +492,7 @@ body.dark .board-count {
 .done-list-container {
   margin-top: 16px;
 }
-.list-item[hidden] {
+.null-data[hidden] {
   display: none;
 }
 .greeting-container {
