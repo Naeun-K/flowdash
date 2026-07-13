@@ -342,18 +342,19 @@ document.querySelectorAll(".dropdown").forEach((dropdown) => {
   const button = dropdown.querySelector(".dropdown-button");
   button?.addEventListener("click", (event) => {
     event.stopPropagation();
-    toggleDropdown(dropdown);
+    // toggleDropdown(dropdown);
+    initDropdowns(dropdown);
   });
 
   dropdown.querySelectorAll(".dropdown-menu .dropdown-item").forEach((item) => {
     item.addEventListener("click", (event) => {
       event.stopPropagation();
-      closeAllDropdowns(dropdown);
+      initDropdowns(dropdown);
     });
   });
 });
 
-document.addEventListener("click", () => closeAllDropdowns());
+document.addEventListener("click", () => initDropdowns());
 
 dropdownItems.forEach((item) => {
   item.addEventListener("click", (event) => {
@@ -362,7 +363,8 @@ dropdownItems.forEach((item) => {
     const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
     if (statusLabel) statusLabel.textContent = statusText;
     currentSelectedStatus = mapStatusLabelToInternal(statusText);
-    closeAllDropdowns(item.closest(".dropdown"));
+    // closeAllDropdowns(item.closest(".dropdown"));
+    initDropdowns(item.closest(".dropdown"));
   });
 });
 
@@ -544,15 +546,23 @@ function createTodoElement(todo) {
 
         const deleteModal = document.createElement("div");
         deleteModal.classList.add("reset-modal-overlay");
-        const deleteModalContent = document.querySelector(
-          ".reset-modal-content",
-        );
-        const deletModalTitle = document.querySelector("#reset-modal-title");
-        const deletModalDesc = document.querySelector(
+        // const deleteModalContent = document.querySelector(
+        //   ".reset-modal-content",
+        // );
+        const originalContent = document.querySelector(".reset-modal-content");
+        if (!originalContent) return;
+        const deleteModalContent = originalContent.cloneNode(true);
+        const deletModalTitle =
+          deleteModalContent.querySelector("#reset-modal-title");
+        const deletModalDesc = deleteModalContent.querySelector(
           ".reset-modal-description",
         );
-        const cancelDeleteBtn = document.querySelector(".reset-modal-cancel");
-        const doDeleteBtn = document.querySelector(".reset-modal-confirm");
+        const cancelDeleteBtn = deleteModalContent.querySelector(
+          ".reset-modal-cancel",
+        );
+        const doDeleteBtn = deleteModalContent.querySelector(
+          ".reset-modal-confirm",
+        );
 
         if (deleteModalContent) {
           deleteModalContent.removeAttribute("hidden");
@@ -569,27 +579,55 @@ function createTodoElement(todo) {
         //모달이 열려 있는 도앙나 뒤족 화면 스크롤 방지
         document.body.style.overflow = "hidden";
 
-        //취소 버튼 클릭 시 모달 닫기
-        cancelDeleteBtn?.addEventListener("click", () => {
-          closeResetModal(deleteModal);
-        });
+        // 공통 닫기 함수 (메모리 누수 방지를 위한 이벤트 제거 포함)
+        const handleClose = () => {
+          closeResetModal(deleteModal); // 모달 페이드아웃 및 remove() 처리 함수
+          document.removeEventListener("keydown", handleKeyDown); // 리스너 해제 필수!
+        };
 
-        //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
-        doDeleteBtn?.addEventListener("click", () => {
+        // 공통 실행 함수
+        const handleConfirm = () => {
           deleteTask();
-          closeResetModal(deleteModal);
-        });
-        document.addEventListener("keydown", (event) => {
-          if (event.key === "Escape" && !deleteModal?.hidden) {
-            closeResetModal(deleteModal);
+          handleClose();
+        };
+
+        // ⭐ 핵심 2: 엔터/ESC 버그를 잡기 위한 키보드 핸들러 통합
+        const handleKeyDown = (event) => {
+          if (event.key === "Escape") {
+            handleClose();
           }
-        });
-        document.addEventListener("keydown", (event) => {
-          if (event.key === "Enter" && !deleteModal?.hidden) {
-            deleteTask();
-            closeResetModal(deleteModal);
+          if (event.key === "Enter") {
+            event.preventDefault(); // 엔터 키의 기본 브라우저 동작 막기
+            handleConfirm();
           }
-        });
+        };
+
+        // 5. 이벤트 리스너 등록
+        cancelDeleteBtn?.addEventListener("click", handleClose);
+        doDeleteBtn?.addEventListener("click", handleConfirm);
+        // //취소 버튼 클릭 시 모달 닫기
+        // cancelDeleteBtn?.addEventListener("click", () => {
+        //   closeResetModal(deleteModal);
+        // });
+
+        // //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
+        // doDeleteBtn?.addEventListener("click", () => {
+        //   deleteTask();
+        //   closeResetModal(deleteModal);
+        // });
+        // 모달이 열려있는 동안에만 document 전체에서 키보드 감지
+        document.addEventListener("keydown", handleKeyDown);
+        // document.addEventListener("keydown", (event) => {
+        //   if (event.key === "Escape" && !deleteModal?.hidden) {
+        //     closeResetModal(deleteModal);
+        //   }
+        // });
+        // document.addEventListener("keydown", (event) => {
+        //   if (event.key === "Enter" && !deleteModal?.hidden) {
+        //     deleteTask();
+        //     closeResetModal(deleteModal);
+        //   }
+        // });
         //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
         deleteModal.addEventListener("click", (event) => {
           if (event.target === deleteModal) {
@@ -645,11 +683,18 @@ function openResetModal() {
 
   const resetModal = document.createElement("div");
   resetModal.classList.add("reset-modal-overlay");
-  const resetModalContent = document.querySelector(".reset-modal-content");
-  const resetModalDesc = document.querySelector(".reset-modal-description");
-  const resetModalTitle = document.querySelector("#reset-modal-title");
-  const cancelButton = document.querySelector(".reset-modal-cancel");
-  const confirmResetButton = document.querySelector(".reset-modal-confirm");
+  const originalContent = document.querySelector(".reset-modal-content");
+  if (!originalContent) return;
+  const resetModalContent = originalContent.cloneNode(true);
+  // const resetModalContent = document.querySelector(".reset-modal-content");
+  const resetModalDesc = resetModalContent.querySelector(
+    ".reset-modal-description",
+  );
+  const resetModalTitle = resetModalContent.querySelector("#reset-modal-title");
+  const cancelButton = resetModalContent.querySelector(".reset-modal-cancel");
+  const confirmResetButton = resetModalContent.querySelector(
+    ".reset-modal-confirm",
+  );
 
   if (resetModalContent) {
     resetModalContent.removeAttribute("hidden");
@@ -665,29 +710,59 @@ function openResetModal() {
 
   //모달이 열려 있는 도앙나 뒤족 화면 스크롤 방지
   document.body.style.overflow = "hidden";
+  // 공통 닫기 함수 (메모리 누수 방지를 위한 이벤트 제거 포함)
+  const handleClose = () => {
+    closeResetModal(resetModal); // 모달 페이드아웃 및 remove() 처리 함수
+    document.removeEventListener("keydown", handleKeyDown); // 리스너 해제 필수!
+  };
 
-  //취소 버튼 클릭 시 모달 닫기
-  cancelButton?.addEventListener("click", () => {
-    closeResetModal(resetModal);
-  });
-
-  //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
-  confirmResetButton?.addEventListener("click", () => {
+  // 공통 실행 함수
+  const handleConfirm = () => {
+    // deleteTask();
     resetAllTasks();
-    closeResetModal(resetModal);
-  });
-  //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !resetModal?.hidden) {
-      closeResetModal(resetModal);
+    handleClose();
+  };
+
+  // ⭐ 핵심 2: 엔터/ESC 버그를 잡기 위한 키보드 핸들러 통합
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      handleClose();
     }
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && !resetModal?.hidden) {
-      resetAllTasks();
-      closeResetModal(resetModal);
+    if (event.key === "Enter") {
+      event.preventDefault(); // 엔터 키의 기본 브라우저 동작 막기
+      handleConfirm();
     }
-  });
+  };
+
+  // 5. 이벤트 리스너 등록
+  cancelButton?.addEventListener("click", handleClose);
+  confirmResetButton?.addEventListener("click", handleConfirm);
+
+  // 모달이 열려있는 동안에만 document 전체에서 키보드 감지
+  document.addEventListener("keydown", handleKeyDown);
+
+  // //취소 버튼 클릭 시 모달 닫기
+  // cancelButton?.addEventListener("click", () => {
+  //   closeResetModal(resetModal);
+  // });
+
+  // //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
+  // confirmResetButton?.addEventListener("click", () => {
+  //   resetAllTasks();
+  //   closeResetModal(resetModal);
+  // });
+  // //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
+  // document.addEventListener("keydown", (event) => {
+  //   if (event.key === "Escape" && !resetModal?.hidden) {
+  //     closeResetModal(resetModal);
+  //   }
+  // });
+  // document.addEventListener("keydown", (event) => {
+  //   if (event.key === "Enter" && !resetModal?.hidden) {
+  //     resetAllTasks();
+  //     closeResetModal(resetModal);
+  //   }
+  // });
   //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
   resetModal.addEventListener("click", (event) => {
     if (event.target === resetModal) {
