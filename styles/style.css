@@ -144,7 +144,7 @@ button {
   transition:
     opacity 0.3s ease,
     transform 0.3s ease,
-    visibility 0.3s;
+    visibility 0.3s ease;
 }
 
 /* 각 항목 (li) 및 링크 스타일 */
@@ -163,18 +163,22 @@ button {
 
 /* 항목에 마우스 올렸을 때 효과 */
 .dropdown-item:hover {
-  background-color: #edf2f7; /* 은은한 블루 그레이 톤 */
+  background-color: #edf2f7;
   color: #1a202c;
 }
 
 /* 마우스 올리면 메뉴 노출 */
-.dropdown:hover .dropdown-menu,
+.dropdown:not(.is-close):hover .dropdown-menu,
 .dropdown.is-open .dropdown-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
-
+.dropdown.is-close .dropdown-menu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+}
 .dropdown:hover .dropdown-button,
 .dropdown.is-open .dropdown-button {
   border-color: #aa9af7;

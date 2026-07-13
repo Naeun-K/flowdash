@@ -267,26 +267,76 @@ priorityInputs.forEach((input) => {
   });
 });
 
-function closeAllDropdowns(excludingDropdown = null) {
-  document.querySelectorAll(".dropdown").forEach((dropdown) => {
-    if (dropdown === excludingDropdown) return;
-    dropdown.classList.remove("is-open");
+// 페이지 로드 시 드롭다운 이벤트 초기화
+function initDropdowns() {
+  const dropdowns = document.querySelectorAll(".dropdown");
+
+  dropdowns.forEach((dropdown) => {
+    const items = dropdown.querySelectorAll(".dropdown-item");
     const button = dropdown.querySelector(".dropdown-button");
-    button?.setAttribute("aria-expanded", "false");
+
+    // 1. 드롭다운 내부 아이템을 클릭했을 때
+    items.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        // 클릭 시 강제로 닫기 클래스 추가
+        dropdown.classList.remove("is-open");
+        dropdown.classList.add("is-close");
+        button?.setAttribute("aria-expanded", "false");
+
+        // 포커스 해제 (필요 시)
+        document.activeElement.blur();
+      });
+    });
+
+    // 2. 마우스가 드롭다운 영역을 완전히 벗어났을 때 (상태 초기화)
+    // 이 처리를 해줘야 다음에 마우스를 다시 올렸을 때 정상적으로 열립니다.
+    dropdown.addEventListener("mouseleave", () => {
+      dropdown.classList.remove("is-close");
+      dropdown.classList.remove("is-open");
+    });
   });
 }
 
-function toggleDropdown(dropdown) {
-  const button = dropdown.querySelector(".dropdown-button");
-  const isOpen = dropdown.classList.contains("is-open");
-  closeAllDropdowns(dropdown);
-  if (!isOpen) {
-    dropdown.classList.add("is-open");
-    button?.setAttribute("aria-expanded", "true");
-  } else {
-    button?.setAttribute("aria-expanded", "false");
-  }
-}
+// 스크립트 실행
+document.addEventListener("DOMContentLoaded", initDropdowns);
+
+// function closeAllDropdowns(excludingDropdown = null) {
+//   //   document.querySelectorAll(".dropdown").forEach((dropdown) => {
+//   const dropdown = document.querySelectorAll(".dropdown");
+//   //   });
+//   const dropdownItems = document.querySelectorAll(".dropdown-item");
+//   // 드롭다운 메뉴 박스 선택 (본인의 HTML 클래스명에 맞게 변경하세요)
+//   const dropdownMenu = document.querySelector(".dropdown-menu");
+
+//   dropdown.forEach((item) => {
+//     item.addEventListener("click", () => {
+//       // 클릭 시 드롭다운 메뉴를 닫음 (클래스 제거 또는 스타일 변경)
+//       // dropdownMenu.classList.remove("is-open");
+//       // 또는 dropdownMenu.style.display = 'none';
+//       if (dropdown === excludingDropdown) return;
+//       dropdown.classList.remove("is-open");
+//       dropdown.classList.add("is-close");
+//       // document.activeElement.blur();
+//       // dropdownMenu.style.display = "none";
+//       const button = dropdown.querySelector(".dropdown-button");
+//       button?.setAttribute("aria-expanded", "false");
+//     });
+//   });
+// }
+
+// function toggleDropdown(dropdown) {
+//   const button = dropdown.querySelector(".dropdown-button");
+//   const isOpen = dropdown.classList.contains("is-open");
+//   const isClose = dropdown.classList.contains("is-close");
+//   closeAllDropdowns(dropdown);
+//   // if (isClose) dropdown.classList.remove("is-close");
+//   if (!isOpen) {
+//     dropdown.classList.add("is-open");
+//     button?.setAttribute("aria-expanded", "true");
+//   } else {
+//     button?.setAttribute("aria-expanded", "false");
+//   }
+// }
 
 document.querySelectorAll(".dropdown").forEach((dropdown) => {
   const button = dropdown.querySelector(".dropdown-button");
