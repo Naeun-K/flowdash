@@ -1166,12 +1166,15 @@ body.dark .todo-title {
 
   .search-block-wrapper {
     display: block;
-    width: 30%;
+    width: 100%; /*30%수정*/
+  }
+  .dropdown_zip {
+    width: 100%;
   }
 
   .search-block {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 10px;
     width: 100%;
   }
@@ -1208,6 +1211,7 @@ body.dark .todo-title {
 
   .add-block {
     margin-top: 12px;
+    width: 100%;
   }
 
   .achieve .card-count {
@@ -1309,7 +1313,7 @@ body.dark .todo-title {
 
   .search-block {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 10px;
     width: 100%;
   }
