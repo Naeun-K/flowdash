@@ -1709,15 +1709,5 @@ body.dark .reset-modal-confirm:hover {
   text-align: center;
 }
 body.dark .null-data {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  min-height: 120px;
-
-  font-size: 14px;
-  font-weight: 500;
   color: #737d8c;
-
-  text-align: center;
 }
