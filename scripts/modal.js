@@ -279,12 +279,17 @@ function initDropdowns() {
     items.forEach((item) => {
       item.addEventListener("click", (e) => {
         // 클릭 시 강제로 닫기 클래스 추가
-        dropdown.classList.remove("is-open");
-        dropdown.classList.add("is-close");
-        button?.setAttribute("aria-expanded", "false");
+        // dropdown.classList.remove("is-open");
+        // dropdown.classList.add("is-close");
+        // button?.setAttribute("aria-expanded", "false");
 
-        // 포커스 해제 (필요 시)
-        document.activeElement.blur();
+        // // 포커스 해제 (필요 시)
+        // document.activeElement.blur();
+        const details = item.closest(".dropdown");
+
+        if (details) {
+          details.removeAttribute("open"); // open 속성을 제거하여 드롭다운을 닫음
+        }
       });
     });
 

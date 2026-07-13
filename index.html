@@ -118,116 +118,116 @@
             </div>
             <!--드롭다운 묶음-->
             <div class="dropdown_zip">
-            <div class="search-period-dropdown dropdown">
-              <button
-                class="search-period-dropdown-button dropdown-button"
-                type="button"
-                aria-haspopup="listbox"
-                aria-expanded="false"
-              >
-                전체 기간
-                <span class="arrow-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-caret-down-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-                    />
-                  </svg>
-                </span>
-              </button>
-              <ul
-                class="search-period-dropdown-menu dropdown-menu"
-                role="listbox"
-              >
-                <li
-                  class="search-period-dropdown-item dropdown-item"
-                  role="option"
-                  data-value="all-days"
+              <details class="search-period-dropdown dropdown">
+                <summary
+                  class="search-period-dropdown-button dropdown-button"
+                  role="button"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
                 >
                   전체 기간
-                </li>
-                <li
-                  class="search-period-dropdown-item dropdown-item"
-                  role="option"
-                  data-value="today"
+                  <span class="arrow-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-caret-down-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                      />
+                    </svg>
+                  </span>
+                </summary>
+                <ul
+                  class="search-period-dropdown-menu dropdown-menu"
+                  role="listbox"
                 >
-                  오늘
-                </li>
-                <li
-                  class="search-period-dropdown-item dropdown-item"
-                  role="option"
-                  data-value="seven-days"
-                >
-                  최근 7일
-                </li>
-              </ul>
-            </div>
-
-            <div class="search-priority-dropdown dropdown">
-              <button
-                class="search-priority-dropdown-button dropdown-button"
-                type="button"
-                aria-haspopup="listbox"
-                aria-expanded="false"
-              >
-                전체 우선순위
-                <span class="arrow-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-caret-down-fill"
-                    viewBox="0 0 16 16"
+                  <li
+                    class="search-period-dropdown-item dropdown-item"
+                    role="option"
+                    data-value="all-days"
                   >
-                    <path
-                      d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-                    />
-                  </svg>
-                </span>
-              </button>
+                    전체 기간
+                  </li>
+                  <li
+                    class="search-period-dropdown-item dropdown-item"
+                    role="option"
+                    data-value="today"
+                  >
+                    오늘
+                  </li>
+                  <li
+                    class="search-period-dropdown-item dropdown-item"
+                    role="option"
+                    data-value="seven-days"
+                  >
+                    최근 7일
+                  </li>
+                </ul>
+              </details>
 
-              <ul
-                class="search-priority-dropdown-menu dropdown-menu"
-                role="listbox"
-              >
-                <li
-                  class="search-priority-dropdown-item dropdown-item"
-                  role="option"
-                  data-value="all-priority"
+              <details class="search-priority-dropdown dropdown">
+                <summary
+                  class="search-priority-dropdown-button dropdown-button"
+                  role="button"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
                 >
                   전체 우선순위
-                </li>
+                  <span class="arrow-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-caret-down-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                      />
+                    </svg>
+                  </span>
+                </summary>
 
-                <li
-                  class="search-priority-dropdown-item dropdown-item"
-                  role="option"
-                  data-value="HIGH"
+                <ul
+                  class="search-priority-dropdown-menu dropdown-menu"
+                  role="listbox"
                 >
-                  HIGH (높음)
-                </li>
-                <li
-                  class="search-priority-dropdown-item dropdown-item"
-                  role="option"
-                  data-value="MID"
-                >
-                  MID (중간)
-                </li>
-                <li
-                  class="search-priority-dropdown-item dropdown-item"
-                  role="option"
-                  data-value="LOW"
-                >
-                  LOW (낮음)
-                </li>
-              </ul>
-            </div>
+                  <li
+                    class="search-priority-dropdown-item dropdown-item"
+                    role="option"
+                    data-value="all-priority"
+                  >
+                    전체 우선순위
+                  </li>
+
+                  <li
+                    class="search-priority-dropdown-item dropdown-item"
+                    role="option"
+                    data-value="HIGH"
+                  >
+                    HIGH (높음)
+                  </li>
+                  <li
+                    class="search-priority-dropdown-item dropdown-item"
+                    role="option"
+                    data-value="MID"
+                  >
+                    MID (중간)
+                  </li>
+                  <li
+                    class="search-priority-dropdown-item dropdown-item"
+                    role="option"
+                    data-value="LOW"
+                  >
+                    LOW (낮음)
+                  </li>
+                </ul>
+              </details>
             </div>
             <button type="button" class="search-sort-button">
               <span class="search-sort-button-text"> 정렬: 오름차순 </span>
@@ -404,9 +404,11 @@
               class="label-input-container task-status-container modal-radio-select-group"
             >
               <p class="modal-label">상태</p>
-              <div class="dropdown modal-status">
-                <button
-                  type="button"
+              <details class="dropdown modal-status">
+                <summary
+                  role="button"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
                   class="dropdown-button modal-status-button"
                 >
                   <span class="modal-status-label">할 일</span>
@@ -424,7 +426,7 @@
                       />
                     </svg>
                   </span>
-                </button>
+                </summary>
                 <ul class="modal-status-menu dropdown-menu" role="listbox">
                   <li
                     data-value="TODO"
@@ -448,7 +450,7 @@
                     완료
                   </li>
                 </ul>
-              </div>
+              </details>
             </div>
           </div>
           <div class="modal-button-container">
