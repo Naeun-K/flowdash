@@ -300,49 +300,10 @@ function initDropdowns() {
 // 스크립트 실행
 document.addEventListener("DOMContentLoaded", initDropdowns);
 
-// function closeAllDropdowns(excludingDropdown = null) {
-//   //   document.querySelectorAll(".dropdown").forEach((dropdown) => {
-//   const dropdown = document.querySelectorAll(".dropdown");
-//   //   });
-//   const dropdownItems = document.querySelectorAll(".dropdown-item");
-//   // 드롭다운 메뉴 박스 선택 (본인의 HTML 클래스명에 맞게 변경하세요)
-//   const dropdownMenu = document.querySelector(".dropdown-menu");
-
-//   dropdown.forEach((item) => {
-//     item.addEventListener("click", () => {
-//       // 클릭 시 드롭다운 메뉴를 닫음 (클래스 제거 또는 스타일 변경)
-//       // dropdownMenu.classList.remove("is-open");
-//       // 또는 dropdownMenu.style.display = 'none';
-//       if (dropdown === excludingDropdown) return;
-//       dropdown.classList.remove("is-open");
-//       dropdown.classList.add("is-close");
-//       // document.activeElement.blur();
-//       // dropdownMenu.style.display = "none";
-//       const button = dropdown.querySelector(".dropdown-button");
-//       button?.setAttribute("aria-expanded", "false");
-//     });
-//   });
-// }
-
-// function toggleDropdown(dropdown) {
-//   const button = dropdown.querySelector(".dropdown-button");
-//   const isOpen = dropdown.classList.contains("is-open");
-//   const isClose = dropdown.classList.contains("is-close");
-//   closeAllDropdowns(dropdown);
-//   // if (isClose) dropdown.classList.remove("is-close");
-//   if (!isOpen) {
-//     dropdown.classList.add("is-open");
-//     button?.setAttribute("aria-expanded", "true");
-//   } else {
-//     button?.setAttribute("aria-expanded", "false");
-//   }
-// }
-
 document.querySelectorAll(".dropdown").forEach((dropdown) => {
   const button = dropdown.querySelector(".dropdown-button");
   button?.addEventListener("click", (event) => {
     event.stopPropagation();
-    // toggleDropdown(dropdown);
     initDropdowns(dropdown);
   });
 
@@ -546,9 +507,6 @@ function createTodoElement(todo) {
 
         const deleteModal = document.createElement("div");
         deleteModal.classList.add("reset-modal-overlay");
-        // const deleteModalContent = document.querySelector(
-        //   ".reset-modal-content",
-        // );
         const originalContent = document.querySelector(".reset-modal-content");
         if (!originalContent) return;
         const deleteModalContent = originalContent.cloneNode(true);
@@ -605,29 +563,9 @@ function createTodoElement(todo) {
         // 5. 이벤트 리스너 등록
         cancelDeleteBtn?.addEventListener("click", handleClose);
         doDeleteBtn?.addEventListener("click", handleConfirm);
-        // //취소 버튼 클릭 시 모달 닫기
-        // cancelDeleteBtn?.addEventListener("click", () => {
-        //   closeResetModal(deleteModal);
-        // });
 
-        // //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
-        // doDeleteBtn?.addEventListener("click", () => {
-        //   deleteTask();
-        //   closeResetModal(deleteModal);
-        // });
-        // 모달이 열려있는 동안에만 document 전체에서 키보드 감지
         document.addEventListener("keydown", handleKeyDown);
-        // document.addEventListener("keydown", (event) => {
-        //   if (event.key === "Escape" && !deleteModal?.hidden) {
-        //     closeResetModal(deleteModal);
-        //   }
-        // });
-        // document.addEventListener("keydown", (event) => {
-        //   if (event.key === "Enter" && !deleteModal?.hidden) {
-        //     deleteTask();
-        //     closeResetModal(deleteModal);
-        //   }
-        // });
+
         //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
         deleteModal.addEventListener("click", (event) => {
           if (event.target === deleteModal) {
