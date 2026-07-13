@@ -329,6 +329,12 @@ button {
 
   transition: 0.3s;
 }
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 body.dark .board-count {
   background-color: #b6b6b6;
 }

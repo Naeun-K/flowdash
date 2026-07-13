@@ -613,11 +613,20 @@ export function renderTodos(todoList) {
   updateCounts(tasks);
 }
 // 전체 데이터 초기화
-const resetButton = document.querySelector(".reset-data-button");
-
-function openResetModal() {
+const resetButton = document.querySelector(
+  ".reset-data-button:not(.reset-filter-button)",
+);
+export function openResetModal({
+  title = "데이터 초기화",
+  description = "정말로 모든 데이터를 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.",
+  confirmText = "전체 삭제",
+  onConfirm = resetAllTasks,
+} = {}) {
   const existingOverlay = document.querySelector(".reset-modal-overlay");
-  if (existingOverlay) existingOverlay.remove();
+
+  if (existingOverlay) {
+    existingOverlay.remove();
+  }
 
   const resetModal = document.createElement("div");
   resetModal.classList.add("reset-modal-overlay");
@@ -634,19 +643,25 @@ function openResetModal() {
     ".reset-modal-confirm",
   );
 
-  if (resetModalContent) {
-    resetModalContent.removeAttribute("hidden");
-    resetModalTitle.textContent = "데이터 초기화";
-    resetModalDesc.textContent =
-      "정말로 모든 데이터를 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.";
-    confirmResetButton.textContent = "전체 삭제";
+  if (
+    !resetModalContent ||
+    !resetModalDesc ||
+    !resetModalTitle ||
+    !cancelButton ||
+    !confirmResetButton
+  ) {
+    return;
   }
 
+  resetModalContent.removeAttribute("hidden");
+
+  resetModalTitle.textContent = title;
+  resetModalDesc.textContent = description;
+  confirmResetButton.textContent = confirmText;
+
   resetModal.append(resetModalContent);
-  //생성한 모달을 화면에 추가
   document.body.append(resetModal);
 
-  //모달이 열려 있는 도앙나 뒤족 화면 스크롤 방지
   document.body.style.overflow = "hidden";
   // 공통 닫기 함수 (메모리 누수 방지를 위한 이벤트 제거 포함)
   const handleClose = () => {
@@ -656,8 +671,7 @@ function openResetModal() {
 
   // 공통 실행 함수
   const handleConfirm = () => {
-    // deleteTask();
-    resetAllTasks();
+    onConfirm();
     handleClose();
   };
 
@@ -675,9 +689,6 @@ function openResetModal() {
   // 5. 이벤트 리스너 등록
   cancelButton?.addEventListener("click", handleClose);
   confirmResetButton?.addEventListener("click", handleConfirm);
-
-  // 모달이 열려있는 동안에만 document 전체에서 키보드 감지
-  document.addEventListener("keydown", handleKeyDown);
 
   // //취소 버튼 클릭 시 모달 닫기
   // cancelButton?.addEventListener("click", () => {
@@ -704,9 +715,11 @@ function openResetModal() {
   //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
   resetModal.addEventListener("click", (event) => {
     if (event.target === resetModal) {
-      closeResetModal(resetModal);
+      handleClose();
     }
   });
+
+  document.addEventListener("keydown", handleKeyDown);
 }
 
 // 전체 초기화 확인 모달 닫기 (닫기 애니메이션 적용)
@@ -739,8 +752,10 @@ function resetAllTasks() {
   //화면의 할 일 목록과 통계도 빈 배열 기준을 다시 렌더링
   renderTodos([]);
 }
-// 전체 데이터 초기화 버튼 클릭 시  확인 모달 열기;
-resetButton?.addEventListener("click", openResetModal);
 
 // 초기 렌더
 renderTodos(getTasks());
+
+resetButton?.addEventListener("click", () => {
+  openResetModal();
+});

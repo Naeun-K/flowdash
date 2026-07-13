@@ -1,7 +1,10 @@
-import { getTasks, renderTodos } from "./modal.js";
+import { getTasks, renderTodos, openResetModal } from "./modal.js";
 
 // 검색 input
 const searchInput = document.querySelector(".search-input");
+
+// 조건 초기화 버튼
+const resetFilterButton = document.querySelector(".reset-filter-button");
 
 // 기간 드롭다운 버튼
 const periodButton = document.querySelector(".search-period-dropdown-button");
@@ -24,8 +27,6 @@ const sortButton = document.querySelector(".search-sort-button");
 
 // 정렬 버튼 안의 글자
 const sortButtonText = document.querySelector(".search-sort-button-text");
-
-const resetButton = document.querySelector(".reset-data-button");
 
 // 필터 정보들이 들어갈 영역
 const filterInfoContainer = document.querySelector(".filter-info-list");
@@ -279,4 +280,39 @@ sortButton?.addEventListener("click", () => {
 
   // 정렬 상태가 바뀌면 전체 필터 다시 적용
   applyFilter();
+});
+//*        조건 초기화           * //
+
+function resetFilters() {
+  // 1. 검색 초기화
+  selectedKeyword = "";
+  searchInput.value = "";
+
+  // 2. 기간 초기화
+  selectedPeriod = "all-days";
+  periodButton.childNodes[0].textContent = "전체 기간 ";
+
+  // 3. 우선순위 초기화
+  selectedPriority = "all-priority";
+  priorityButton.childNodes[0].textContent = "전체 우선순위 ";
+
+  // 4. 정렬 초기화
+  isAscending = true;
+  sortButtonText.textContent = "정렬: 오름차순";
+
+  // 5. 정렬 화살표 초기화
+  sortIcon.style.transform = "rotate(0deg)";
+
+  // 6. 초기화된 조건으로 목록 다시 출력
+  applyFilter();
+}
+
+resetFilterButton?.addEventListener("click", () => {
+  openResetModal({
+    title: "조건 초기화",
+    description:
+      "현재 적용된 검색, 기간, 우선순위, 정렬 조건을 초기화하시겠습니까?\n저장된 할 일 데이터는 삭제되지 않습니다.",
+    confirmText: "초기화",
+    onConfirm: resetFilters,
+  });
 });
