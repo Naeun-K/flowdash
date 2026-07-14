@@ -20,6 +20,16 @@ button {
   border: 0;
 }
 
+/* 테마가 부드럽게 바뀔 때만 일시적으로 사용할 클래스 */
+.theme-transitioning,
+.theme-transitioning * {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease !important;
+}
+
 .search-container {
   display: flex;
   flex-direction: column;
