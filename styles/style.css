@@ -885,7 +885,33 @@ body.dark .board-count {
   align-items: center;
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 99;
+
+  /* 바탕은 위치 이동이나 크기 변화 없이 투명도만 조절 */
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+.new-task-modal[hidden] {
+  display: none;
+}
+.new-task-modal .modal-content {
+  /* 초기 상태: 투명하고, 0.9배 크기에, 20px 아래에 배치 */
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+
+  /* 모달 알맹이가 사르르 커지며 올라오도록 설정 */
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.3s ease-out;
+}
+
+.new-task-modal.active {
+  opacity: 1;
+}
+/* 4. openModal 함수에 의해 active 클래스가 붙었을 때 (완전히 보이는 상태) */
+.new-task-modal.active .modal-content {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .new-task-modal[hidden] {
