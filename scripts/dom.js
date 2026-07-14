@@ -177,4 +177,123 @@ themeButton.addEventListener("click", () => {
 
   // 변경된 테마에 맞게 아이콘 변경
   updateThemeIcon();
+}); // 테마 버튼과 드롭다운 요소 가져오기
+const themeSelectButton = document.querySelector(".greeting-theme-button");
+const themeDropdownMenu = document.querySelector(".theme-dropdown-menu");
+const themeDropdown = document.querySelector(".theme-dropdown");
+const themeItems = document.querySelectorAll(".theme-dropdown-item");
+const themeButtonIcon = document.querySelector(".greeting-theme-button-icon");
+const themeButtonText = document.querySelector(".greeting-theme-button-text");
+
+// 기본 테마 팔레트 아이콘
+const defaultThemeIcon = `
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="13.5" cy="6.5" r="1.5"></circle>
+    <circle cx="17.5" cy="10.5" r="1.5"></circle>
+    <circle cx="8.5" cy="7.5" r="1.5"></circle>
+    <circle cx="6.5" cy="12.5" r="1.5"></circle>
+    <path
+      d="M12 3a9 9 0 1 0 9 9c0-1.1-.9-2-2-2h-2.2a2 2 0 0 1-1.8-2.8l.5-1.1A2.2 2.2 0 0 0 13.5 3H12Z"
+    ></path>
+  </svg>
+`;
+
+// 계절별 아이콘
+const themeIcons = {
+  spring: "🌸",
+  summer: "☀️",
+  autumn: "🍂",
+  winter: "❄️",
+};
+
+// 계절별 버튼 이름
+const themeNames = {
+  default: "테마",
+  spring: "테마",
+  summer: "테마",
+  autumn: "테마",
+  winter: "테마",
+};
+// 테마 버튼 클릭 시 드롭다운 열기/닫기
+themeSelectButton?.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  if (!themeDropdownMenu) return;
+
+  themeDropdownMenu.hidden = !themeDropdownMenu.hidden;
+
+  themeSelectButton.setAttribute(
+    "aria-expanded",
+    String(!themeDropdownMenu.hidden),
+  );
+});
+
+// 드롭다운 바깥 클릭 시 닫기
+document.addEventListener("click", (event) => {
+  if (!themeDropdownMenu || !themeDropdown) return;
+
+  if (!themeDropdown.contains(event.target)) {
+    themeDropdownMenu.hidden = true;
+    themeSelectButton?.setAttribute("aria-expanded", "false");
+  }
+});
+
+// 테마 선택 시 버튼 색상, 아이콘, 글자 변경
+themeItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    const selectedTheme = item.dataset.theme;
+
+    // 기존 선택 표시 제거
+    themeItems.forEach((themeItem) => {
+      themeItem.classList.remove("is-selected");
+    });
+
+    // 클릭한 항목 선택 표시
+    item.classList.add("is-selected");
+
+    // 기존 계절 클래스 제거
+    themeSelectButton?.classList.remove(
+      "theme-spring",
+      "theme-summer",
+      "theme-autumn",
+      "theme-winter",
+    );
+
+    // 기본이 아니면 계절 클래스 추가
+    if (selectedTheme !== "default") {
+      themeSelectButton?.classList.add(`theme-${selectedTheme}`);
+    }
+
+    // 기본은 팔레트 SVG, 계절은 이모지로 변경
+    if (themeButtonIcon) {
+      if (selectedTheme === "default") {
+        themeButtonIcon.innerHTML = defaultThemeIcon;
+      } else {
+        themeButtonIcon.textContent = themeIcons[selectedTheme];
+      }
+    }
+
+    // 버튼 글자 변경
+    if (themeButtonText) {
+      themeButtonText.textContent = themeNames[selectedTheme];
+    }
+
+    // 드롭다운 닫기
+    if (themeDropdownMenu) {
+      themeDropdownMenu.hidden = true;
+    }
+
+    themeSelectButton?.setAttribute("aria-expanded", "false");
+  });
 });
