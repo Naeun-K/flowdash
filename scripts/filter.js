@@ -125,7 +125,7 @@ function updateFilterInfo() {
  * 검색 + 기간 + 우선순위 + 정렬을
  * 한 번에 적용하는 함수
  */
-function applyFilter() {
+export function applyFilter() {
   // 로컬스토리지에 저장된 전체 할 일 가져오기
 
   let tasks = getTasks();
@@ -316,4 +316,9 @@ resetFilterButton?.addEventListener("click", () => {
     confirmText: "초기화",
     onConfirm: resetFilters,
   });
+});
+
+// 이벤트가 발생하면 기존 필터를 다시 적용하라고 지시합니다.
+window.addEventListener("todoUpdated", () => {
+  applyFilter();
 });
