@@ -1,4 +1,5 @@
 import { createStorage } from "./storage.js"; // 안전한 로컬스토리지 래퍼
+import { applyFilter } from "./filter.js";
 
 const flowdashTodos = createStorage("flowdash-todos");
 
@@ -241,6 +242,10 @@ function handleModalSubmit(event) {
   if (event) event.preventDefault();
   const saved = saveData(event);
   if (!saved) return;
+
+  // [추가] 데이터가 성공적으로 저장되었음을 브라우저 전체에 알립니다.
+  window.dispatchEvent(new Event("todoUpdated"));
+
   closeModal();
 }
 
