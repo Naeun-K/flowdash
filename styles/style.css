@@ -805,10 +805,11 @@ body.dark .board-count {
   display: flex;
   align-items: center;
   gap: 12px;
-
-  margin-top: 24px;
+  align-self: stretch;
+  width: fit-content;
+  /* margin-top: 24px;
   margin-right: 32px;
-  margin-bottom: 52px;
+  margin-bottom: 52px; */
 }
 .greeting-theme-button,
 .greeting-theme-toggle {
@@ -828,7 +829,7 @@ body.dark .board-count {
   border-radius: 20px;
   border: 1px solid #e0e5eb;
   background: #fff;
-
+  color: #8b93a5;
   transition: 0.3s;
 }
 /* 테마 버튼 스타일 */
@@ -1763,7 +1764,22 @@ body.dark .todo-title {
     padding: 16px;
     align-items: flex-start;
   }
+  .greeting-theme-toggle-container {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 (버튼 아래에 드롭다운) */
+    align-items: flex-end; /* 오른쪽 끝(우측)으로 밀어서 정렬 */
+    gap: 8px;
 
+    margin-top: 5px;
+    margin-right: 20px;
+  }
+  .greeting-theme-button-text {
+    display: none;
+  }
+  .greeting-theme-button {
+    width: 40px;
+    height: 40px;
+  }
   .dropdown-button {
     display: flex;
     align-items: center;
