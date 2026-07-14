@@ -23,6 +23,18 @@ html[data-theme="spring"] {
   /* focus 테두리 */
   --theme-focus: rgba(229, 183, 193, 0.3);
 }
+/* 봄 다크 */
+html[data-theme="spring"] body.dark {
+  /* 버튼, 보드 구분 선 */
+  --theme-button: #efaad0;
+  --theme-border: #eda4b0;
+
+  /* 버튼 hover, 강조 글자 */
+  --theme-button-hover: #c78993;
+  --theme-text: #e98ec0;
+  /* focus 테두리 */
+  --theme-focus: #ffd6e3;
+}
 /* 여름 라이트 */
 html[data-theme="summer"] {
   /* 버튼, 보드 구분 선 */
@@ -38,17 +50,17 @@ html[data-theme="summer"] {
 /* 여름 다크 */
 html[data-theme="summer"] body.dark {
   /* 버튼, 보드 구분 선 */
-  --theme-button: #6ec1e4;
-  --theme-border: #2cacad;
+  --theme-button: #48769e;
+  --theme-border: #6c96bc;
 
   /* 버튼 hover, 강조 글자 */
-  --theme-button-hover: #2cacad;
+  --theme-button-hover: #6c96bc;
   --theme-text: #8ee7e7;
   /* focus 테두리 */
-  --theme-focus: #d9f5f0;
+  --theme-focus: #b5d6e0;
 }
 /* 가을 라이트 */
-html[data-theme="fall"] {
+html[data-theme="autumn"] {
   /* 버튼, 보드 구분 선 */
   --theme-button: #dcb6a2;
   --theme-border: #ca9174;
@@ -58,6 +70,18 @@ html[data-theme="fall"] {
   --theme-text: #b86c45;
   /* focus 테두리 */
   --theme-focus: #eddad1;
+}
+/* 가을 다크 */
+html[data-theme="fall"] {
+  /* 버튼, 보드 구분 선 */
+  --theme-button: #a86040;
+  --theme-border: #b8721c;
+
+  /* 버튼 hover, 강조 글자 */
+  --theme-button-hover: #9b6e34;
+  --theme-text: #b77751;
+  /* focus 테두리 */
+  --theme-focus: #ac7015;
 }
 /* 겨울 라이트 */
 html[data-theme="winter"] {
@@ -70,6 +94,18 @@ html[data-theme="winter"] {
   --theme-text: #46679c;
   /* focus 테두리 */
   --theme-focus: #d0e0e3;
+}
+/* 겨울 다크 */
+html[data-theme="winter"] {
+  /* 버튼, 보드 구분 선 */
+  --theme-button: #778da9;
+  --theme-border: #76a5af;
+
+  /* 버튼 hover, 강조 글자 */
+  --theme-button-hover: #76a5af;
+  --theme-text: #415a77;
+  /* focus 테두리 */
+  --theme-focus: #dce6f3;
 }
 .container {
   max-width: 1350px;
@@ -990,10 +1026,6 @@ body.dark .board-count {
   color: #5f42f0;
 }
 
-/* 선택된 테마 */
-.theme-dropdown-item.is-selected {
-}
-
 /* 테마 드롭다운 메뉴 */
 .theme-dropdown-menu {
   position: absolute;
@@ -1771,7 +1803,9 @@ body.dark .search-block-wrapper {
   background-color: rgba(23, 29, 38, 1);
   border: 0.999px solid rgba(38, 49, 64, 1);
 }
-
+body.dark .search-input-container:focus-within {
+  border: 0.999px solid #000;
+}
 body.dark .add-task-button {
   background-color: var(--theme-border);
 }
