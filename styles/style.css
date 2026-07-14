@@ -73,7 +73,8 @@ html[data-theme="autumn"] {
   --theme-focus: #eddad1;
 }
 /* 가을 다크 */
-html[data-theme="fall"] {
+/* html[data-theme="fall"] { */
+html[data-theme="autumn"] body.dark {
   /* 버튼, 보드 구분 선 */
   --theme-button: #a86040;
   --theme-border: #b8721c;
@@ -97,7 +98,8 @@ html[data-theme="winter"] {
   --theme-focus: #d0e0e3;
 }
 /* 겨울 다크 */
-html[data-theme="winter"] {
+/* html[data-theme="winter"] { */
+html[data-theme="winter"] body.dark {
   /* 버튼, 보드 구분 선 */
   --theme-button: #778da9;
   --theme-border: #76a5af;
@@ -933,10 +935,18 @@ body.dark .board-count {
   text-align: center;
 }
 
-/* 선택된 항목만 체크 표시 */
-.theme-dropdown-item.is-selected .theme-dropdown-check {
-  display: block;
+/* 💡 HTML에 들어있는 체크 표시(✓) 스타일 제어 
+  선택되지 않은 버튼의 체크 표시(✓)는 숨기고, 
+  is-selected 클래스가 붙은 버튼의 체크 표시만 보이게 만듭니다. */
+
+.theme-dropdown-item .theme-dropdown-check {
+  display: none;
 }
+
+.theme-dropdown-item.is-selected .theme-dropdown-check {
+  display: inline-block;
+}
+
 /* 테마 아이콘 */
 .theme-dropdown-icon {
   display: flex;
