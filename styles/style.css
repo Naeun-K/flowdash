@@ -1415,6 +1415,7 @@ body.dark .todo-title {
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
+    padding: 10px 10px;
   }
 
   .add-block {
@@ -1430,6 +1431,18 @@ body.dark .todo-title {
     display: block;
     visibility: visible;
   } */
+}
+
+@media (max-width: 356px) {
+  .dropdown-button {
+    padding: 10px;
+    white-space: wrap;
+  }
+
+  .arrow-icon,
+  .arrow-icon svg {
+    margin-left: 0;
+  }
 }
 
 /* 다크모드 정렬 버튼 */
