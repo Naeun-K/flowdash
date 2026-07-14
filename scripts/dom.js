@@ -259,6 +259,13 @@ themeItems.forEach((item) => {
       themeItem.classList.remove("is-selected");
     });
 
+    // 기본 테마는 속성 제거
+    if (selectedTheme === "default") {
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      // 선택한 계절 테마 적용
+      document.documentElement.setAttribute("data-theme", selectedTheme);
+    }
     // 클릭한 항목 선택 표시
     item.classList.add("is-selected");
 
