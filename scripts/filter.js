@@ -127,6 +127,7 @@ function updateFilterInfo() {
  */
 function applyFilter() {
   // 로컬스토리지에 저장된 전체 할 일 가져오기
+
   let tasks = getTasks();
 
   // =========================
