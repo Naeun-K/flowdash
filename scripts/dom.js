@@ -135,6 +135,21 @@ function updateThemeIcon() {
       </svg>
     `;
   }
+
+  // 화면전환 애니메이션 추가
+  themeButton.addEventListener("click", () => {
+    // 1. body에 부드러운 전환 효과를 주는 클래스 추가
+    document.body.classList.add("theme-transitioning");
+
+    // 2. 기존 테마 변경 로직 실행 (예: 클래스 토글)
+    document.body.classList.toggle("dark-theme");
+    // (또는 기존에 사용하시던 테마 변경 코드를 여기에 그대로 두시면 됩니다)
+
+    // 3. 애니메이션(0.3초)이 끝난 후, hover 애니메이션과 충돌하지 않도록 클래스 제거
+    setTimeout(() => {
+      document.body.classList.remove("theme-transitioning");
+    }, 300); // CSS에 지정한 시간(0.3초 = 300ms)과 일치시킵니다.
+  });
 }
 
 // 저장된 마지막 테마 불러오기
