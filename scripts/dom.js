@@ -304,3 +304,49 @@ themeItems.forEach((item) => {
     themeSelectButton?.setAttribute("aria-expanded", "false");
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. 드롭다운 내부의 테마 아이템 버튼들을 전부 가져옵니다.
+  const themeButtons = document.querySelectorAll(".theme-dropdown-item");
+
+  // 2. 로컬스토리지에서 저장된 테마 확인 (없으면 기본값 'default')
+  const savedTheme = localStorage.getItem("selectedTheme") || "default";
+
+  // 3. 새로고침 즉시 저장된 테마를 불러와 적용
+  applyTheme(savedTheme);
+
+  // 4. 각 테마 버튼에 클릭 이벤트 등록
+  themeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedTheme = button.getAttribute("data-theme");
+
+      // 로컬스토리지에 선택한 테마 문자열 저장
+      localStorage.setItem("selectedTheme", selectedTheme);
+
+      // 화면에 적용
+      applyTheme(selectedTheme);
+    });
+  });
+
+  // 5. 테마 실시간 적용 함수
+  function applyTheme(themeName) {
+    if (themeName === "default") {
+      // 기본 테마일 때는 html의 data-theme 속성을 아예 제거하여 :root 스타일이 적용되게 합니다.
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      // 봄, 여름, 가을, 겨울 테마일 때는 html에 해당 값을 넣어줍니다.
+      document.documentElement.setAttribute("data-theme", themeName);
+    }
+
+    // 6. 드롭다운 메뉴 안에서 어떤 버튼이 선택되었는지 체크 표시(✓) 동기화
+    themeButtons.forEach((button) => {
+      const buttonTheme = button.getAttribute("data-theme");
+
+      if (buttonTheme === themeName) {
+        button.classList.add("is-selected");
+      } else {
+        button.classList.remove("is-selected");
+      }
+    });
+  }
+});
