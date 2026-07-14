@@ -1862,19 +1862,79 @@ body.dark .reset-modal-confirm:hover {
 }
 body.dark .null-data {
   color: #737d8c;
-}
-/* 검색·기간·우선순위·정렬이 공간을 균등하게 사용
-body.dark .search-input-container,
-body.dark .search-period-dropdown,
-body.dark .search-priority-dropdown,
-body.dark .search-sort-button {
-  flex: 1;
-  min-width: 0;
-}
+} /* ========================= */
+/* 모바일 - 필터 및 초기화 */
+/* ========================= */
+@media (max-width: 767px) {
+  .button-wrapper {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #e0e5eb;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-다크모드 검색·필터 요소 간격
-body.dark .search-block {
-  display: flex;
-  justify-content: flex-start;
-  gap: 20px;
-} */
+  body.dark .button-wrapper {
+    background: #171d26;
+    border-color: #263140;
+  }
+  .button-wrapper .reset-filter-button,
+  .button-wrapper .reset-data-button {
+    width: 100%;
+    height: 44px;
+    border-radius: 10px;
+  }
+  .search-sort-reset-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  /* 기간 / 우선순위 / 정렬 태그 영역 */
+  .filter-info-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .search-sort-info {
+    width: fit-content;
+    white-space: nowrap;
+  }
+
+  /* 조건 초기화 */
+  .reset-filter-button {
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    box-sizing: border-box;
+
+    border: 1px solid #765eed;
+    border-radius: 10px;
+    background-color: #765eed;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  /* 전체 초기화 */
+  .reset-data-button:not(.reset-filter-button) {
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    box-sizing: border-box;
+
+    border: 1px solid #f04438;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #f04438;
+
+    font-size: 15px;
+    font-weight: 600;
+  }
+}
