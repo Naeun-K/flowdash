@@ -20,8 +20,8 @@ nicknameElement.addEventListener("click", function () {
   input.value = nicknameElement.textContent.trim();
 
   // input 스타일 설정
-  input.style.color = "#5b4cff";
-  input.style.border = "1px solid #5b4cff";
+  input.style.color = "var(--theme-text)";
+  input.style.border = "1px solid var(--theme-text)";
   input.style.font = "inherit";
   input.style.background = "transparent";
   input.style.padding = "0 2px";
