@@ -389,6 +389,8 @@ function clearBoardLists() {
 }
 
 function updateCounts(tasks) {
+  if (!tasks || !Array.isArray(tasks)) return;
+
   const todoCount = tasks.filter((t) => t.status === "TODO").length;
   const doingCount = tasks.filter((t) => t.status === "DOING").length;
   const doneCount = tasks.filter((t) => t.status === "DONE").length;
@@ -631,7 +633,9 @@ export function renderTodos(todoList) {
     else if (todoUl) todoUl.appendChild(el);
   });
 
-  updateCounts(tasks);
+  // updateCounts(tasks);
+  const allTasksForStats = getTasks();
+  updateCounts(allTasksForStats);
 }
 // 전체 데이터 초기화
 const resetButton = document.querySelector(
