@@ -765,7 +765,17 @@ body.dark .board-count {
 .greeting-theme-toggle-container {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  gap: 12px;
+
+  margin-top: 24px;
+  margin-right: 32px;
+  margin-bottom: 52px;
+}
+.greeting-theme-button,
+.greeting-theme-toggle {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  font-family: inherit;
 }
 
 .greeting-theme-toggle {
@@ -776,16 +786,234 @@ body.dark .board-count {
   /* 버튼 크기 수정 */
   width: 40px;
   height: 40px;
-  margin-right: 32.09px;
-  margin-top: 24.11px;
-  margin-bottom: 51.68px;
   border-radius: 20px;
   border: 1px solid #e0e5eb;
   background: #fff;
 
   transition: 0.3s;
 }
+/* 테마 버튼 스타일 */
+.greeting-theme-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 
+  width: 112px;
+  height: 40px;
+  padding: 0 18px;
+
+  border: 1px solid #5f42f0;
+  border-radius: 20px;
+  background: #fff;
+
+  color: #5f42f0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+
+  appearance: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.greeting-theme-button:hover {
+  background: #f8f5ff;
+}
+
+.greeting-theme-button svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* 테마 버튼과 드롭다운 기준 */
+.theme-dropdown {
+  position: relative;
+}
+
+/* 테마 드롭다운 제목 영역 */
+.theme-dropdown-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  padding: 0 8px 12px;
+}
+
+.theme-dropdown-header strong {
+  color: #1b2432;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.theme-dropdown-header span {
+  color: #7c8798;
+  font-size: 13px;
+}
+
+/* 테마 선택 버튼 */
+.theme-dropdown-item {
+  display: grid;
+  grid-template-columns: 32px 1fr 20px;
+  align-items: center;
+  gap: 8px;
+
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 10px;
+
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+
+  color: #1b2432;
+  font-family: inherit;
+  font-size: 15px;
+  text-align: left;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* 테마 항목  hover */
+.theme-dropdown-item:hover {
+  background: #f7f5ff;
+}
+
+/* 체크 아이콘 기본 숨김 */
+.theme-dropdown-check {
+  display: none;
+
+  color: #5f42f0;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* 선택된 항목만 체크 표시 */
+.theme-dropdown-item.is-selected .theme-dropdown-check {
+  display: block;
+}
+/* 테마 아이콘 */
+.theme-dropdown-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #f7f8fa;
+
+  font-size: 17px;
+}
+
+/* 테마 설정 버튼 */
+.theme-dropdown-setting {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px 10px 6px;
+
+  border: none;
+  border-top: 1px solid #e8ebef;
+  background: transparent;
+
+  color: #1b2432;
+  font-family: inherit;
+  font-size: 15px;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+/* ======================================== */
+/* 기본 테마 버튼 (보라색) */
+/* ======================================== */
+.greeting-theme-button {
+  background: #fff;
+  border: 1px solid #5f42f0;
+  color: #5f42f0;
+}
+
+/* ======================================== */
+/* 봄 테마 버튼 */
+/* ======================================== */
+.greeting-theme-button.theme-spring {
+  border-color: #f472b6;
+  color: #f472b6;
+}
+
+/* ======================================== */
+/* 여름 테마 버튼 */
+/* ======================================== */
+.greeting-theme-button.theme-summer {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+/* ======================================== */
+/* 가을 테마 버튼 */
+/* ======================================== */
+.greeting-theme-button.theme-autumn {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+/* ======================================== */
+/* 겨울 테마 버튼 */
+/* ======================================== */
+.greeting-theme-button.theme-winter {
+  border-color: #60a5fa;
+  color: #60a5fa;
+}
+
+.greeting-theme-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.greeting-theme-button-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* 테마 설정 hover */
+.theme-dropdown-setting:hover {
+  color: #5f42f0;
+}
+
+/* 선택된 테마 */
+.theme-dropdown-item.is-selected {
+}
+
+/* 테마 드롭다운 메뉴 */
+.theme-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 9999;
+
+  width: 240px;
+  padding: 18px 12px 12px;
+
+  border: 1px solid #e0e5eb;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(27, 36, 50, 0.12);
+}
+
+/* 드롭다운 숨김 */
+.theme-dropdown-menu[hidden] {
+  display: none;
+}
 /* hover color change*/
 .greeting-theme-toggle:hover {
   background-color: #f8fafc;

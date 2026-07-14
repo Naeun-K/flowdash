@@ -39,6 +39,122 @@
           <span class="greeting-date">2026년 1월 22일</span>
         </div>
         <div class="greeting-theme-toggle-container">
+          <div class="theme-dropdown">
+            <button
+              type="button"
+              class="greeting-theme-button"
+              aria-label="테마 변경"
+              aria-expanded="false"
+              aria-controls="theme-dropdown-menu"
+            >
+              <!-- 아이콘 영역 -->
+              <span class="greeting-theme-button-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="13.5" cy="6.5" r="1.5"></circle>
+                  <circle cx="17.5" cy="10.5" r="1.5"></circle>
+                  <circle cx="8.5" cy="7.5" r="1.5"></circle>
+                  <circle cx="6.5" cy="12.5" r="1.5"></circle>
+                  <path
+                    d="M12 3a9 9 0 1 0 9 9c0-1.1-.9-2-2-2h-2.2a2 2 0 0 1-1.8-2.8l.5-1.1A2.2 2.2 0 0 0 13.5 3H12Z"
+                  ></path>
+                </svg>
+              </span>
+
+              <span class="greeting-theme-button-text">테마</span>
+            </button>
+
+            <div class="theme-dropdown-menu" id="theme-dropdown-menu" hidden>
+              <div class="theme-dropdown-header">
+                <strong>테마 변경</strong>
+                <span>원하는 테마를 선택해보세요</span>
+              </div>
+
+              <button
+                type="button"
+                class="theme-dropdown-item is-selected"
+                data-theme="default"
+              >
+                <span class="theme-dropdown-icon theme-default-icon">◉</span>
+                <span>기본</span>
+                <span class="theme-dropdown-check">✓</span>
+              </button>
+
+              <button
+                type="button"
+                class="theme-dropdown-item"
+                data-theme="spring"
+              >
+                <span class="theme-dropdown-icon">🌸</span>
+                <span>봄</span>
+                <span class="theme-dropdown-check">✓</span>
+              </button>
+
+              <button
+                type="button"
+                class="theme-dropdown-item"
+                data-theme="summer"
+              >
+                <span class="theme-dropdown-icon">☀️</span>
+                <span>여름</span>
+                <span class="theme-dropdown-check">✓</span>
+              </button>
+
+              <button
+                type="button"
+                class="theme-dropdown-item"
+                data-theme="autumn"
+              >
+                <span class="theme-dropdown-icon">🍂</span>
+                <span>가을</span>
+                <span class="theme-dropdown-check">✓</span>
+              </button>
+
+              <button
+                type="button"
+                class="theme-dropdown-item"
+                data-theme="winter"
+              >
+                <span class="theme-dropdown-icon">❄️</span>
+                <span>겨울</span>
+                <span class="theme-dropdown-check">✓</span>
+              </button>
+
+              <button type="button" class="theme-dropdown-setting">
+                <svg
+                  class="theme-setting-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path
+                    d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.5 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.5a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.5 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.14.37.36.7.65.96.3.26.67.41 1.06.44H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51.6Z"
+                  ></path>
+                </svg>
+
+                <span>테마 설정</span>
+              </button>
+            </div>
+          </div>
+
           <button
             class="greeting-theme-toggle"
             type="button"
