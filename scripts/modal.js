@@ -91,19 +91,35 @@ function populateModal(task) {
 
 function openModal(task = null) {
   if (!modal) return;
+  modal.classList.remove("active");
+
   modal.hidden = false;
   modal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
   populateModal(task);
-  requestAnimationFrame(() => titleInput?.focus());
+
+  setTimeout(() => {
+    modal.classList.add("active");
+    titleInput?.focus();
+  }, 10);
 }
 
 function closeModal() {
   if (!modal) return;
+
+  modal.classList.remove("active");
+
   modal.hidden = true;
   modal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
   setDefaultModalState();
+
+  setTimeout(() => {
+    // 딜레이 도중에 유저가 다시 열지 않았을 때만(active가 없을 때만) 완전히 숨깁니다.
+    if (!modal.classList.contains("active")) {
+      modal.hidden = true;
+    }
+  }, 300);
 }
 
 export function getTasks() {
