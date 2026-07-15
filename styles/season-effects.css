@@ -9,7 +9,79 @@
 /* ========================= */
 /* 여름 - 물결 효과 */
 /* ========================= */
+/* ======================================== */
+/* 계절 효과 공통 레이어 */
+/* ======================================== */
 
+.season-effect-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ======================================== */
+/* 여름 물결 */
+/* ======================================== */
+
+.summer-ripple {
+  position: absolute;
+  display: block;
+
+  box-sizing: border-box;
+  border: 3px solid rgba(143, 213, 234, 0.65);
+  border-radius: 50%;
+
+  opacity: 1;
+  transform: scale(0.2);
+
+  animation: summerRipple var(--duration, 4s) ease-out forwards;
+}
+
+.summer-ripple::before,
+.summer-ripple::after {
+  content: "";
+
+  position: absolute;
+  display: block;
+
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.summer-ripple::before {
+  inset: -14px;
+
+  border: 3px solid rgba(185, 231, 245, 0.5);
+}
+
+.summer-ripple::after {
+  inset: -28px;
+
+  border: 3px solid rgba(221, 246, 252, 0.45);
+}
+
+/* ======================================== */
+/* 여름 물결 애니메이션 */
+/* ======================================== */
+
+@keyframes summerRipple {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.2);
+  }
+
+  60% {
+    opacity: 0.45;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
 /* ========================= */
 /* 가을 - 낙엽 효과 */
 
@@ -149,9 +221,3 @@
 /* ========================= */
 /* 움직임 최소화 설정 */
 /* ========================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .season-effect-layer {
-    display: none;
-  }
-}
