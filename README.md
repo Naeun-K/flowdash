@@ -278,12 +278,12 @@ Git/GitHub 브랜치 전략을 활용한 협업 및 기능별 모듈화 구현
 
 ## 8. 실행 방법
 
-## 실행 환경
+### 실행 환경
 
 -Visual Studio Code
 -Live Server Extension
 
-## 실행 방법
+### 실행 방법
 
 1.프로젝트를 Visual Studio Code에서 실행한다.
 2.index.html 파일을 연다.
