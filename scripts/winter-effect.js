@@ -80,6 +80,7 @@ export function startWinterEffect() {
     // 풍성함을 유지하되 무리하지 않도록 최대 25개 제한 유지
     if (currentSnowflakes.length >= 25) return;
 
+    const isFluffySnow = Math.random() < 0.18;
     // 크기 분류 난수 설정
     const sizeCategory = Math.random();
     let size = 0;
@@ -93,7 +94,12 @@ export function startWinterEffect() {
 
     const snowflake = document.createElement("span");
     snowflake.classList.add("winter-snowflake");
-    snowflake.innerHTML = SNOWFLAKE_SVG;
+
+    if (isFluffySnow) {
+      snowflake.classList.add("winter-snowflake--fluffy");
+    } else {
+      snowflake.innerHTML = SNOWFLAKE_SVG;
+    }
 
     // 좌우 배치 비율
     let leftPosition = 0;

@@ -80,9 +80,13 @@
   display: block;
 
   box-sizing: border-box;
-  border: 3px solid rgba(143, 213, 234, 0.65);
+  border: 1.5px solid rgba(94, 192, 248, 0.75);
   border-radius: 50%;
+  box-shadow:
+    0 0 10px rgba(94, 192, 248, 0.25),
+    0 0 20px rgba(94, 192, 248, 0.12);
 
+  filter: blur(0.6px);
   opacity: 1;
   transform: scale(0.2);
 
@@ -103,7 +107,7 @@
 .summer-ripple::before {
   inset: -14px;
 
-  border: 3px solid rgba(185, 231, 245, 0.5);
+  border: 3px solid rgba(163, 232, 253, 0.5);
 }
 
 .summer-ripple::after {
@@ -191,6 +195,24 @@
 
 /* ========================= */
 /* 겨울 - 눈송이 효과 */
+.winter-snowflake--fluffy {
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(220, 241, 255, 1) 0%,
+    rgba(173, 216, 245, 0.9) 28%,
+    rgba(129, 190, 231, 0.55) 52%,
+    rgba(129, 190, 231, 0.18) 70%,
+    transparent 80%
+  );
+
+  filter: blur(1px);
+
+  box-shadow:
+    0 0 4px rgba(151, 207, 242, 0.75),
+    0 0 9px rgba(104, 178, 226, 0.4);
+}
 
 /* 눈송이 개별 스타일 */
 .winter-snowflake {
