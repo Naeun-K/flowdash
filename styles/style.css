@@ -12,6 +12,17 @@
   /* focus 테두리 */
   --theme-focus: #5c4dff;
 }
+
+:root body.dark {
+  --theme-text: #5f42f0;
+  --theme-button-hover: #5f42f0;
+  --theme-button: #4b32c3;
+  --theme-border: #4b32c3;
+  --theme-bgc: #fff;
+  --theme-bgc-dark: #121720;
+  --theme-nav: #ffffff;
+  --theme-focus: #5c4dff;
+}
 /* 봄 라이트 */
 html[data-theme="spring"] {
   /* 버튼, 보드 구분 선 */
@@ -815,9 +826,15 @@ body.dark .board-count {
 }
 
 .greeting-icon {
-  width: 33.59px;
-  height: 33.59px;
+  width: 40px;
+  height: 40px;
   padding-left: 4.41px;
+}
+
+.greeting-icon,
+.greeting-icon svg {
+  display: inline-block;
+  vertical-align: baseline;
 }
 
 .greeting-date {

@@ -1,28 +1,42 @@
 <!doctype html>
-<html lang="ko" data-theme="winter">
+<html lang="ko">
   <head>
+    <!-- 1. 브라우저 호환성 및 인코딩 (모든 사이트 기본 호환) -->
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>flowdash</title>
+
+    <title>flowdash - 스마트한 할 일 관리 대시보드</title>
     <link rel="stylesheet" href="./styles/reset.css" />
     <link rel="stylesheet" href="./styles/style.css" />
     <link rel="stylesheet" href="./styles/season-effects.css" />
+
+    <!-- 1. 검색엔진(SEO) 전용 메타 설명 태그 (이게 누락되어 점수가 깎였습니다!) -->
+    <meta
+      name="description"
+      content="FlowDash와 함께 하루의 할 일을 직관적으로 관리하고 대시보드 통계를 확인하세요."
+    />
   </head>
   <body>
-    <!--모바일 미디어쿼리 만 적용되는 서비스-->
-    <nav class="mobile-section-nav">
+    <!-- 모바일 미디어쿼리 전용 내비게이션 (랜드마크 nav) -->
+    <nav class="mobile-section-nav" aria-label="모바일 빠른 이동">
       <a href="#top" class="nav-link">현황</a>
       <a href="#list" class="nav-link">목록</a>
       <a href="#board" class="nav-link">진행중</a>
       <a href="#done" class="nav-link">완료</a>
     </nav>
+
     <div id="top" class="container">
+      <!-- SEO용 페이지 최상위 제목 (숨김 처리 권장 CSS: .sr-only) -->
+      <h1 class="sr-only">FlowDash 할 일 관리 서비스</h1>
+
       <header class="greeting-container">
         <div class="greeting-content">
           <p class="greeting">
             <span class="greeting-message">안녕하세요, </span>
             <span class="greeting-nickname"> Flowdash</span>님
-            <span class="greeting-icon">
+            <!-- 장식용 SVG에 aria-hidden="true" 추가 -->
+            <span class="greeting-icon" aria-hidden="true">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="34"
@@ -48,8 +62,7 @@
               aria-expanded="false"
               aria-controls="theme-dropdown-menu"
             >
-              <!-- 아이콘 영역 -->
-              <span class="greeting-theme-button-icon">
+              <span class="greeting-theme-button-icon" aria-hidden="true">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -60,7 +73,6 @@
                   stroke-width="1.8"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  aria-hidden="true"
                 >
                   <circle cx="13.5" cy="6.5" r="1.5"></circle>
                   <circle cx="17.5" cy="10.5" r="1.5"></circle>
@@ -71,8 +83,6 @@
                   ></path>
                 </svg>
               </span>
-
-              <!-- 테마 전용 드롭다운  -->
               <span class="greeting-theme-button-text">테마</span>
             </button>
 
@@ -82,12 +92,18 @@
                 <span>원하는 테마를 선택해보세요</span>
               </div>
 
+              <!-- 커스텀 드롭다운 아이템 키보드 접근성(tabindex) 추가 -->
               <button
                 type="button"
                 class="theme-dropdown-item is-selected"
                 data-theme="default"
+                tabindex="0"
               >
-                <span class="theme-dropdown-icon theme-default-icon">◉</span>
+                <span
+                  class="theme-dropdown-icon theme-default-icon"
+                  aria-hidden="true"
+                  >◉</span
+                >
                 <span>기본</span>
                 <span class="theme-dropdown-check">✓</span>
               </button>
@@ -96,8 +112,9 @@
                 type="button"
                 class="theme-dropdown-item"
                 data-theme="spring"
+                tabindex="0"
               >
-                <span class="theme-dropdown-icon">🌸</span>
+                <span class="theme-dropdown-icon" aria-hidden="true">🌸</span>
                 <span>봄</span>
                 <span class="theme-dropdown-check">✓</span>
               </button>
@@ -106,8 +123,9 @@
                 type="button"
                 class="theme-dropdown-item"
                 data-theme="summer"
+                tabindex="0"
               >
-                <span class="theme-dropdown-icon">☀️</span>
+                <span class="theme-dropdown-icon" aria-hidden="true">☀️</span>
                 <span>여름</span>
                 <span class="theme-dropdown-check">✓</span>
               </button>
@@ -116,8 +134,9 @@
                 type="button"
                 class="theme-dropdown-item"
                 data-theme="autumn"
+                tabindex="0"
               >
-                <span class="theme-dropdown-icon">🍂</span>
+                <span class="theme-dropdown-icon" aria-hidden="true">🍂</span>
                 <span>가을</span>
                 <span class="theme-dropdown-check">✓</span>
               </button>
@@ -126,13 +145,14 @@
                 type="button"
                 class="theme-dropdown-item"
                 data-theme="winter"
+                tabindex="0"
               >
-                <span class="theme-dropdown-icon">❄️</span>
+                <span class="theme-dropdown-icon" aria-hidden="true">❄️</span>
                 <span>겨울</span>
                 <span class="theme-dropdown-check">✓</span>
               </button>
 
-              <button type="button" class="theme-dropdown-setting">
+              <button type="button" class="theme-dropdown-setting" tabindex="0">
                 <svg
                   class="theme-setting-icon"
                   xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +171,6 @@
                     d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.5 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.5a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15.5 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.14.37.36.7.65.96.3.26.67.41 1.06.44H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51.6Z"
                   ></path>
                 </svg>
-
                 <span>테마 설정</span>
               </button>
             </div>
@@ -169,6 +188,7 @@
               fill="#1B2432"
               class="bi bi-moon-stars"
               viewBox="0 0 16 16"
+              aria-hidden="true"
             >
               <path
                 d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286"
@@ -180,7 +200,8 @@
           </button>
         </div>
       </header>
-      <section class="todo-statistics-container">
+
+      <section class="todo-statistics-container" aria-label="할 일 통계">
         <h2 class="sr-only">할 일 리스트 통계 보드</h2>
         <div class="todo-statistics-card total">
           <span class="card-title">Total Tasks</span>
@@ -203,22 +224,30 @@
           <span class="card-count achieved-rate"> 0% </span>
         </div>
       </section>
-      <section id="list" class="search-container">
+
+      <section
+        id="list"
+        class="search-container"
+        aria-label="할 일 검색 및 필터"
+      >
         <h2 class="sr-only">검색 및 조회 그리고 할 일을 추가할 수 있는 섹션</h2>
         <div class="search-block-wrapper">
           <div class="search-block">
             <div class="search-input-container">
+              <label for="searchDataName" class="sr-only"
+                >할 일 검색어 입력</label
+              >
               <input
                 id="searchDataName"
                 name="searchDataName"
                 class="search-input"
-                type="text"
+                type="search"
                 placeholder="할 일 검색..."
               />
               <button
                 class="search-input-button"
                 type="button"
-                aria-label="검색"
+                aria-label="검색 실행"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -227,6 +256,7 @@
                   fill="currentColor"
                   class="bi bi-search"
                   viewBox="0 0 16 16"
+                  aria-hidden="true"
                 >
                   <path
                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
@@ -244,7 +274,7 @@
                   aria-expanded="false"
                 >
                   전체 기간
-                  <span class="arrow-icon">
+                  <span class="arrow-icon" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -262,25 +292,32 @@
                 <ul
                   class="search-period-dropdown-menu dropdown-menu"
                   role="listbox"
+                  aria-label="기간 선택"
                 >
                   <li
                     class="search-period-dropdown-item dropdown-item"
                     role="option"
+                    aria-selected="true"
                     data-value="all-days"
+                    tabindex="0"
                   >
                     전체 기간
                   </li>
                   <li
                     class="search-period-dropdown-item dropdown-item"
                     role="option"
+                    aria-selected="false"
                     data-value="today"
+                    tabindex="0"
                   >
                     오늘
                   </li>
                   <li
                     class="search-period-dropdown-item dropdown-item"
                     role="option"
+                    aria-selected="false"
                     data-value="seven-days"
+                    tabindex="0"
                   >
                     최근 7일
                   </li>
@@ -295,7 +332,7 @@
                   aria-expanded="false"
                 >
                   전체 우선순위
-                  <span class="arrow-icon">
+                  <span class="arrow-icon" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -314,33 +351,41 @@
                 <ul
                   class="search-priority-dropdown-menu dropdown-menu"
                   role="listbox"
+                  aria-label="우선순위 선택"
                 >
                   <li
                     class="search-priority-dropdown-item dropdown-item"
                     role="option"
+                    aria-selected="true"
                     data-value="all-priority"
+                    tabindex="0"
                   >
                     전체 우선순위
                   </li>
-
                   <li
                     class="search-priority-dropdown-item dropdown-item"
                     role="option"
+                    aria-selected="false"
                     data-value="HIGH"
+                    tabindex="0"
                   >
                     HIGH (높음)
                   </li>
                   <li
                     class="search-priority-dropdown-item dropdown-item"
                     role="option"
+                    aria-selected="false"
                     data-value="MID"
+                    tabindex="0"
                   >
                     MID (중간)
                   </li>
                   <li
                     class="search-priority-dropdown-item dropdown-item"
                     role="option"
+                    aria-selected="false"
                     data-value="LOW"
+                    tabindex="0"
                   >
                     LOW (낮음)
                   </li>
@@ -349,7 +394,7 @@
             </div>
             <button type="button" class="search-sort-button">
               <span class="search-sort-button-text"> 정렬: 오름차순 </span>
-              <span class="search-sort-button-icon">
+              <span class="search-sort-button-icon" aria-hidden="true">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -380,69 +425,75 @@
             <button type="button" class="reset-data-button reset-filter-button">
               필터 초기화
             </button>
-
             <button type="button" class="reset-data-button">
               전체 데이터 초기화
             </button>
           </div>
         </div>
       </section>
-      <section id="board" class="board-container">
+
+      <section id="board" class="board-container" aria-label="할 일 보드판">
         <h2 class="sr-only">
           할 일 리스트 / 진행 중인 리스트 / 완료된 업무 리스트
         </h2>
+
+        <!-- 할일 보드 -->
         <div class="board-todo-board">
           <div class="board-header board-todo-header">
-            <span class="board-title board-todo-title">할일</span>
+            <span class="board-title board-todo-title" id="todo-board-label"
+              >할일</span
+            >
             <span class="board-count todo-count">0</span>
           </div>
-
           <div class="todo-list-container">
-            <ul class="todo-list">
-              <li class="list-item">
-                <p class="todo-null-data null-data" hidden>할 일이 없습니다</p>
+            <ul class="todo-list" aria-labelledby="todo-board-label">
+              <li class="list-item todo-null-item">
+                <p class="todo-null-data null-data">할 일이 없습니다</p>
               </li>
             </ul>
           </div>
         </div>
 
+        <!-- 진행중 보드 -->
         <div class="board-doing-board">
           <div class="board-header board-doing-header">
-            <span class="board-title board-doing-title">진행중</span>
+            <span class="board-title board-doing-title" id="doing-board-label"
+              >진행중</span
+            >
             <span class="board-count doing-count">0</span>
           </div>
-
           <div class="doing-list-container">
-            <ul class="doing-list">
-              <li class="list-item">
-                <p class="doing-null-data null-data" hidden>
-                  진행 중인 일이 없습니다
-                </p>
+            <ul class="doing-list" aria-labelledby="doing-board-label">
+              <li class="list-item doing-null-item">
+                <p class="doing-null-data null-data">진행 중인 일이 없습니다</p>
               </li>
             </ul>
           </div>
         </div>
 
+        <!-- 완료 보드 -->
         <div id="done" class="board-done-board">
           <div class="board-header board-done-header">
-            <span class="board-title board-done-title">완료</span>
+            <span class="board-title board-done-title" id="done-board-label"
+              >완료</span
+            >
             <span class="board-count done-count">0</span>
           </div>
-
           <div class="done-list-container">
-            <ul class="done-list">
-              <li class="list-item">
-                <p class="null-data done-null-data" hidden>
-                  완료된 일이 없습니다
-                </p>
+            <ul class="done-list" aria-labelledby="done-board-label">
+              <li class="list-item done-null-item">
+                <p class="null-data done-null-data">완료된 일이 없습니다</p>
               </li>
             </ul>
           </div>
         </div>
       </section>
+
       <footer class="footer">&copy; 2026 UIONE. All rights reserved.</footer>
     </div>
+
     <!-- ================================================= 모달 ======================================================= -->
+    <!-- 새 할 일 작성 모달 -->
     <div
       class="new-task-modal"
       role="dialog"
@@ -452,13 +503,15 @@
       hidden
     >
       <div class="modal-content">
-        <h2 class="modal-title">새 할 일</h2>
+        <h2 class="modal-title" id="new-task-modal-title">새 할 일 추가</h2>
         <form class="modal-form" novalidate>
           <div class="label-input-container">
             <div class="label-wrapper">
               <label for="task-title" class="modal-label">제목 *</label>
-              <!-- 에러 발생 시 보여줄 안내 문구 -->
-              <span class="error-message" hidden> 제목을 입력해주세요! </span>
+              <!-- 에러 가시성을 위한 aria-live 영역으로 활용 가능 -->
+              <span class="error-message" id="title-error" hidden>
+                제목을 입력해주세요!
+              </span>
             </div>
             <input
               type="text"
@@ -466,6 +519,7 @@
               name="task-title"
               class="modal-input"
               required
+              aria-describedby="title-error"
             />
           </div>
           <div class="label-input-container">
@@ -478,8 +532,9 @@
             ></textarea>
           </div>
           <div class="modal-radio-select-container">
-            <div class="modal-priority modal-radio-select-group">
-              <p class="modal-label">우선순위</p>
+            <!-- 우선순위 선택 그룹화 -->
+            <fieldset class="modal-priority modal-radio-select-group">
+              <legend class="modal-label">우선순위</legend>
               <div class="label-input-container radio-container">
                 <input
                   type="radio"
@@ -494,6 +549,7 @@
                   class="modal-radio-label radio-high"
                   >높음</label
                 >
+
                 <input
                   type="radio"
                   id="task-priority-mid"
@@ -507,6 +563,7 @@
                   class="modal-radio-label radio-mid"
                   >중간</label
                 >
+
                 <input
                   type="radio"
                   id="task-priority-low"
@@ -521,20 +578,22 @@
                   >낮음</label
                 >
               </div>
-            </div>
+            </fieldset>
+
             <div
               class="label-input-container task-status-container modal-radio-select-group"
             >
-              <p class="modal-label">상태</p>
+              <p class="modal-label" id="status-select-label">상태</p>
               <details class="dropdown modal-status">
                 <summary
                   role="button"
                   aria-haspopup="listbox"
                   aria-expanded="false"
+                  aria-labelledby="status-select-label"
                   class="dropdown-button modal-status-button"
                 >
                   <span class="modal-status-label">할 일</span>
-                  <span class="arrow-icon">
+                  <span class="arrow-icon" aria-hidden="true">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -549,25 +608,35 @@
                     </svg>
                   </span>
                 </summary>
-                <ul class="modal-status-menu dropdown-menu" role="listbox">
+                <ul
+                  class="modal-status-menu dropdown-menu"
+                  role="listbox"
+                  aria-label="상태 선택"
+                >
                   <li
                     data-value="TODO"
                     role="option"
+                    aria-selected="true"
                     class="modal-status-todo modal-status-item dropdown-item"
+                    tabindex="0"
                   >
                     할 일
                   </li>
                   <li
                     data-value="DOING"
                     role="option"
+                    aria-selected="false"
                     class="modal-status-doing dropdown-item modal-status-item"
+                    tabindex="0"
                   >
                     진행중
                   </li>
                   <li
                     data-value="DONE"
                     role="option"
+                    aria-selected="false"
                     class="modal-status-done dropdown-item modal-status-item"
+                    tabindex="0"
                   >
                     완료
                   </li>
@@ -582,7 +651,133 @@
         </form>
       </div>
     </div>
-    <!-- 할 일 리스트 카드 요소 구조  -->
+
+    <!-- 데이터 리셋/삭제 모달 -->
+    <div
+      class="reset-modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reset-modal-title"
+      aria-describedby="reset-modal-desc"
+      hidden
+    >
+      <h2 id="reset-modal-title" class="modal-title">데이터 초기화 경고</h2>
+      <p id="reset-modal-desc" class="reset-modal-description">
+        정말로 모든 할 일 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수
+        없습니다.
+      </p>
+      <div class="reset-modal-buttons">
+        <button type="button" class="reset-modal-cancel">취소</button>
+        <button type="button" class="reset-modal-confirm">초기화 진행</button>
+      </div>
+    </div>
+
+    <!-- 테마 설정 모달 -->
+    <div class="theme-setting-modal" hidden>
+      <div
+        class="theme-setting-modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="theme-setting-title"
+        aria-describedby="theme-setting-desc"
+      >
+        <div class="theme-setting-modal-header">
+          <div>
+            <h2 id="theme-setting-title">테마 설정</h2>
+            <p id="theme-setting-desc">원하는 테마와 화면 모드를 선택하세요.</p>
+          </div>
+          <button
+            type="button"
+            class="theme-setting-modal-close"
+            aria-label="테마 설정 닫기"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div class="theme-setting-section">
+          <h3>계절 테마</h3>
+          <div class="theme-setting-options">
+            <button
+              type="button"
+              class="theme-setting-option is-selected"
+              data-theme="default"
+            >
+              <span class="theme-setting-option-icon" aria-hidden="true"
+                >🎨</span
+              >
+              <span>기본</span>
+            </button>
+            <button
+              type="button"
+              class="theme-setting-option"
+              data-theme="spring"
+            >
+              <span class="theme-setting-option-icon" aria-hidden="true"
+                >🌸</span
+              >
+              <span>봄</span>
+            </button>
+            <button
+              type="button"
+              class="theme-setting-option"
+              data-theme="summer"
+            >
+              <span class="theme-setting-option-icon" aria-hidden="true"
+                >☀️</span
+              >
+              <span>여름</span>
+            </button>
+            <button
+              type="button"
+              class="theme-setting-option"
+              data-theme="autumn"
+            >
+              <span class="theme-setting-option-icon" aria-hidden="true"
+                >🍂</span
+              >
+              <span>가을</span>
+            </button>
+            <button
+              type="button"
+              class="theme-setting-option"
+              data-theme="winter"
+            >
+              <span class="theme-setting-option-icon" aria-hidden="true"
+                >❄️</span
+              >
+              <span>겨울</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="theme-setting-section">
+          <div class="theme-dark-setting">
+            <div class="theme-dark-setting-info">
+              <strong>다크 모드 같이 적용</strong>
+              <p>선택한 테마를 다크 모드에도 함께 적용합니다.</p>
+            </div>
+            <label class="theme-switch">
+              <input
+                type="checkbox"
+                class="theme-switch-input"
+                aria-label="다크 모드 함께 적용 여부"
+              />
+              <span class="theme-switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="theme-setting-modal-buttons">
+          <button type="button" class="theme-setting-cancel">취소</button>
+          <button type="button" class="theme-setting-apply">적용</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- 할 일 리스트 카드 템플릿  -->
+    <!-- ======================================== -->
     <div
       id="hidden-card"
       class="todo-container"
@@ -672,139 +867,10 @@
         </p>
       </div>
     </div>
-    <!-- 삭제 모달 카드 구조 -->
-    <div
-      class="reset-modal-content"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="reset-modal-title"
-      hidden
-    >
-      <h2 id="reset-modal-title" class="modal-title"></h2>
-
-      <p class="reset-modal-description"></p>
-
-      <div class="reset-modal-buttons">
-        <button type="button" class="reset-modal-cancel">취소</button>
-
-        <button type="button" class="reset-modal-confirm"></button>
-      </div>
-    </div>
-
-    <!-- ======================================== -->
-    <!-- 테마 설정 모달 -->
-    <!-- ======================================== -->
-    <div class="theme-setting-modal" hidden>
-      <div
-        class="theme-setting-modal-content"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="theme-setting-title"
-      >
-        <!-- ========================= -->
-        <!-- 모달 헤더 -->
-        <!-- ========================= -->
-        <div class="theme-setting-modal-header">
-          <div>
-            <h2 id="theme-setting-title">테마 설정</h2>
-            <p>원하는 테마와 화면 모드를 선택하세요.</p>
-          </div>
-
-          <!-- 모달 닫기 버튼 -->
-          <button
-            type="button"
-            class="theme-setting-modal-close"
-            aria-label="테마 설정 닫기"
-          >
-            ×
-          </button>
-        </div>
-
-        <!-- ========================= -->
-        <!-- 계절 테마 선택 -->
-        <!-- ========================= -->
-        <div class="theme-setting-section">
-          <h3>계절 테마</h3>
-
-          <div class="theme-setting-options">
-            <button
-              type="button"
-              class="theme-setting-option is-selected"
-              data-theme="default"
-            >
-              <span class="theme-setting-option-icon">🎨</span>
-              <span>기본</span>
-            </button>
-
-            <button
-              type="button"
-              class="theme-setting-option"
-              data-theme="spring"
-            >
-              <span class="theme-setting-option-icon">🌸</span>
-              <span>봄</span>
-            </button>
-
-            <button
-              type="button"
-              class="theme-setting-option"
-              data-theme="summer"
-            >
-              <span class="theme-setting-option-icon">☀️</span>
-              <span>여름</span>
-            </button>
-
-            <button
-              type="button"
-              class="theme-setting-option"
-              data-theme="autumn"
-            >
-              <span class="theme-setting-option-icon">🍂</span>
-              <span>가을</span>
-            </button>
-
-            <button
-              type="button"
-              class="theme-setting-option"
-              data-theme="winter"
-            >
-              <span class="theme-setting-option-icon">❄️</span>
-              <span>겨울</span>
-            </button>
-          </div>
-        </div>
-        <!-- ========================= -->
-        <!-- 다크 모드 같이 적용 -->
-        <!-- ========================= -->
-        <div class="theme-setting-section">
-          <div class="theme-dark-setting">
-            <div class="theme-dark-setting-info">
-              <strong>다크 모드 같이 적용</strong>
-              <p>선택한 테마를 다크 모드에도 함께 적용합니다.</p>
-            </div>
-
-            <!-- 스위치 -->
-            <label class="theme-switch">
-              <input type="checkbox" class="theme-switch-input" />
-              <span class="theme-switch-slider"></span>
-            </label>
-          </div>
-        </div>
-
-        <!-- ========================= -->
-        <!-- 모달 하단 버튼 -->
-        <!-- ========================= -->
-        <div class="theme-setting-modal-buttons">
-          <button type="button" class="theme-setting-cancel">취소</button>
-
-          <button type="button" class="theme-setting-apply">적용</button>
-        </div>
-      </div>
-    </div>
 
     <script type="module" src="./scripts/modal.js"></script>
     <script type="module" src="./scripts/dom.js"></script>
-    <script src="./scripts/icon.js"></script>
+    <script src="./scripts/icon.js" defer></script>
     <script type="module" src="./scripts/nickname.js"></script>
     <script type="module" src="./scripts/change.js"></script>
     <script type="module" src="./scripts/filter.js"></script>
