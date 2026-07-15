@@ -22,28 +22,39 @@
   `,
 };
 
+/**
+ * 1. SVG 문자열을 DOM 객체(DocumentFragment)로 변환하는 함수
+ * - 메모리 상에만 존재하는 가상 템플릿(<template>)을 생성하여 HTML 파싱을 수행합니다.
+ * - 완성된 DOM 트리(DocumentFragment)를 반환하므로 성능과 보안 측면에서 안전합니다.
+ */
 function createSvgFragment(svgString) {
   const template = document.createElement("template");
-  template.innerHTML = svgString.trim();
-  return template.content;
+  template.innerHTML = svgString?.trim() || ""; // 전달받은 SVG 문자열의 공백을 제거하고 템플릿에 주입
+  return template.content; // 파싱된 실제 DOM 노드(Fragment) 반환
 }
 
+/**
+ * 2. [핵심 기능] 무작위 SVG 아이콘 선택 및 실시간 DOM 반영 함수
+ * - 정의된 아이콘 목록 중 하나를 무작위로 추첨합니다.
+ * - 추첨된 SVG 문자열을 실시간으로 화면의 대상 요소(.greeting-icon)에 갈아 끼웁니다.
+ */
 function updateRandomIcon() {
   const iconSpan = document.querySelector(".greeting-icon");
 
-  if (!iconSpan) return; 
+  // 화면에 아이콘을 넣을 대상 요소가 존재하지 않으면 실행을 중단합니다.
+  if (!iconSpan) return;
 
-  
+  // svgIcons 객체에 등록된 모든 아이콘의 Key 배열을 추출합니다.
   const keys = Object.keys(svgIcons);
 
-  
+  // 무작위 인덱스를 생성하여 아이콘 키를 임의 선택합니다.
   const randomIndex = Math.floor(Math.random() * keys.length);
   const selectedKey = keys[randomIndex];
-  const selectedSvg = svgIcons[selectedKey];
+  const selectedSvg = svgIcons[selectedKey]; // 최종 선택된 SVG XML 문자열
 
+  // [핵심 DOM 조작] 기존 아이콘 자식 노드들을 전부 비우고, 새로 생성한 SVG Fragment를 삽입합니다.
   iconSpan.replaceChildren(createSvgFragment(selectedSvg));
-  
 }
 
-
+// 3. 페이지의 HTML 구조(DOM)가 완전히 로드되면 무작위 아이콘 업데이트를 실행합니다.
 window.addEventListener("DOMContentLoaded", updateRandomIcon);

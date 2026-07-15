@@ -1,8 +1,4 @@
-﻿
-
-
-
-
+﻿/* =================== 봄 테마 애니메이션 ========================= */
 .spring-petal {
   position: absolute;
   top: -30px;
@@ -10,11 +6,9 @@
   will-change: transform, opacity;
   animation: spring-fall ease-in-out forwards;
 
-  
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.05); 
+  box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.05);
 }
-
 
 @keyframes spring-fall {
   0% {
@@ -23,49 +17,36 @@
     transform: translateX(0) rotate(0deg);
   }
   10% {
-    opacity: 1; 
+    opacity: 1;
   }
   30% {
-    
     transform: translateX(calc(var(--sway-distance) * 0.8))
       rotate(calc(var(--max-rotation) * 0.3));
   }
   60% {
-    
     transform: translateX(calc(var(--sway-distance) * -0.5))
       rotate(calc(var(--max-rotation) * 0.6));
   }
   85% {
-    opacity: 0.6; 
+    opacity: 0.6;
   }
   100% {
     top: 105vh;
     transform: translateX(calc(var(--sway-distance) * 0.2))
       rotate(var(--max-rotation));
-    opacity: 0; 
+    opacity: 0;
   }
 }
-
-
-
-
-
-
-
-
+/* =================== 여름 테마 애니메이션 ========================= */
 .season-effect-layer {
   position: fixed;
   inset: 0;
-  
+
   z-index: -1;
 
   overflow: hidden;
   pointer-events: none;
 }
-
-
-
-
 
 .summer-ripple {
   position: absolute;
@@ -108,10 +89,6 @@
   border: 3px solid rgba(221, 246, 252, 0.45);
 }
 
-
-
-
-
 @keyframes summerRipple {
   0% {
     opacity: 0.8;
@@ -127,10 +104,7 @@
     transform: scale(1.8);
   }
 }
-
-
-
-
+/* =================== 가을 테마 애니메이션 ========================= */
 .autumn-leaf {
   position: absolute;
   pointer-events: none;
@@ -139,54 +113,48 @@
   animation-name: autumn-fall;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
-  
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-
 .autumn-leaf svg {
   transform: rotate(45deg);
   width: 100%;
   height: 100%;
-  fill: currentColor; 
+  fill: currentColor;
 }
 @keyframes autumn-fall {
   0% {
     top: -40px;
     transform: translateX(0) rotate(0deg);
   }
-  
+
   25% {
     transform: translateX(calc(var(--sway-distance) * 0.7))
       rotate(calc(var(--max-rotation) * 0.25));
   }
-  
+
   50% {
     transform: translateX(calc(var(--sway-distance) * -0.4))
       rotate(calc(var(--max-rotation) * 0.5));
   }
-  
+
   75% {
     transform: translateX(calc(var(--sway-distance) * 0.9))
       rotate(calc(var(--max-rotation) * 0.75));
     opacity: 0.8;
   }
-  
+
   100% {
     top: 105vh;
     transform: translateX(calc(var(--sway-distance) * 0.2))
       rotate(var(--max-rotation));
-    opacity: 0; 
+    opacity: 0;
   }
 }
-
-
-
-
-
+/* =================== 겨울 테마 애니메이션 ========================= */
 .winter-snowflake--fluffy {
   border-radius: 50%;
 
@@ -206,7 +174,6 @@
     0 0 9px rgba(104, 178, 226, 0.4);
 }
 
-
 .winter-snowflake {
   position: absolute;
   top: -40px;
@@ -216,12 +183,10 @@
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
 
-  
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-
 
 @keyframes winter-fall {
   0% {
@@ -229,17 +194,16 @@
     transform: translateX(0) rotate(0deg);
   }
   50% {
-    
     transform: translateX(calc(var(--sway-distance) / 2))
       rotate(calc(var(--max-rotation) / 2));
   }
   100% {
     top: 105vh;
     transform: translateX(var(--sway-distance)) rotate(var(--max-rotation));
-    opacity: 0; 
+    opacity: 0;
   }
 }
-
+/* =================== 공통 레이아웃 (가을, 겨울) ========================= */
 .autumn-falling-layer,
 .winter-falling-layer {
   position: fixed;
@@ -252,4 +216,3 @@
 
   z-index: -1;
 }
-
