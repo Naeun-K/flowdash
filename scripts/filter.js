@@ -1,5 +1,11 @@
 import { getTasks, renderTodos, openResetModal } from "./modal.js";
 
+// =========================================================================
+// [수정] 로컬스토리지 값 가져오기
+// =========================================================================
+const STORAGE_KEY = "flowdash-filter-settings";
+const savedSettings = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
 // 검색 input
 const searchInput = document.querySelector(".search-input");
 
@@ -34,17 +40,35 @@ const filterInfoContainer = document.querySelector(".filter-info-list");
 // 정렬 화살표 아이콘
 const sortIcon = document.querySelector(".search-sort-button-icon svg");
 
+// =========================================================================
+// [수정] 원본 변수가 초기 실행 시 저장소의 값을 물고 시작하도록 만듭니다.
+// =========================================================================
 // 현재 검색어
-let selectedKeyword = "";
+let selectedKeyword =
+  savedSettings.selectedKeyword !== undefined
+    ? savedSettings.selectedKeyword
+    : "";
 
 // 현재 선택된 기간
-let selectedPeriod = "all-days";
+let selectedPeriod = savedSettings.selectedPeriod || "all-days";
 
 // 현재 선택된 우선순위
-let selectedPriority = "all-priority";
+let selectedPriority = savedSettings.selectedPriority || "all-priority";
 
 // 현재 정렬 상태
-let isAscending = true;
+let isAscending =
+  savedSettings.isAscending !== undefined ? savedSettings.isAscending : true;
+
+// 로컬스토리지 저장용 헬퍼 함수
+function saveSettingsToStorage() {
+  const settings = {
+    selectedKeyword,
+    selectedPeriod,
+    selectedPriority,
+    isAscending,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+}
 
 /**
  * 오늘 날짜의 시작 시간을 구하는 함수
@@ -228,6 +252,9 @@ searchInput?.addEventListener("input", () => {
   // 앞뒤 공백 제거 후 검색어 저장
   selectedKeyword = searchInput.value.trim();
 
+  // 상태 저장
+  saveSettingsToStorage();
+
   // 검색어가 바뀔 때마다 전체 필터 다시 적용
   applyFilter();
 });
@@ -240,8 +267,11 @@ periodItems.forEach((item) => {
     // 클릭한 항목의 data-value 저장
     selectedPeriod = item.dataset.value;
 
-    // 버튼 글자를 선택한 기간으로 변경
+    // 버튼 글자를 선택한 기간으로 변경 (원본 코드)
     periodButton.childNodes[0].textContent = `${item.textContent.trim()} `;
+
+    // 상태 저장
+    saveSettingsToStorage();
 
     // 기간이 바뀌면 전체 필터 다시 적용
     applyFilter();
@@ -256,8 +286,11 @@ priorityItems.forEach((item) => {
     // 클릭한 항목의 data-value 저장
     selectedPriority = item.dataset.value;
 
-    // 버튼 글자를 선택한 우선순위로 변경
+    // 버튼 글자를 선택한 우선순위로 변경 (원본 코드)
     priorityButton.childNodes[0].textContent = `${item.textContent.trim()} `;
+
+    // 상태 저장
+    saveSettingsToStorage();
 
     // 우선순위가 바뀌면 전체 필터 다시 적용
     applyFilter();
@@ -278,6 +311,9 @@ sortButton?.addEventListener("click", () => {
 
   // 화살표 방향 변경
   sortIcon.style.transform = isAscending ? "rotate(0deg)" : "rotate(180deg)";
+
+  // 상태 저장
+  saveSettingsToStorage();
 
   // 정렬 상태가 바뀌면 전체 필터 다시 적용
   applyFilter();
@@ -304,6 +340,9 @@ function resetFilters() {
   // 5. 정렬 화살표 초기화
   sortIcon.style.transform = "rotate(0deg)";
 
+  // 로컬스토리지 초기화
+  saveSettingsToStorage();
+
   // 6. 초기화된 조건으로 목록 다시 출력
   applyFilter();
 }
@@ -322,3 +361,60 @@ resetFilterButton?.addEventListener("click", () => {
 window.addEventListener("todoUpdated", () => {
   applyFilter();
 });
+
+// =========================================================================
+// [수정] 3. 페이지가 로드되고 데이터가 주입된 후 '완벽히 싱크 맞추기'
+// =========================================================================
+function syncLoadedUI() {
+  // 검색어 복구
+  if (selectedKeyword && searchInput) {
+    searchInput.value = selectedKeyword;
+  }
+
+  // 기간 드롭다운 글자 복구
+  if (
+    selectedPeriod !== "all-days" &&
+    periodButton &&
+    periodButton.childNodes[0]
+  ) {
+    const savedPeriodItem = Array.from(periodItems).find(
+      (item) => item.dataset.value === selectedPeriod,
+    );
+    if (savedPeriodItem) {
+      periodButton.childNodes[0].textContent = `${savedPeriodItem.textContent.trim()} `;
+    }
+  }
+
+  // 우선순위 드롭다운 글자 복구
+  if (
+    selectedPriority !== "all-priority" &&
+    priorityButton &&
+    priorityButton.childNodes[0]
+  ) {
+    const savedPriorityItem = Array.from(priorityItems).find(
+      (item) => item.dataset.value === selectedPriority,
+    );
+    if (savedPriorityItem) {
+      priorityButton.childNodes[0].textContent = `${savedPriorityItem.textContent.trim()} `;
+    }
+  }
+
+  // 정렬 글자 및 화살표 복구
+  if (!isAscending) {
+    if (sortButtonText) sortButtonText.textContent = "정렬: 내림차순";
+    if (sortIcon) sortIcon.style.transform = "rotate(180deg)";
+  }
+
+  // ★★★ [핵심 수정] 외부에서 처음으로 데이터 렌더링이 완료된 타이밍에 맞춰 필터를 강제 실행시킵니다.
+  // 이로써 새로고침 직후에도 저장된 설정에 따라 데이터 목록이 즉시 필터링된 형태로 화면에 유지됩니다.
+  setTimeout(() => {
+    applyFilter();
+  }, 50);
+}
+
+// 안전하게 UI 싱크 및 로드 시점 필터 적용 실행
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", syncLoadedUI);
+} else {
+  syncLoadedUI();
+}
