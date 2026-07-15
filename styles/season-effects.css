@@ -6,6 +6,54 @@
 /* 봄 - 벚꽃잎 효과 */
 /* ========================= */
 
+/* ====================================================
+   🌸 봄 벚꽃비 개별 입자 및 흔들림 애니메이션 스타일
+   ==================================================== */
+
+/* 벚꽃잎 개별 입자 스타일링 */
+.spring-petal {
+  position: absolute;
+  top: -30px;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: spring-fall ease-in-out forwards;
+
+  /* 벚꽃잎 고유의 연한 핑크색 타원 형태 구현 */
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.05); /* 입체감 부여 */
+}
+
+/* 벚꽃잎이 바람을 타고 지그재그로 흔들리며 투명하게 하강하는 애니메이션 */
+@keyframes spring-fall {
+  0% {
+    top: -30px;
+    opacity: 0;
+    transform: translateX(0) rotate(0deg);
+  }
+  10% {
+    opacity: 1; /* 부드러운 생성 */
+  }
+  30% {
+    /* 지그재그 하강 첫 번째 꺾임 */
+    transform: translateX(calc(var(--sway-distance) * 0.8))
+      rotate(calc(var(--max-rotation) * 0.3));
+  }
+  60% {
+    /* 반대 방향 흔들림 */
+    transform: translateX(calc(var(--sway-distance) * -0.5))
+      rotate(calc(var(--max-rotation) * 0.6));
+  }
+  85% {
+    opacity: 0.6; /* 바닥에 가까워질수록 연해짐 */
+  }
+  100% {
+    top: 105vh;
+    transform: translateX(calc(var(--sway-distance) * 0.2))
+      rotate(var(--max-rotation));
+    opacity: 0; /* 바닥 도달 직전 완전 소멸 */
+  }
+}
+
 /* ========================= */
 /* 여름 - 물결 효과 */
 /* ========================= */
@@ -16,7 +64,8 @@
 .season-effect-layer {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  /* z-index: 1; */
+  z-index: -1;
 
   overflow: hidden;
   pointer-events: none;
@@ -85,18 +134,6 @@
 /* ========================= */
 /* 가을 - 낙엽 효과 */
 
-/* 가을 낙엽 효과 레이어 설정 */
-.autumn-falling-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none; /* 클릭 방해 금지 */
-  z-index: -1; /* 콘텐츠 및 모달보다 아래 배치 */
-  overflow: hidden;
-}
-
 /* 낙엽 기본 스타일 */
 .autumn-leaf {
   position: absolute;
@@ -150,30 +187,10 @@
   }
 }
 
-/* 애니메이션 감소를 선호하는 사용자 대응
-@media (prefers-reduced-motion: reduce) {
-  .autumn-leaf {
-    display: none !important;
-    animation: none !important;
-  }
-} */
-
 /* ========================= */
 
 /* ========================= */
 /* 겨울 - 눈송이 효과 */
-
-/* 겨울 효과 컨테이너 */
-.winter-falling-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none; /* 사용자 클릭 방해 차단 */
-  z-index: -1; /* 모든 메인 카드, 모달, 헤더보다 뒤에 위치 */
-  overflow: hidden;
-}
 
 /* 눈송이 개별 스타일 */
 .winter-snowflake {
@@ -209,14 +226,7 @@
   }
 }
 
-/* 애니메이션 감축 선호 시 숨김 처리 */
-/* @media (prefers-reduced-motion: reduce) {
-  .winter-snowflake {
-    display: none !important;
-    animation: none !important;
-  }
-} */
-
+.autumn-falling-layer,
 .autumn-falling-layer,
 .winter-falling-layer {
   position: fixed;
@@ -227,7 +237,8 @@
   pointer-events: none;
   overflow: hidden;
 
-  z-index: 9999;
+  /* z-index: 9999; */
+  z-index: -1;
 }
 /* ========================= */
 
