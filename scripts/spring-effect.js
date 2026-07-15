@@ -50,24 +50,17 @@ export function startSpringEffect() {
     // 꽃잎 크기 무작위 설정 (8px ~ 18px)
     const size = Math.floor(Math.random() * 11) + 8;
 
-    // const size = Math.floor(Math.random() * 7) + 6;
-    // 중앙을 비우기 위해 화면 좌우 영역 위주 생성 위치 필터링
-    let leftPosition = 0;
-    if (Math.random() < 0.8) {
-      leftPosition =
-        Math.random() < 0.5 ? Math.random() * 15 : 85 + Math.random() * 15;
-    } else {
-      leftPosition = 15 + Math.random() * 70;
-    }
+    // 화면 전체에서 랜덤 생성
+    const leftPosition = Math.random() * 100;
 
     const color = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
-    const duration = 8 + Math.random() * 8; // 낙하 시간 (8~16초)
+    const duration = 12 + Math.random() * 10; // 낙하 시간 (12~22초)
     const delay = Math.random() * 5;
     const opacity = 0.5 + Math.random() * 0.5; // 은은한 투명도 범위 설정
 
     // 좌우로 흔들릴 너비와 전체 회전각 무작위 적용
     const swayDistance =
-      (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 30);
+      (Math.random() < 0.5 ? -1 : 1) * (15 + Math.random() * 35);
     const maxRotation = 360 + Math.floor(Math.random() * 540); // 공중 회전을 더 다채롭게 설정
 
     // 인라인 스타일 매핑
@@ -82,7 +75,7 @@ export function startSpringEffect() {
     petal.style.setProperty("--max-rotation", `${maxRotation}deg`);
 
     layer.appendChild(petal);
-  }, 800);
+  }, 450);
 }
 
 /**

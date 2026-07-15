@@ -10,9 +10,9 @@ const RIPPLE_SIZE_RANGES = [
   { min: 180, max: 220 },
 ];
 
-const MAX_RIPPLES = 4;
-const MIN_INTERVAL = 1200;
-const MAX_INTERVAL = 2000;
+const MAX_RIPPLES = 7;
+const MIN_INTERVAL = 500;
+const MAX_INTERVAL = 900;
 
 // 최솟값과 최댓값 사이의 무작위 숫자
 function getRandomNumber(min, max) {
@@ -29,7 +29,8 @@ function getRandomPosition(size) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
 
-  const side = Math.random() < 0.5 ? "left" : "right";
+  const sides = ["left", "center", "right"];
+  const side = getRandomItem(sides);
 
   const verticalAreas = [
     {
@@ -37,8 +38,8 @@ function getRandomPosition(size) {
       max: viewportHeight * 0.25,
     },
     {
-      min: viewportHeight * 0.65,
-      max: viewportHeight - size * 0.2,
+      min: viewportHeight * 0.3,
+      max: viewportHeight * 0.7,
     },
     {
       min: viewportHeight * 0.25,
@@ -53,6 +54,8 @@ function getRandomPosition(size) {
 
   if (side === "left") {
     left = getRandomNumber(-size * 0.45, viewportWidth * 0.1);
+  } else if (side === "center") {
+    left = getRandomNumber(viewportWidth * 0.3, viewportWidth * 0.7 - size);
   } else {
     left = getRandomNumber(viewportWidth * 0.85, viewportWidth - size * 0.45);
   }
@@ -69,7 +72,7 @@ function createRipple(layer) {
   const sizeRange = getRandomItem(RIPPLE_SIZE_RANGES);
   const size = getRandomNumber(sizeRange.min, sizeRange.max);
 
-  const duration = getRandomNumber(3.5, 5.5);
+  const duration = getRandomNumber(4.5, 5.6);
   const delay = getRandomNumber(0, 0.5);
 
   const { top, left } = getRandomPosition(size);
@@ -77,6 +80,8 @@ function createRipple(layer) {
   const ripple = document.createElement("span");
 
   ripple.className = "summer-ripple";
+
+  const heightRatio = getRandomNumber(0.75, 1);
 
   ripple.style.width = `${size}px`;
   ripple.style.height = `${size}px`;
