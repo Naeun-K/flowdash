@@ -126,11 +126,6 @@ export function startSummerEffect(layer) {
   // 중복 실행 방지
   if (summerTimers.has(layer)) return;
 
-  //   // 움직임 최소화 사용자는 실행하지 않음
-  //   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  //     return;
-  //   }
-
   summerTimers.set(layer, {
     intervalId: null,
   });
