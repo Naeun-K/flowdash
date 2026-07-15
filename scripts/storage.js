@@ -1,23 +1,3 @@
-// export function createStorage(storageName) {
-//   return {
-//     set(key, value) {
-//       const fullKey = `${storageName}:${key}`;
-//       localStorage.setItem(fullKey, JSON.stringify(value));
-//     },
-//     get(key) {
-//       const fullKey = `${storageName}:${key}`;
-//       const data = localStorage.getItem(fullKey);
-//       return data ? JSON.parse(data) : null;
-//     },
-//     remove(key) {
-//       localStorage.removeItem(`${storageName}:${key}`);
-//     },
-//   };
-// }
-
-/**
- * 로컬스토리지의 실제 정상 작동 여부를 사전에 검증하는 헬퍼 함수
- */
 function isLocalStorageAvailable() {
   const testKey = "__storage_test__";
   try {

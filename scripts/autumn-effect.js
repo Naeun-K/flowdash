@@ -89,7 +89,6 @@ export function startAutumnEffect() {
         LEAF_SVGS[Math.floor(Math.random() * LEAF_SVGS.length)],
       ),
     );
-    // leaf.innerHTML=LEAF_SVGS[Math.floor(Math.random()*LEAF_SVGS.length)]
     // 크기 무작위 설정 (15px ~ 28px)
     const size = Math.floor(Math.random() * 14) + 15;
 
