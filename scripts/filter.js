@@ -160,7 +160,10 @@ function updateFilterInfo() {
  * @returns {void}
  */
 export function applyFilter() {
+  console.log("현재 period:", selectedPeriod);
+
   let tasks = getTasks();
+  console.log(tasks);
 
   // 1. 기간 필터링 처리 (task.id의 타임스탬프 값을 기준으로 분류)
   if (selectedPeriod === "today") {
@@ -233,6 +236,7 @@ searchInput?.addEventListener("input", () => {
 periodItems.forEach((item) => {
   item.addEventListener("click", () => {
     selectedPeriod = item.dataset.value;
+    console.log("선택된 기간:", selectedPeriod);
     periodButton.childNodes[0].textContent = `${item.textContent.trim()} `;
     saveSettingsToStorage();
     applyFilter();
