@@ -6,7 +6,6 @@ const flowdashTodos = createStorage("flowdash-todos");
 const modal = document.querySelector(".new-task-modal");
 const openButton = document.querySelector(".add-task-button");
 const closeButton = document.querySelector(".modal-close-button");
-const saveButton = document.querySelector(".modal-submit-button");
 const form = document.querySelector(".modal-form");
 const titleInput = document.querySelector('.modal-input[name="task-title"]');
 const descInput = document.querySelector(".modal-textarea");

@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="ko">
   <head>
-    <!-- 1. 브라우저 호환성 및 인코딩 (모든 사이트 기본 호환) -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,14 +10,12 @@
     <link rel="stylesheet" href="./styles/style.css" />
     <link rel="stylesheet" href="./styles/season-effects.css" />
 
-    <!-- 1. 검색엔진(SEO) 전용 메타 설명 태그 (이게 누락되어 점수가 깎였습니다!) -->
     <meta
       name="description"
       content="FlowDash와 함께 하루의 할 일을 직관적으로 관리하고 대시보드 통계를 확인하세요."
     />
   </head>
   <body>
-    <!-- 모바일 미디어쿼리 전용 내비게이션 (랜드마크 nav) -->
     <nav class="mobile-section-nav" aria-label="모바일 빠른 이동">
       <a href="#top" class="nav-link">현황</a>
       <a href="#list" class="nav-link">목록</a>
@@ -27,7 +24,6 @@
     </nav>
 
     <div id="top" class="container">
-      <!-- SEO용 페이지 최상위 제목 (숨김 처리 권장 CSS: .sr-only) -->
       <h1 class="sr-only">FlowDash 할 일 관리 서비스</h1>
 
       <header class="greeting-container">
@@ -35,7 +31,6 @@
           <p class="greeting">
             <span class="greeting-message">안녕하세요, </span>
             <span class="greeting-nickname"> Flowdash</span>님
-            <!-- 장식용 SVG에 aria-hidden="true" 추가 -->
             <span class="greeting-icon" aria-hidden="true">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +87,6 @@
                 <span>원하는 테마를 선택해보세요</span>
               </div>
 
-              <!-- 커스텀 드롭다운 아이템 키보드 접근성(tabindex) 추가 -->
               <button
                 type="button"
                 class="theme-dropdown-item is-selected"
@@ -266,7 +260,6 @@
                   </svg>
                 </button>
               </div>
-              <!--드롭다운 묶음-->
               <div class="dropdown_zip">
                 <details class="search-period-dropdown dropdown">
                   <summary
@@ -442,7 +435,6 @@
             할 일 리스트 / 진행 중인 리스트 / 완료된 업무 리스트
           </h2>
 
-          <!-- 할일 보드 -->
           <div class="board-todo-board">
             <div class="board-header board-todo-header">
               <span class="board-title board-todo-title" id="todo-board-label"
@@ -459,7 +451,6 @@
             </div>
           </div>
 
-          <!-- 진행중 보드 -->
           <div class="board-doing-board">
             <div class="board-header board-doing-header">
               <span class="board-title board-doing-title" id="doing-board-label"
@@ -478,7 +469,6 @@
             </div>
           </div>
 
-          <!-- 완료 보드 -->
           <div id="done" class="board-done-board">
             <div class="board-header board-done-header">
               <span class="board-title board-done-title" id="done-board-label"
@@ -499,8 +489,6 @@
       <footer class="footer">&copy; 2026 UIONE. All rights reserved.</footer>
     </div>
 
-    <!-- ================================================= 모달 ======================================================= -->
-    <!-- 새 할 일 작성 모달 -->
     <div
       class="new-task-modal"
       role="dialog"
@@ -515,8 +503,12 @@
           <div class="label-input-container">
             <div class="label-wrapper">
               <label for="task-title" class="modal-label">제목 *</label>
-              <!-- 에러 가시성을 위한 aria-live 영역으로 활용 가능 -->
-              <span class="error-message" id="title-error" hidden>
+              <span
+                class="error-message"
+                id="title-error"
+                aria-live="polite"
+                hidden
+              >
                 제목을 입력해주세요!
               </span>
             </div>
@@ -539,7 +531,6 @@
             ></textarea>
           </div>
           <div class="modal-radio-select-container">
-            <!-- 우선순위 선택 그룹화 -->
             <fieldset class="modal-priority modal-radio-select-group">
               <legend class="modal-label">우선순위</legend>
               <div class="label-input-container radio-container">
@@ -659,7 +650,6 @@
       </div>
     </div>
 
-    <!-- 데이터 리셋/삭제 모달 -->
     <div
       class="reset-modal-content"
       role="dialog"
@@ -679,7 +669,6 @@
       </div>
     </div>
 
-    <!-- 테마 설정 모달 -->
     <div class="theme-setting-modal" hidden>
       <div
         class="theme-setting-modal-content"
@@ -782,9 +771,6 @@
       </div>
     </div>
 
-    <!-- ======================================== -->
-    <!-- 할 일 리스트 카드 템플릿  -->
-    <!-- ======================================== -->
     <div
       id="hidden-card"
       class="todo-container"
@@ -795,7 +781,13 @@
     >
       <div class="todo-icon-container">
         <div class="todo-priority-icon">중간</div>
-        <div class="todo-close-icon" aria-hidden="true" hidden>
+        <button
+          type="button"
+          class="todo-close-icon"
+          aria-label="할 일 삭제"
+          aria-hidden="true"
+          hidden
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -808,7 +800,7 @@
               d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
             />
           </svg>
-        </div>
+        </button>
       </div>
       <div class="todo-title-desc-container">
         <h2 class="todo-title"></h2>
@@ -879,7 +871,6 @@
     <script type="module" src="./scripts/dom.js"></script>
     <script src="./scripts/icon.js" defer></script>
     <script type="module" src="./scripts/nickname.js"></script>
-    <!-- <script type="module" src="./scripts/change.js"></script> -->
     <script type="module" src="./scripts/filter.js"></script>
     <script type="module" src="./scripts/season-theme.js"></script>
   </body>

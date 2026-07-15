@@ -2685,9 +2685,35 @@ body.dark .theme-switch-input:checked + .theme-switch-slider {
     color: var(--theme-nav);
   }
   .mobile-section-nav a {
+    color: var(--theme-text);
+    position: relative;
+    padding-bottom: 4px;
+    transition: color 0.3s ease;
     font-size: 13px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
+  }
+
+  /* 2. 밑줄 생성 (가상 요소) */
+  .mobile-section-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+
+    /* 글자 색상을 자동으로 따라감 */
+    background-color: currentColor;
+
+    /* 기본 상태: 숨김 */
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  /* 3. 호버 시 밑줄 노출 */
+  .mobile-section-nav a:hover::after {
+    transform: scaleX(1); /* 밑줄 등장 */
   }
   .mobile-section-nav a.active {
     color: #ffffff;
@@ -2699,6 +2725,8 @@ body.dark .theme-switch-input:checked + .theme-switch-slider {
     margin-top: 30px; /* 기존 위 여백 값 */
   }
 }
+
+
 #list,
 #board,
 #done {
