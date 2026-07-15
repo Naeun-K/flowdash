@@ -1,4 +1,5 @@
-﻿/**
+﻿import { createSvgFragment } from "./season-svg-utils.js";
+/**
  * @file winterEffect.js
  * @description 화면에 아름답게 흔들리며 떨어지는 겨울 눈송이 애니메이션 효과를 구현한 모듈입니다.
  */

@@ -1,4 +1,6 @@
-﻿/**
+﻿import { createSvgFragment } from "./season-svg-utils.js";
+
+/**
  * @fileoverview 가을 낙엽 떨어짐 효과 애니메이션을 관리하는 모듈입니다.
  * 배경 레이어 생성, 일정 간격의 낙엽 인스턴스 생성, 애니메이션 속성 무작위 설정 및 효과 해제 기능을 포함합니다.
  */
