@@ -7,6 +7,7 @@ import { startSummerEffect, stopSummerEffect } from "./summer-effect.js";
 import { startAutumnEffect, stopAutumnEffect } from "./autumn-effect.js";
 
 import { startWinterEffect, stopWinterEffect } from "./winter-effect.js";
+import { startSpringEffect, stopSpringEffect } from "./spring-effect.js";
 
 console.log("★★★★ season-theme 실행 ★★★★");
 
@@ -38,6 +39,7 @@ function stopAllSeasonEffects(layer) {
   stopSummerEffect(layer);
   stopAutumnEffect();
   stopWinterEffect();
+  stopSpringEffect();
 }
 
 // ========================================
@@ -54,6 +56,10 @@ function updateSeasonEffect() {
 
   stopAllSeasonEffects(layer);
 
+  if (currentTheme === "spring") {
+    console.log("봄 효과 시작");
+    startSpringEffect();
+  }
   if (currentTheme === "summer") {
     console.log("여름 효과 시작");
     startSummerEffect(layer);
