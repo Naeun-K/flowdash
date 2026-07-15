@@ -1,8 +1,4 @@
-// ========================================
-// 여름 물결 효과
-// ========================================
-
-const summerTimers = new WeakMap();
+﻿const summerTimers = new WeakMap();
 
 const RIPPLE_SIZE_RANGES = [
   { min: 50, max: 70 },
@@ -14,17 +10,30 @@ const MAX_RIPPLES = 7;
 const MIN_INTERVAL = 500;
 const MAX_INTERVAL = 900;
 
-// 최솟값과 최댓값 사이의 무작위 숫자
+/**
+ * Returns a random number inside a given inclusive range.
+ * @param {number} min - Lower bound.
+ * @param {number} max - Upper bound.
+ * @returns {number} A random value.
+ */
 function getRandomNumber(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-// 배열에서 무작위 항목 선택
+/**
+ * Picks a random item from an array.
+ * @param {Array<unknown>} items - Candidate values.
+ * @returns {unknown} A randomly selected item.
+ */
 function getRandomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-// 좌우 가장자리와 화면의 빈 공간 위주로 위치 설정
+/**
+ * Computes a random ripple position based on viewport size.
+ * @param {number} size - Ripple size in pixels.
+ * @returns {{ top: number, left: number }} A random position.
+ */
 function getRandomPosition(size) {
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
@@ -63,7 +72,10 @@ function getRandomPosition(size) {
   return { top, left };
 }
 
-// 물결 하나 생성
+/**
+ * Creates a single summer ripple element.
+ * @param {HTMLElement} layer - The ripple container.
+ */
 function createRipple(layer) {
   const currentRippleCount = layer.querySelectorAll(".summer-ripple").length;
 
@@ -103,7 +115,10 @@ function createRipple(layer) {
   layer.append(ripple);
 }
 
-// 다음 물결 생성 예약
+/**
+ * Schedules the next ripple generation cycle.
+ * @param {HTMLElement} layer - The ripple container.
+ */
 function scheduleNextRipple(layer) {
   const timerData = summerTimers.get(layer);
 
@@ -119,25 +134,28 @@ function scheduleNextRipple(layer) {
   }, interval);
 }
 
-// 여름 효과 시작
+/**
+ * Starts generating summer ripple effects.
+ * @param {HTMLElement} layer - The ripple container.
+ */
 export function startSummerEffect(layer) {
   if (!layer) return;
 
-  // 중복 실행 방지
   if (summerTimers.has(layer)) return;
 
   summerTimers.set(layer, {
     intervalId: null,
   });
 
-  // 시작 즉시 첫 번째 물결 생성
   createRipple(layer);
 
-  // 이후 1.2~2초 간격으로 생성
   scheduleNextRipple(layer);
 }
 
-// 여름 효과 종료
+/**
+ * Stops the summer ripple effect and clears existing ripples.
+ * @param {HTMLElement} layer - The ripple container.
+ */
 export function stopSummerEffect(layer) {
   if (!layer) return;
 

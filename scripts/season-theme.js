@@ -1,4 +1,4 @@
-import { startSummerEffect, stopSummerEffect } from "./summer-effect.js";
+﻿import { startSummerEffect, stopSummerEffect } from "./summer-effect.js";
 import { startAutumnEffect, stopAutumnEffect } from "./autumn-effect.js";
 import { startWinterEffect, stopWinterEffect } from "./winter-effect.js";
 import { startSpringEffect, stopSpringEffect } from "./spring-effect.js";
@@ -17,14 +17,14 @@ function getSeasonEffectLayer() {
   return layer;
 }
 
-// [핵심] 기존 찌꺼기 애니메이션 루프와 타임아웃을 안전하게 완전 청소하는 유틸리티
+
 function clearPreviousSeasonEffects(layer) {
   stopSpringEffect();
   stopSummerEffect(layer);
   stopAutumnEffect();
   stopWinterEffect();
   if (layer) {
-    layer.textContent = ""; // 남아있는 파티클 Element DOM들을 완벽히 지워 메모리 누수를 원천 차단
+    layer.textContent = ""; 
   }
 }
 
@@ -35,10 +35,10 @@ function updateSeasonEffect() {
     themeStorage.get("season") ||
     "default";
 
-  // 1. 새 효과가 적용되기 전에, 활성화된 모든 루프와 가비지 컬렉팅 요소를 청소
+  
   clearPreviousSeasonEffects(layer);
 
-  // 2. 단 한 가지의 특정 애니메이션만 실행하여 중복 구동을 방지
+  
   if (currentTheme === "spring") {
     startSpringEffect();
   } else if (currentTheme === "summer") {
@@ -50,7 +50,7 @@ function updateSeasonEffect() {
   }
 }
 
-// 돔 어트리뷰트 감지 설정 최적화
+
 const themeObserver = new MutationObserver((mutations) => {
   const isThemeChanged = mutations.some(
     (m) => m.type === "attributes" && m.attributeName === "data-theme",
@@ -65,5 +65,5 @@ themeObserver.observe(document.documentElement, {
   attributeFilter: ["data-theme"],
 });
 
-// 첫 실행 동기화
+
 updateSeasonEffect();

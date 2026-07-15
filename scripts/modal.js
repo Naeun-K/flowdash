@@ -1,4 +1,4 @@
-import { createStorage } from "./storage.js"; // 안전한 로컬스토리지 래퍼
+﻿import { createStorage } from "./storage.js";
 import { applyFilter } from "./filter.js";
 
 const flowdashTodos = createStorage("flowdash-todos");
@@ -16,14 +16,15 @@ const priorityLabels = document.querySelectorAll(".modal-radio-label");
 const modalTitle = document.querySelector(".modal-title");
 const modalSubmitButton = document.querySelector(".modal-submit-button");
 
-let currentSelectedStatus = "TODO"; // internal status: TODO, DOING, DONE
+let currentSelectedStatus = "TODO";
 let editingTaskId = null;
 let hasSubmitted = false;
-
-// [추가] 모달을 열었을 때 어떤 버튼이 포커스를 갖고 있었는지 기억할 변수
 let lastActiveElement = null;
+
 /**
- * 보안 강화: 안전한 텍스트 출력을 위한 XSS 방어 새니타이저
+ * Sanitizes text to prevent XSS injection in rendered content.
+ * @param {string} text - Raw text to sanitize.
+ * @returns {string} Escaped text.
  */
 function sanitize(text) {
   if (text == null) return "";
@@ -109,10 +110,13 @@ function populateModal(task) {
   editingTaskId = String(task.id);
 }
 
+/**
+ * Opens the task modal for creating or editing a task.
+ * @param {object|null} task - Task data to populate when editing.
+ */
 function openModal(task = null) {
   if (!modal) return;
 
-  // [추가] 모달을 열기 직전, 현재 포커스된 요소를 기록해 둡니다 ("+ 새 할 일" 버튼 등)
   lastActiveElement = document.activeElement;
 
   modal.classList.remove("active");
@@ -133,6 +137,9 @@ function openModal(task = null) {
   }, 10);
 }
 
+/**
+ * Closes the task modal and restores focus to the previously active element.
+ */
 function closeModal() {
   if (!modal) return;
 
@@ -140,12 +147,9 @@ function closeModal() {
   document.body.style.overflow = "";
   setDefaultModalState();
 
-  // ★ [핵심 수정] 모달이 닫히는 즉시 포커스를 안전하게 모달 외부로 돌려보냅니다.
-  // 모달 내부의 닫기 버튼에 포커스가 묶인 채 aria-hidden이 true가 되는 현상을 방지합니다.
   if (lastActiveElement && typeof lastActiveElement.focus === "function") {
     lastActiveElement.focus();
   } else {
-    // 기억된 이전 포커스 요소가 없다면 안전하게 "+ 새 할 일" 버튼으로 포커스를 보냅니다.
     openButton?.focus();
   }
 
@@ -157,6 +161,10 @@ function closeModal() {
   }, 300);
 }
 
+/**
+ * Reads the saved task list from storage.
+ * @returns {Array<object>} The stored tasks.
+ */
 export function getTasks() {
   const stored = flowdashTodos.get("tasks");
   return Array.isArray(stored) ? stored : [];
@@ -297,9 +305,6 @@ function handleModalSubmit(event) {
   closeModal();
 }
 
-// =========================================================================
-// 안전하게 바인딩된 글로벌 모달 리스너 모음
-// =========================================================================
 openButton?.addEventListener("click", () => openModal());
 closeButton?.addEventListener("click", closeModal);
 
@@ -307,7 +312,6 @@ modal?.addEventListener("click", (event) => {
   if (event.target === modal) closeModal();
 });
 
-// ESC 키 글로벌 리스너 단 하나로 제한하여 결합
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && modal && !modal.hidden) {
     closeModal();
@@ -319,7 +323,6 @@ form?.addEventListener("submit", handleModalSubmit);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter" && modal && !modal.hidden) {
     const activeEl = document.activeElement;
-    // textarea나 다른 컨트롤 내부에서의 무조건적인 전송 방지
     if (activeEl !== descInput) {
       handleModalSubmit(event);
     }
@@ -346,9 +349,9 @@ priorityInputs.forEach((input) => {
   });
 });
 
-// =========================================================================
-// 성능 최적화: 드롭다운 제어 이벤트 위임 (Event Delegation) 적용
-// =========================================================================
+/**
+ * Closes all open dropdowns in the modal UI.
+ */
 function closeAllDropdowns() {
   document.querySelectorAll(".dropdown").forEach((dropdown) => {
     dropdown.removeAttribute("open");
@@ -356,7 +359,6 @@ function closeAllDropdowns() {
   });
 }
 
-// 이벤트 중복 추가 없이 전역 클릭 한 번으로 모든 드롭다운 통제
 document.addEventListener("click", (event) => {
   const target = event.target;
   const isDropdownClick = target.closest(".dropdown");
@@ -385,7 +387,9 @@ dropdownItems.forEach((item) => {
   });
 });
 
-// Render helpers
+/**
+ * Clears the board lists and displays empty-state placeholders.
+ */
 function clearBoardLists() {
   document
     .querySelectorAll(".todo-list, .doing-list, .done-list")
@@ -411,13 +415,17 @@ function clearBoardLists() {
 
       const p = document.createElement("p");
       p.className = `${specificClass} null-data`;
-      p.textContent = messageText; // XSS 방어
+      p.textContent = messageText;
 
       li.appendChild(p);
       ul.appendChild(li);
     });
 }
 
+/**
+ * Updates the summary counts shown on the dashboard cards.
+ * @param {Array<object>} tasks - Current tasks to count.
+ */
 function updateCounts(tasks) {
   if (!tasks || !Array.isArray(tasks)) return;
 
@@ -444,6 +452,11 @@ function updateCounts(tasks) {
   if (achievedEl) achievedEl.textContent = `${achieved}%`;
 }
 
+/**
+ * Formats a timestamp into a readable display string.
+ * @param {number} ms - Timestamp in milliseconds.
+ * @returns {string} A formatted local date string.
+ */
 function formatDate(ms) {
   const date = new Date(ms);
   const year = date.getFullYear();
@@ -455,6 +468,11 @@ function formatDate(ms) {
   return `${year}. ${month}. ${day} ${hours}:${minutes}`;
 }
 
+/**
+ * Creates the DOM element for a single todo item.
+ * @param {object} todo - Task data to render.
+ * @returns {HTMLElement} The rendered list item.
+ */
 function createTodoElement(todo) {
   let targetNullClass = "";
   if (todo.status === "TODO") {
@@ -581,10 +599,9 @@ function createTodoElement(todo) {
         document.body.append(deleteModal);
         document.body.style.overflow = "hidden";
 
-        // 메모리 누수 방지 이벤트 수거 함수 구성
         const handleClose = () => {
           closeResetModal(deleteModal);
-          document.removeEventListener("keydown", handleKeyDown); // 글로벌 리스너 즉각 수거
+          document.removeEventListener("keydown", handleKeyDown);
         };
 
         const handleConfirm = () => {
@@ -634,6 +651,10 @@ function createTodoElement(todo) {
   return li;
 }
 
+/**
+ * Renders the supplied task list into the board columns.
+ * @param {Array<object>} todoList - Tasks to display.
+ */
 export function renderTodos(todoList) {
   const tasks = Array.isArray(todoList) ? todoList : getTasks();
   clearBoardLists();
@@ -653,11 +674,14 @@ export function renderTodos(todoList) {
   updateCounts(allTasksForStats);
 }
 
-// 전체 데이터 초기화
 const resetButton = document.querySelector(
   ".reset-data-button:not(.reset-filter-button)",
 );
 
+/**
+ * Opens a confirmation modal for destructive actions.
+ * @param {Object} options - Modal configuration.
+ */
 export function openResetModal({
   title = "데이터 초기화",
   description = "정말로 모든 데이터를 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.",
@@ -705,7 +729,7 @@ export function openResetModal({
 
   const handleClose = () => {
     closeResetModal(resetModal);
-    document.removeEventListener("keydown", handleKeyDown); // 리스너 완벽 수거
+    document.removeEventListener("keydown", handleKeyDown);
   };
 
   const handleConfirm = () => {
@@ -735,6 +759,10 @@ export function openResetModal({
   document.addEventListener("keydown", handleKeyDown);
 }
 
+/**
+ * Closes a reset confirmation modal.
+ * @param {HTMLElement} resetModal - Modal element to close.
+ */
 function closeResetModal(resetModal) {
   if (!resetModal) return;
 
@@ -753,12 +781,14 @@ function closeResetModal(resetModal) {
   }, 200);
 }
 
+/**
+ * Clears all persisted tasks and rerenders the empty board.
+ */
 function resetAllTasks() {
   saveTasks([]);
   renderTodos([]);
 }
 
-// 초기 렌더 및 트리거 바인딩
 renderTodos(getTasks());
 
 resetButton?.addEventListener("click", () => {

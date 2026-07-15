@@ -1,8 +1,8 @@
-/* ====================================================
-   🌸 봄 벚꽃비 개별 입자 및 흔들림 애니메이션 스타일
-   ==================================================== */
+﻿
 
-/* 벚꽃잎 개별 입자 스타일링 */
+
+
+
 .spring-petal {
   position: absolute;
   top: -30px;
@@ -10,12 +10,12 @@
   will-change: transform, opacity;
   animation: spring-fall ease-in-out forwards;
 
-  /* 벚꽃잎 고유의 연한 핑크색 타원 형태 구현 */
+  
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.05); /* 입체감 부여 */
+  box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.05); 
 }
 
-/* 벚꽃잎이 바람을 타고 지그재그로 흔들리며 투명하게 하강하는 애니메이션 */
+
 @keyframes spring-fall {
   0% {
     top: -30px;
@@ -23,49 +23,49 @@
     transform: translateX(0) rotate(0deg);
   }
   10% {
-    opacity: 1; /* 부드러운 생성 */
+    opacity: 1; 
   }
   30% {
-    /* 지그재그 하강 첫 번째 꺾임 */
+    
     transform: translateX(calc(var(--sway-distance) * 0.8))
       rotate(calc(var(--max-rotation) * 0.3));
   }
   60% {
-    /* 반대 방향 흔들림 */
+    
     transform: translateX(calc(var(--sway-distance) * -0.5))
       rotate(calc(var(--max-rotation) * 0.6));
   }
   85% {
-    opacity: 0.6; /* 바닥에 가까워질수록 연해짐 */
+    opacity: 0.6; 
   }
   100% {
     top: 105vh;
     transform: translateX(calc(var(--sway-distance) * 0.2))
       rotate(var(--max-rotation));
-    opacity: 0; /* 바닥 도달 직전 완전 소멸 */
+    opacity: 0; 
   }
 }
 
-/* ========================= */
-/* 여름 - 물결 효과 */
-/* ========================= */
-/* ======================================== */
-/* 계절 효과 공통 레이어 */
-/* ======================================== */
+
+
+
+
+
+
 
 .season-effect-layer {
   position: fixed;
   inset: 0;
-  /* z-index: 1; */
+  
   z-index: -1;
 
   overflow: hidden;
   pointer-events: none;
 }
 
-/* ======================================== */
-/* 여름 물결 */
-/* ======================================== */
+
+
+
 
 .summer-ripple {
   position: absolute;
@@ -108,9 +108,9 @@
   border: 3px solid rgba(221, 246, 252, 0.45);
 }
 
-/* ======================================== */
-/* 여름 물결 애니메이션 */
-/* ======================================== */
+
+
+
 
 @keyframes summerRipple {
   0% {
@@ -127,10 +127,10 @@
     transform: scale(1.8);
   }
 }
-/* ========================= */
-/* 가을 - 낙엽 효과 */
 
-/* 낙엽 기본 스타일 */
+
+
+
 .autumn-leaf {
   position: absolute;
   pointer-events: none;
@@ -139,54 +139,54 @@
   animation-name: autumn-fall;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
-  /* animation-fill-mode: none; */
+  
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 진짜 단풍잎 SVG 스타일링 */
+
 .autumn-leaf svg {
   transform: rotate(45deg);
   width: 100%;
   height: 100%;
-  fill: currentColor; /* 자바스크립트에서 준 leaf.style.color가 자동으로 입혀집니다. */
+  fill: currentColor; 
 }
 @keyframes autumn-fall {
   0% {
     top: -40px;
     transform: translateX(0) rotate(0deg);
   }
-  /* 1. 오른쪽(또는 왼쪽)으로 크게 흔들림 */
+  
   25% {
     transform: translateX(calc(var(--sway-distance) * 0.7))
       rotate(calc(var(--max-rotation) * 0.25));
   }
-  /* 2. 다시 중앙을 거쳐 반대 방향으로 흔들림 (지그재그 핵심) */
+  
   50% {
     transform: translateX(calc(var(--sway-distance) * -0.4))
       rotate(calc(var(--max-rotation) * 0.5));
   }
-  /* 3. 다시 원래 흔들리던 방향으로 회전하며 이동 */
+  
   75% {
     transform: translateX(calc(var(--sway-distance) * 0.9))
       rotate(calc(var(--max-rotation) * 0.75));
     opacity: 0.8;
   }
-  /* 4. 최종 목적지에 도달하며 서서히 사라짐 */
+  
   100% {
     top: 105vh;
     transform: translateX(calc(var(--sway-distance) * 0.2))
       rotate(var(--max-rotation));
-    opacity: 0; /* 떨어지면서 서서히 소멸 */
+    opacity: 0; 
   }
 }
 
-/* ========================= */
 
-/* ========================= */
-/* 겨울 - 눈송이 효과 */
+
+
+
 .winter-snowflake--fluffy {
   border-radius: 50%;
 
@@ -206,7 +206,7 @@
     0 0 9px rgba(104, 178, 226, 0.4);
 }
 
-/* 눈송이 개별 스타일 */
+
 .winter-snowflake {
   position: absolute;
   top: -40px;
@@ -216,27 +216,27 @@
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
 
-  /* SVG 정렬 */
+  
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 눈송이가 천천히 회전하며 흔들리며 내리는 애니메이션 */
+
 @keyframes winter-fall {
   0% {
     top: -40px;
     transform: translateX(0) rotate(0deg);
   }
   50% {
-    /* 중간 지점에서 살짝 흔들림 */
+    
     transform: translateX(calc(var(--sway-distance) / 2))
       rotate(calc(var(--max-rotation) / 2));
   }
   100% {
     top: 105vh;
     transform: translateX(var(--sway-distance)) rotate(var(--max-rotation));
-    opacity: 0; /* 떨어지며 마지막에 투명해짐 */
+    opacity: 0; 
   }
 }
 
@@ -252,4 +252,4 @@
 
   z-index: -1;
 }
-/* ========================= */
+

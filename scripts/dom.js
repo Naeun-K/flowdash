@@ -1,8 +1,10 @@
-import { createStorage } from "./storage.js";
+﻿import { createStorage } from "./storage.js";
 
 const themeStorage = createStorage("flowdash-theme");
 
-// ==================== 현재 날짜 표시 ====================
+/**
+ * Initializes the greeting date and message based on the current time.
+ */
 const now = new Date();
 const year = now.getFullYear();
 const month = now.getMonth() + 1;
@@ -12,7 +14,6 @@ if (dateElement) {
   dateElement.textContent = `${year}년 ${month}월 ${date}일`;
 }
 
-// ==================== 시간별 인사말 ====================
 const hour = now.getHours();
 const greetingElement = document.querySelector(".greeting-message");
 if (greetingElement) {
@@ -27,9 +28,11 @@ if (greetingElement) {
   }
 }
 
-// ==================== 다크모드 제어 ====================
 const themeButton = document.querySelector(".greeting-theme-toggle");
 
+/**
+ * Updates the theme toggle button icon to match the current mode.
+ */
 function updateThemeIcon() {
   if (!themeButton) return;
   if (document.body.classList.contains("dark")) {
@@ -48,12 +51,10 @@ function updateThemeIcon() {
   }
 }
 
-// 초기 테마 로드 및 아이콘 동기화
 const savedTheme = themeStorage.get("theme") || "light";
 document.body.classList.toggle("dark", savedTheme === "dark");
 updateThemeIcon();
 
-// 클릭 리스너 등록
 if (themeButton) {
   themeButton.addEventListener("click", () => {
     document.body.classList.add("theme-transitioning");
@@ -73,7 +74,6 @@ if (themeButton) {
   });
 }
 
-// ==================== 계절 테마 제어 ====================
 const themeSelectButton = document.querySelector(".greeting-theme-button");
 const themeDropdownMenu = document.querySelector(".theme-dropdown-menu");
 const themeDropdown = document.querySelector(".theme-dropdown");
@@ -111,8 +111,11 @@ document.addEventListener("click", (event) => {
   }
 });
 
+/**
+ * Applies the selected theme and updates related UI state.
+ * @param {string} themeName - The theme to apply.
+ */
 function applyTheme(themeName) {
-  // HTML data-theme만 변경해두면, 실제 생성/삭제는 season-theme.js의 MutationObserver가 전담합니다.
   if (themeName === "default") {
     document.documentElement.removeAttribute("data-theme");
   } else {
@@ -156,7 +159,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ==================== 테마 설정 모달 및 제어 ====================
   const themeSettingButton = document.querySelector(".theme-dropdown-setting");
   const themeSettingModal = document.querySelector(".theme-setting-modal");
   const themeSettingModalContent = document.querySelector(

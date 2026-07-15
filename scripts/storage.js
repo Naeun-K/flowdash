@@ -1,3 +1,7 @@
+﻿/**
+ * Checks whether localStorage is available in the current browser environment.
+ * @returns {boolean} True when storage access succeeds.
+ */
 function isLocalStorageAvailable() {
   const testKey = "__storage_test__";
   try {
@@ -10,8 +14,8 @@ function isLocalStorageAvailable() {
 }
 
 /**
- * 로컬스토리지에 담긴 현재 프리픽스(storageName) 기반의 데이터를
- * 시각적으로 보여주는 디버깅용 함수
+ * Logs the currently stored values for a given storage prefix.
+ * @param {string} storageName - Prefix used to group stored entries.
  */
 function showCurrentStorageData(storageName) {
   try {
@@ -20,7 +24,6 @@ function showCurrentStorageData(storageName) {
 
     for (let i = 0; i < localStorage.length; i++) {
       const fullKey = localStorage.key(i);
-      // 현재 스토리지 이름(예: flowdash-theme)으로 시작하는 키만 필터링
       if (fullKey && fullKey.startsWith(`${storageName}:`)) {
         const subKey = fullKey.replace(`${storageName}:`, "");
         const rawValue = localStorage.getItem(fullKey);
@@ -35,7 +38,7 @@ function showCurrentStorageData(storageName) {
 
     if (hasData) {
       console.group(`📦 [LocalStorage] '${storageName}' 그룹에 저장된 데이터`);
-      console.table(storedData); // 테이블 형식으로 깔끔하게 출력
+      console.table(storedData);
       console.groupEnd();
     } else {
       console.log(
@@ -50,8 +53,12 @@ function showCurrentStorageData(storageName) {
   }
 }
 
+/**
+ * Creates a namespaced storage helper for reading and writing values.
+ * @param {string} storageName - Prefix applied to all stored keys.
+ * @returns {{ get: Function, set: Function, remove: Function }} A storage API instance.
+ */
 export function createStorage(storageName) {
-  // 사용 가능 여부 최초 1회 판별
   const isAvailable = isLocalStorageAvailable();
 
   if (!isAvailable) {
@@ -60,7 +67,6 @@ export function createStorage(storageName) {
     );
   } else {
     console.log(`🟢 [LocalStorage] 로컬스토리지가 활성화되어 있습니다.`);
-    // 초기 로드 시 한 번 저장 상태를 콘솔에 보여줍니다.
     showCurrentStorageData(storageName);
   }
 
@@ -78,7 +84,6 @@ export function createStorage(storageName) {
         localStorage.setItem(fullKey, JSON.stringify(value));
         console.log(`💾 [LocalStorage 저장 완료] ${key} ➔`, value);
 
-        // 저장될 때마다 실시간으로 로컬스토리지에 담긴 모습을 콘솔에 출력
         showCurrentStorageData(storageName);
       } catch (error) {
         console.error(
