@@ -1,4 +1,8 @@
-﻿import { createStorage } from "./storage.js";
+﻿/**
+ * @fileoverview 할 일(Todo) 생성, 수정, 삭제 모달 관리 및
+ * 보드 렌더링, 로컬 스토리지 동기화를 담당하는 모듈입니다.
+ */
+import { createStorage } from "./storage.js";
 import { applyFilter } from "./filter.js";
 
 /**
@@ -908,12 +912,103 @@ function resetAllTasks() {
   renderTodos([]);
 }
 
-// --- 최초 기동 시점 실행부 ---
+/**
+ * [핵심 초기화 모듈 함수]
+ * 페이지 기동 시 저장 데이터를 기반으로 렌더링을 지시하고 모달 이벤트 세팅을 처리합니다.
+ */
+export function initTodoManager() {
+  // 1. 최초 데이터 렌더링 기동
+  renderTodos(getTasks());
 
-// 1. 페이지 로드 시 기존 저장 데이터를 불러와 보드 구성
-renderTodos(getTasks());
+  // 2. 이벤트 리스너 세트 바인딩
+  const resetButton = document.querySelector(
+    ".reset-data-button:not(.reset-filter-button)",
+  );
+  resetButton?.addEventListener("click", () => {
+    openResetModal();
+  });
 
-// 2. 전체 데이터 초기화 버튼 클릭 이벤트 연동
-resetButton?.addEventListener("click", () => {
-  openResetModal();
-});
+  titleInput?.addEventListener("input", function () {
+    if (!hasSubmitted) return;
+    const titleError = document.querySelector(".error-message");
+    if (titleInput.value.trim() !== "") {
+      if (titleError) titleError.style.display = "none";
+      titleInput.classList.remove("input-error");
+    } else {
+      if (titleError) titleError.style.display = "inline";
+      titleInput.classList.add("input-error");
+    }
+  });
+
+  openButton?.addEventListener("click", () => openModal());
+  closeButton?.addEventListener("click", closeModal);
+
+  modal?.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal && !modal.hidden) {
+      closeModal();
+    }
+  });
+
+  form?.addEventListener("submit", handleModalSubmit);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && modal && !modal.hidden) {
+      const activeEl = document.activeElement;
+      if (activeEl !== descInput) {
+        handleModalSubmit(event);
+      }
+    }
+  });
+
+  priorityLabels.forEach((label) => {
+    label.addEventListener("click", () => {
+      const inputId = label.getAttribute("for");
+      const input = document.querySelector(`#${inputId}`);
+      if (input) {
+        input.checked = true;
+        priorityLabels.forEach((lbl) => lbl.classList.remove("active"));
+        label.classList.add("active");
+      }
+    });
+  });
+
+  priorityInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+      priorityLabels.forEach((label) => label.classList.remove("active"));
+      const checkedLabel = document.querySelector(`label[for="${input.id}"]`);
+      checkedLabel?.classList.add("active");
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    const isDropdownClick = target.closest(".dropdown");
+
+    if (!isDropdownClick) {
+      closeAllDropdowns();
+      return;
+    }
+
+    const dropdown = target.closest(".dropdown");
+    const isItemClick = target.closest(".dropdown-item");
+
+    if (isItemClick && dropdown) {
+      dropdown.removeAttribute("open");
+    }
+  });
+
+  dropdownItems.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const statusText = item.textContent.trim();
+      const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
+      if (statusLabel) statusLabel.textContent = statusText;
+      currentSelectedStatus = mapStatusLabelToInternal(statusText);
+      closeAllDropdowns();
+    });
+  });
+}

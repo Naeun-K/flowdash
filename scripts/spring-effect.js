@@ -1,4 +1,5 @@
-﻿/**
+﻿import { createSvgFragment } from "./season-svg-utils.js";
+/**
  * @file springEffect.js
  * @description 화면에 벚꽃 잎이 흐드러지게 떨어지는 봄 테마 애니메이션 효과를 구현한 모듈입니다.
  */

@@ -160,7 +160,10 @@ function updateFilterInfo() {
  * @returns {void}
  */
 export function applyFilter() {
+  console.log("현재 period:", selectedPeriod);
+
   let tasks = getTasks();
+  console.log(tasks);
 
   // 1. 기간 필터링 처리 (task.id의 타임스탬프 값을 기준으로 분류)
   if (selectedPeriod === "today") {
@@ -233,6 +236,7 @@ searchInput?.addEventListener("input", () => {
 periodItems.forEach((item) => {
   item.addEventListener("click", () => {
     selectedPeriod = item.dataset.value;
+    console.log("선택된 기간:", selectedPeriod);
     periodButton.childNodes[0].textContent = `${item.textContent.trim()} `;
     saveSettingsToStorage();
     applyFilter();
@@ -299,11 +303,10 @@ window.addEventListener("todoUpdated", () => {
 });
 
 /**
- * 최초 로드 혹은 새로고침 시, LocalStorage에 보관 중이던 이전 필터 설정들을 가져와 DOM UI 요소들과 완벽하게 동기화합니다.
- * @function syncLoadedUI
- * @returns {void}
+ * [핵심 초기화 모듈 함수]
+ * 저장된 필터 UI 복구 및 이벤트 리스너 세팅을 진행합니다.
  */
-function syncLoadedUI() {
+export function initFilterAndSort() {
   // 기존 검색어 복원
   if (selectedKeyword && searchInput) {
     searchInput.value = selectedKeyword;
@@ -347,11 +350,4 @@ function syncLoadedUI() {
   setTimeout(() => {
     applyFilter();
   }, 50);
-}
-
-// DOM 준비 완료 여부에 맞춰 동기화 셋업 함수 실행 시점 결정
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", syncLoadedUI);
-} else {
-  syncLoadedUI();
 }
