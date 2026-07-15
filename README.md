@@ -75,36 +75,37 @@
 
 ### 3-1. 디렉터리 구조
 
+```text
 flowdash/
-│
-├── img/
-│   ├── spring.webp
-│   ├── summer.webp
-│   ├── autumn.webp
-│   └── winter.webp
-│
-├── scripts/
-│   ├── autumn-effect.js
-│   ├── dom.js
-│   ├── filter.js
-│   ├── icon.js
-│   ├── modal.js
-│   ├── nickname.js
-│   ├── season-theme.js
-│   ├── spring-effect.js
-│   ├── storage.js
-│   ├── summer-effect.js
-│   └── winter-effect.js
-│
-├── styles/
-│   ├── reset.css
-│   ├── season-effects.css
-│   └── style.css
-│
-├── index.html
-├── .prettierrc.js
-└── README.md
-
+|
++-- img/
+|   +-- spring.webp
+|   +-- summer.webp
+|   +-- autumn.webp
+|   \-- winter.webp
+|
++-- scripts/
+|   +-- autumn-effect.js
+|   +-- dom.js
+|   +-- filter.js
+|   +-- icon.js
+|   +-- modal.js
+|   +-- nickname.js
+|   +-- season-theme.js
+|   +-- spring-effect.js
+|   +-- storage.js
+|   +-- summer-effect.js
+|   \-- winter-effect.js
+|
++-- styles/
+|   +-- reset.css
+|   +-- season-effects.css
+|   \-- style.css
+|
++-- index.html
++-- .prettierrc.js
+\-- README.md
+```
 모듈 단위의 명확한 역할 분담을 통해 코드의 의존성을 최소화했습니다.
 
 
