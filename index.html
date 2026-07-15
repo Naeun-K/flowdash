@@ -690,6 +690,117 @@
       </div>
     </div>
 
+    <!-- ======================================== -->
+    <!-- 테마 설정 모달 -->
+    <!-- ======================================== -->
+    <div class="theme-setting-modal" hidden>
+      <div
+        class="theme-setting-modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="theme-setting-title"
+      >
+        <!-- ========================= -->
+        <!-- 모달 헤더 -->
+        <!-- ========================= -->
+        <div class="theme-setting-modal-header">
+          <div>
+            <h2 id="theme-setting-title">테마 설정</h2>
+            <p>원하는 테마와 화면 모드를 선택하세요.</p>
+          </div>
+
+          <!-- 모달 닫기 버튼 -->
+          <button
+            type="button"
+            class="theme-setting-modal-close"
+            aria-label="테마 설정 닫기"
+          >
+            ×
+          </button>
+        </div>
+
+        <!-- ========================= -->
+        <!-- 계절 테마 선택 -->
+        <!-- ========================= -->
+        <div class="theme-setting-section">
+          <h3>계절 테마</h3>
+
+          <div class="theme-setting-options">
+            <button
+              type="button"
+              class="theme-setting-option is-selected"
+              data-theme="default"
+            >
+              <span class="theme-setting-option-icon">🎨</span>
+              <span>기본</span>
+            </button>
+
+            <button
+              type="button"
+              class="theme-setting-option"
+              data-theme="spring"
+            >
+              <span class="theme-setting-option-icon">🌸</span>
+              <span>봄</span>
+            </button>
+
+            <button
+              type="button"
+              class="theme-setting-option"
+              data-theme="summer"
+            >
+              <span class="theme-setting-option-icon">☀️</span>
+              <span>여름</span>
+            </button>
+
+            <button
+              type="button"
+              class="theme-setting-option"
+              data-theme="autumn"
+            >
+              <span class="theme-setting-option-icon">🍂</span>
+              <span>가을</span>
+            </button>
+
+            <button
+              type="button"
+              class="theme-setting-option"
+              data-theme="winter"
+            >
+              <span class="theme-setting-option-icon">❄️</span>
+              <span>겨울</span>
+            </button>
+          </div>
+        </div>
+        <!-- ========================= -->
+        <!-- 다크 모드 같이 적용 -->
+        <!-- ========================= -->
+        <div class="theme-setting-section">
+          <div class="theme-dark-setting">
+            <div class="theme-dark-setting-info">
+              <strong>다크 모드 같이 적용</strong>
+              <p>선택한 테마를 다크 모드에도 함께 적용합니다.</p>
+            </div>
+
+            <!-- 스위치 -->
+            <label class="theme-switch">
+              <input type="checkbox" class="theme-switch-input" />
+              <span class="theme-switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- 모달 하단 버튼 -->
+        <!-- ========================= -->
+        <div class="theme-setting-modal-buttons">
+          <button type="button" class="theme-setting-cancel">취소</button>
+
+          <button type="button" class="theme-setting-apply">적용</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="./scripts/modal.js"></script>
     <script type="module" src="./scripts/dom.js"></script>
     <script src="./scripts/icon.js"></script>

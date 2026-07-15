@@ -349,4 +349,254 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+  // ========================================
+  // 테마 설정 모달
+  // ========================================
+
+  // 테마 설정 버튼과 모달 요소 가져오기
+  const themeSettingButton = document.querySelector(".theme-dropdown-setting");
+  const themeSettingModal = document.querySelector(".theme-setting-modal");
+  const themeSettingModalContent = document.querySelector(
+    ".theme-setting-modal-content",
+  );
+  const themeSettingCloseButton = document.querySelector(
+    ".theme-setting-modal-close",
+  );
+  const themeSettingCancelButton = document.querySelector(
+    ".theme-setting-cancel",
+  );
+
+  // =========================
+  // 테마 설정 모달 열기
+  // =========================
+  function openThemeSettingModal() {
+    if (!themeSettingModal) return;
+
+    // 현재 실제로 적용된 테마 가져오기
+    pendingTheme =
+      document.documentElement.getAttribute("data-theme") || "default";
+
+    // 현재 다크모드 상태 가져오기
+    pendingDarkMode = document.body.classList.contains("dark");
+
+    // 현재 테마에 맞는 카드 선택 표시
+    themeSettingOptions.forEach((option) => {
+      option.classList.toggle(
+        "is-selected",
+        option.dataset.theme === pendingTheme,
+      );
+    });
+
+    // 현재 다크모드 상태를 스위치에 표시
+    if (themeDarkSwitch) {
+      themeDarkSwitch.checked = pendingDarkMode;
+    }
+
+    // 현재 적용된 테마 색으로 모달 표시
+    updateThemeModalPreview(pendingTheme);
+
+    themeSettingModal.hidden = false;
+    themeDropdownMenu.hidden = true;
+    themeSelectButton?.setAttribute("aria-expanded", "false");
+  }
+
+  // =========================
+  // 테마 설정 모달 닫기
+  // =========================
+  function closeThemeSettingModal() {
+    if (!themeSettingModal) return;
+
+    themeSettingModal.hidden = true;
+  }
+
+  // =========================
+  // 테마 설정 버튼 클릭
+  // =========================
+  themeSettingButton?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    openThemeSettingModal();
+  });
+
+  // =========================
+  // 닫기 버튼 클릭
+  // =========================
+  themeSettingCloseButton?.addEventListener("click", closeThemeSettingModal);
+
+  // =========================
+  // 취소 버튼 클릭
+  // =========================
+  themeSettingCancelButton?.addEventListener("click", closeThemeSettingModal);
+
+  // =========================
+  // 모달 바깥 영역 클릭 시 닫기
+  // =========================
+  themeSettingModal?.addEventListener("click", (event) => {
+    if (event.target === themeSettingModal) {
+      closeThemeSettingModal();
+    }
+  });
+
+  // =========================
+  // 모달 안쪽 클릭 시 닫힘 방지
+  // =========================
+  themeSettingModalContent?.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  // =========================
+  // ESC 키로 모달 닫기
+  // =========================
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !themeSettingModal?.hidden) {
+      closeThemeSettingModal();
+    }
+  });
+
+  // ========================================
+  // 테마 설정 모달 선택 기능
+  // ========================================
+
+  // 모달 안의 계절 테마 버튼 가져오기
+  const themeSettingOptions = document.querySelectorAll(
+    ".theme-setting-option",
+  );
+
+  // 다크모드 같이 적용 스위치 가져오기
+  const themeDarkSwitch = document.querySelector(".theme-switch-input");
+
+  // 적용 버튼 가져오기
+  const themeSettingApplyButton = document.querySelector(
+    ".theme-setting-apply",
+  );
+
+  // 모달에서 임시로 선택한 테마
+  let pendingTheme = "default";
+
+  // 모달에서 임시로 선택한 다크모드 상태
+  let pendingDarkMode = false;
+
+  // =========================
+  // 모달 내부 테마 미리보기
+  // =========================
+  function updateThemeModalPreview(theme) {
+    if (!themeSettingModalContent) return;
+
+    const root = document.documentElement;
+    const previousTheme = root.getAttribute("data-theme");
+
+    // 선택한 테마의 CSS 변수 값을 잠깐 가져오기
+    if (theme === "default") {
+      root.removeAttribute("data-theme");
+    } else {
+      root.setAttribute("data-theme", theme);
+    }
+
+    const themeStyle = getComputedStyle(root);
+
+    const previewVariables = [
+      "--theme-button",
+      "--theme-button-hover",
+      "--theme-border",
+      "--theme-text",
+      "--theme-focus",
+    ];
+
+    previewVariables.forEach((variableName) => {
+      const value = themeStyle.getPropertyValue(variableName).trim();
+
+      themeSettingModalContent.style.setProperty(variableName, value);
+    });
+
+    // 실제 페이지 테마는 원래 상태로 되돌리기
+    if (previousTheme) {
+      root.setAttribute("data-theme", previousTheme);
+    } else {
+      root.removeAttribute("data-theme");
+    }
+  }
+  // =========================
+  // 계절 테마 선택
+  // =========================
+  themeSettingOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      // 클릭한 테마를 임시 선택값으로 저장
+      pendingTheme = option.dataset.theme;
+
+      // 기존 선택 표시 제거
+      themeSettingOptions.forEach((themeOption) => {
+        themeOption.classList.remove("is-selected");
+      });
+
+      // 클릭한 카드 선택 표시
+      option.classList.add("is-selected");
+
+      // 모달 안에서만 선택한 테마 미리보기
+      updateThemeModalPreview(pendingTheme);
+    });
+  });
+
+  // =========================
+  // 다크모드 스위치 상태 저장
+  // =========================
+  themeDarkSwitch?.addEventListener("change", () => {
+    pendingDarkMode = themeDarkSwitch.checked;
+  });
+
+  // =========================
+  // 적용 버튼 클릭
+  // =========================
+  themeSettingApplyButton?.addEventListener("click", () => {
+    // 실제 페이지에 선택한 계절 테마 적용
+    if (pendingTheme === "default") {
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      document.documentElement.setAttribute("data-theme", pendingTheme);
+    }
+    // 드롭다운 체크 표시를 적용한 테마로 변경
+    document.querySelectorAll(".theme-dropdown-item").forEach((item) => {
+      item.classList.toggle("is-selected", item.dataset.theme === pendingTheme);
+    });
+
+    // 선택한 계절 테마 저장
+    themeStorage.set("season", pendingTheme);
+
+    // 선택한 다크모드 상태 저장
+    themeStorage.set("mode", pendingDarkMode ? "dark" : "light");
+
+    // 다크모드 적용
+    document.body.classList.toggle("dark", pendingDarkMode);
+
+    // 기존 계절 클래스 제거
+    themeSelectButton?.classList.remove(
+      "theme-spring",
+      "theme-summer",
+      "theme-autumn",
+      "theme-winter",
+    );
+
+    // 헤더 테마 버튼에 선택한 계절 클래스 추가
+    if (pendingTheme !== "default") {
+      themeSelectButton?.classList.add(`theme-${pendingTheme}`);
+    }
+
+    // 헤더 테마 버튼 아이콘 변경
+    if (themeButtonIcon) {
+      if (pendingTheme === "default") {
+        themeButtonIcon.innerHTML = defaultThemeIcon;
+      } else {
+        themeButtonIcon.textContent = themeIcons[pendingTheme];
+      }
+    }
+
+    // 헤더 버튼 글자 유지
+    if (themeButtonText) {
+      themeButtonText.textContent = "테마";
+    }
+
+    // 다크모드 아이콘 변경
+    updateThemeIcon();
+
+    // 모달 닫기
+    closeThemeSettingModal();
+  });
 });

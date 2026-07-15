@@ -1001,11 +1001,6 @@ body.dark .board-count {
   height: 18px;
 }
 
-/* 테마 설정 hover */
-.theme-dropdown-setting:hover {
-  color: #5f42f0;
-}
-
 /* 선택된 테마  */
 /* .theme-dropdown-item.is-selected {
 } */
@@ -1151,6 +1146,34 @@ body.dark .board-count {
 /* 테마 설정 hover */
 .theme-dropdown-setting:hover {
   color: #5f42f0;
+}
+
+/* ========================= */
+/* 현재 계절 테마 색상 적용 */
+/* ========================= */
+
+/* 선택된 계절 항목 */
+.theme-dropdown-item.is-selected {
+  background: color-mix(in srgb, var(--theme-button) 14%, white);
+}
+
+.theme-dropdown-item.is-selected .theme-dropdown-check {
+  color: var(--theme-button);
+}
+
+/* 테마 설정 버튼 hover */
+.theme-dropdown-setting:hover {
+  background: transparent;
+  color: var(--theme-text);
+}
+.theme-dropdown-item:hover,
+.theme-dropdown-setting:hover {
+  background: color-mix(in srgb, var(--theme-button) 14%, white);
+}
+/* 테마 설정 아이콘 hover */
+.theme-dropdown-setting:hover svg {
+  color: var(--theme-text);
+  stroke: var(--theme-text);
 }
 
 /* 테마 드롭다운 메뉴 */
@@ -1509,6 +1532,359 @@ body.dark .board-count {
   background: var(--theme-button);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
+
+/* ========================= */
+/* 테마 설정 모달 배경 */
+/* ========================= */
+.theme-setting-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* 모달 숨김 */
+.theme-setting-modal[hidden] {
+  display: none;
+}
+
+/* ========================= */
+/* 테마 설정 모달 상자 */
+/* ========================= */
+.theme-setting-modal-content {
+  width: 100%;
+  max-width: 620px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+
+  padding: 36px;
+  border: 1px solid #e0e5eb;
+  border-radius: 20px;
+
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(27, 36, 50, 0.16);
+
+  animation: themeSettingModalOpen 0.25s ease;
+}
+
+/* ========================= */
+/* 모달 헤더 */
+/* ========================= */
+.theme-setting-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.theme-setting-modal-header h2 {
+  margin: 0;
+
+  color: #1b2432;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.theme-setting-modal-header p {
+  margin: 8px 0 0;
+
+  color: #7c8798;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 닫기 버튼 */
+.theme-setting-modal-close {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e0e5eb;
+  border-radius: 50%;
+  background: #fff;
+
+  color: #5c6f8a;
+  font-family: inherit;
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.theme-setting-modal-close:hover {
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+  background: #f8fafc;
+}
+
+/* ========================= */
+/* 설정 구역 공통 */
+/* ========================= */
+.theme-setting-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.theme-setting-section h3 {
+  margin: 0;
+
+  color: #1b2432;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* ========================= */
+/* 계절 테마 선택 영역 */
+/* ========================= */
+.theme-setting-options {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+/* 계절 선택 버튼 */
+.theme-setting-option {
+  position: relative;
+
+  min-height: 108px;
+  padding: 16px 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  border: 1px solid #e0e5eb;
+  border-radius: 14px;
+  background: #fff;
+
+  color: #5c6f8a;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.theme-setting-option:hover {
+  transform: translateY(-2px);
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+  box-shadow: 0 6px 14px rgba(27, 36, 50, 0.1);
+}
+
+/* 선택된 계절 */
+.theme-setting-option.is-selected {
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+  box-shadow: 0 0 0 2px var(--theme-focus);
+}
+
+/* 계절 아이콘 */
+.theme-setting-option-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+  background: #f7f8fa;
+
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* ========================= */
+/* 모달 하단 버튼 */
+/* ========================= */
+.theme-setting-modal-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+
+  padding-top: 8px;
+}
+
+/* 취소 버튼 */
+.theme-setting-cancel {
+  height: 44px;
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+
+  color: #667085;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.theme-setting-cancel:hover {
+  background: #f2f4f7;
+  color: #1b2432;
+}
+
+/* 적용 버튼 */
+.theme-setting-apply {
+  height: 44px;
+  padding: 0 22px;
+
+  border: 1px solid var(--theme-button);
+  border-radius: 8px;
+  background: var(--theme-button);
+
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.theme-setting-apply:hover {
+  transform: translateY(-1px);
+  border-color: var(--theme-button-hover);
+  background: var(--theme-button-hover);
+}
+
+/* ========================= */
+/* 모달 열림 애니메이션 */
+/* ========================= */
+@keyframes themeSettingModalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* ========================= */
+/* 다크 모드 같이 적용 */
+/* ========================= */
+.theme-dark-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding-top: 20px;
+  border-top: 1px solid #e8ebef;
+}
+
+/* 설명 */
+.theme-dark-setting-info strong {
+  display: block;
+
+  color: #1b2432;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.theme-dark-setting-info p {
+  margin-top: 6px;
+
+  color: #7c8798;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ========================= */
+/* 스위치 */
+/* ========================= */
+
+.theme-switch {
+  position: relative;
+
+  width: 46px;
+  height: 26px;
+
+  flex-shrink: 0;
+}
+
+/* 체크박스 숨김 */
+.theme-switch-input {
+  display: none;
+}
+
+/* 배경 */
+.theme-switch-slider {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 999px;
+  background: #d9dee7;
+
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+/* 동그라미 */
+.theme-switch-slider::before {
+  content: "";
+
+  position: absolute;
+  top: 3px;
+  left: 3px;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+
+  transition: 0.25s;
+}
+
+/* ON 상태 */
+.theme-switch-input:checked + .theme-switch-slider {
+  background: var(--theme-button);
+}
+
+/* 동그라미 이동 */
+.theme-switch-input:checked + .theme-switch-slider::before {
+  transform: translateX(20px);
+}
+
 /* ---------------------------------------------------- 모달 스타일 끄읕 ------------------------------------ */
 /* ------------------------------------------할 일 리스트 카드 시이자악------------------------------------------------ */
 .todo-container {
@@ -2132,6 +2508,27 @@ body.dark .theme-dropdown-setting:hover {
 body.dark .theme-dropdown-check {
   color: var(--theme-text);
 }
+
+/* 선택 및 hover 배경 */
+body.dark .theme-dropdown-item:hover,
+body.dark .theme-dropdown-item.is-selected,
+body.dark .theme-dropdown-setting:hover {
+  background: color-mix(in srgb, var(--theme-button) 20%, #1f2733);
+
+  color: #f1f2f4;
+}
+
+/* 선택된 테마의 체크 표시 */
+body.dark .theme-dropdown-item.is-selected .theme-dropdown-check {
+  color: var(--theme-button);
+}
+
+/* 테마 설정 아이콘과 글자 */
+body.dark .theme-dropdown-setting:hover,
+body.dark .theme-dropdown-setting:hover svg {
+  color: var(--theme-text);
+  stroke: var(--theme-text);
+}
 /* ==================== 다크모드 모달 ==================== */
 
 /* 모달 배경 */
@@ -2399,6 +2796,90 @@ body.dark .reset-modal-confirm:hover {
   line-height: 1.6;
 }
 
+/* ========================= */
+/* 다크모드 테마 설정 모달 */
+/* ========================= */
+body.dark .theme-setting-modal {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+body.dark .theme-setting-modal-content {
+  background: #171d26;
+  border-color: #263140;
+}
+
+body.dark .theme-setting-modal-header h2,
+body.dark .theme-setting-section h3 {
+  color: #f1f2f4;
+}
+
+body.dark .theme-setting-modal-header p {
+  color: #abb1ba;
+}
+
+body.dark .theme-setting-modal-close {
+  background: #171d26;
+  border-color: #263140;
+  color: #f1f2f4;
+}
+
+body.dark .theme-setting-modal-close:hover {
+  background: #1f2733;
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+}
+
+/* 다크모드 계절 테마 카드 */
+body.dark .theme-setting-option {
+  background: #171d26;
+  border-color: #263140;
+  color: #abb1ba;
+}
+
+/* 다크모드 계절 테마 카드 hover 및 선택 상태 */
+body.dark .theme-setting-option:hover,
+body.dark .theme-setting-option.is-selected {
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+  background: #1f2733;
+}
+
+body.dark .theme-setting-option-icon {
+  background: #1f2733;
+}
+
+body.dark .theme-setting-cancel {
+  color: #abb1ba;
+}
+
+body.dark .theme-setting-cancel:hover {
+  background: #263140;
+  color: #f1f2f4;
+}
+
+/* ========================= */
+/* 다크모드 테마 스위치 */
+/* ========================= */
+body.dark .theme-dark-setting {
+  border-top-color: #263140;
+}
+
+body.dark .theme-dark-setting-info strong {
+  color: #f1f2f4;
+}
+
+body.dark .theme-dark-setting-info p {
+  color: #abb1ba;
+}
+
+body.dark .theme-switch-slider {
+  background: #374151;
+}
+
+body.dark .theme-switch-input:checked + .theme-switch-slider {
+  background: var(--theme-button);
+}
+
 /* 모바일 미디어 쿼리 서비스*/
 .mobile-section-nav {
   display: none;
@@ -2545,5 +3026,39 @@ body.dark .null-data {
 
     font-size: 15px;
     font-weight: 600;
+  }
+
+  /* ========================= */
+  /* 모바일 테마 설정 모달 */
+  /* ========================= */
+  .theme-setting-modal-content {
+    max-height: calc(100vh - 32px);
+    padding: 24px 20px;
+    gap: 22px;
+    overflow-y: auto;
+  }
+
+  .theme-setting-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .theme-setting-option:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .theme-setting-modal-buttons {
+    position: sticky;
+    bottom: 0;
+    padding-top: 14px;
+    background: #fff;
+  }
+
+  body.dark .theme-setting-modal-buttons {
+    background: #171d26;
+  }
+
+  .theme-setting-cancel,
+  .theme-setting-apply {
+    flex: 1;
   }
 }
