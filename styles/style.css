@@ -9,22 +9,12 @@
   --theme-border: #4b32c3;
   /*배경 색*/
   --theme-bgc: #fff;
-  --theme-bgc-dark: #121720;
-  --theme-nav: #ffffff;
+  --theme-bgc-dark: #121720; /* 추가됨 */
+  --theme-nav: #ffffff; /* 추가됨 */
   /* focus 테두리 */
   --theme-focus: #5c4dff;
 }
 
-:root body.dark {
-  --theme-text: #5f42f0;
-  --theme-button-hover: #5f42f0;
-  --theme-button: #4b32c3;
-  --theme-border: #4b32c3;
-  --theme-bgc: #fff;
-  --theme-bgc-dark: #121720;
-  --theme-nav: #ffffff;
-  --theme-focus: #5c4dff;
-}
 /* 봄 라이트 */
 html[data-theme="spring"] {
   /* 버튼, 보드 구분 선 */
@@ -258,22 +248,22 @@ button {
   display: flex;
   gap: 10px;
 }
-
+  
 .dropdown-button {
   width: 100%;
   background-color: #ffffff;
 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px 20px;
   font-size: 14px;
   border: 1px solid #e0e5eb;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
-  display: inline-flex; /* 요소들을 한 줄로 배치하면서 Flexbox 적용 */
-  align-items: center; /* 세로 방향 가운데 정렬 */
-  justify-content: center;
 }
+
 .dropdown-button svg {
   margin-left: 10px;
   vertical-align: middle;
