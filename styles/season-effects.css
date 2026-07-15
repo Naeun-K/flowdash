@@ -150,13 +150,13 @@
   }
 }
 
-/* 애니메이션 감소를 선호하는 사용자 대응 */
+/* 애니메이션 감소를 선호하는 사용자 대응
 @media (prefers-reduced-motion: reduce) {
   .autumn-leaf {
     display: none !important;
     animation: none !important;
   }
-}
+} */
 
 /* ========================= */
 
@@ -210,11 +210,24 @@
 }
 
 /* 애니메이션 감축 선호 시 숨김 처리 */
-@media (prefers-reduced-motion: reduce) {
+/* @media (prefers-reduced-motion: reduce) {
   .winter-snowflake {
     display: none !important;
     animation: none !important;
   }
+} */
+
+.autumn-falling-layer,
+.winter-falling-layer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+
+  pointer-events: none;
+  overflow: hidden;
+
+  z-index: 9999;
 }
 /* ========================= */
 
