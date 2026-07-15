@@ -1332,6 +1332,20 @@ body.dark .board-count {
   font-weight: 500;
   line-height: 21.6px;
 }
+.label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.error-message[hidden] {
+  display: none;
+}
+.error-message {
+  color: #ff4d4f; /* 경고를 나타내는 빨간색 계열 */
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .modal-input {
   height: 46.22px;
   padding: 0 10px;
@@ -1347,6 +1361,13 @@ body.dark .board-count {
 .modal-input:focus {
   border-color: var(--theme-border);
   box-shadow: 0 0 0 3px var(--theme-focus);
+}
+/* 에러 발생 시 input 테두리도 빨갛게 변경하고 싶을 때 사용할 클래스 */
+.modal-input.input-error {
+  border-color: #ff4d4f;
+}
+.modal-input.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(255, 77, 79, 0.3);
 }
 
 .modal-textarea {

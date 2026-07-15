@@ -19,6 +19,8 @@ const modalSubmitButton = document.querySelector(".modal-submit-button");
 
 let currentSelectedStatus = "TODO"; // internal status: TODO, DOING, DONE
 let editingTaskId = null;
+// 페이지 상단에 변수 선언
+let hasSubmitted = false;
 
 function mapStatusLabelToInternal(text) {
   if (!text) return "TODO";
@@ -99,6 +101,11 @@ function openModal(task = null) {
   document.body.style.overflow = "hidden";
   populateModal(task);
 
+  hasSubmitted = false;
+  const titleError = document.querySelector(".error-message");
+  if (titleError) titleError.style.display = "none";
+  titleInput?.classList.remove("input-error");
+
   setTimeout(() => {
     modal.classList.add("active");
     titleInput?.focus();
@@ -170,7 +177,19 @@ function saveData(e) {
   const title = titleInput?.value.trim();
   const content = descInput?.value.trim();
 
-  if (!title) return;
+  const titleError = document.querySelector(".error-message");
+
+  // if (!title) return;
+  if (!title) {
+    hasSubmitted = true; // 👈 이제부터 실시간 검증 가동!
+    if (titleError) titleError.style.display = "inline-block"; // 안내 문구 띄우기
+    titleInput?.classList.add("input-error"); // 인풋 테두리 빨갛게
+    titleInput?.focus(); // 포커스 이동
+    return false; // 저장을 막기 위해 false 리턴 (필요 시)
+  } else {
+    if (titleError) titleError.style.display = "none";
+    titleInput?.classList.remove("input-error");
+  }
 
   const selectedRadio = document.querySelector(
     'input[name="priority"]:checked',
@@ -237,6 +256,20 @@ function saveData(e) {
   renderTodos(tasks);
   return true;
 }
+
+// 4. 실시간 입력 반응 (hasSubmitted가 true일 때만 반응)
+titleInput?.addEventListener("input", function () {
+  if (!hasSubmitted) return; // 저장을 아직 한 번도 안 눌렀다면 아무 동작 안 함
+
+  const titleError = document.getElementById("titleError");
+  if (titleInput.value.trim() !== "") {
+    if (titleError) titleError.style.display = "none";
+    titleInput.classList.remove("input-error");
+  } else {
+    if (titleError) titleError.style.display = "inline";
+    titleInput.classList.add("input-error");
+  }
+});
 
 function handleModalSubmit(event) {
   if (event) event.preventDefault();

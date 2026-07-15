@@ -377,7 +377,7 @@
           </div>
           <div class="button-wrapper">
             <button type="button" class="reset-data-button reset-filter-button">
-              조건 초기화
+              필터 초기화
             </button>
 
             <button type="button" class="reset-data-button">
@@ -452,9 +452,13 @@
     >
       <div class="modal-content">
         <h2 class="modal-title">새 할 일</h2>
-        <form class="modal-form">
+        <form class="modal-form" novalidate>
           <div class="label-input-container">
-            <label for="task-title" class="modal-label">제목 *</label>
+            <div class="label-wrapper">
+              <label for="task-title" class="modal-label">제목 *</label>
+              <!-- 에러 발생 시 보여줄 안내 문구 -->
+              <span class="error-message" hidden> 제목을 입력해주세요! </span>
+            </div>
             <input
               type="text"
               id="task-title"
