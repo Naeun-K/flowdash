@@ -1,17 +1,17 @@
 // ========================================
-// 봄 - 벚꽃잎 생성
-// ========================================
-
-// ========================================
-// 여름 - 물결 생성
+// 계절 효과 가져오기
 // ========================================
 
 import { startSummerEffect, stopSummerEffect } from "./summer-effect.js";
 
+import { startAutumnEffect, stopAutumnEffect } from "./autumn-effect.js";
+
+import { startWinterEffect, stopWinterEffect } from "./winter-effect.js";
+
 console.log("★★★★ season-theme 실행 ★★★★");
-console.log("season-theme.js 실행됨");
+
 // ========================================
-// 계절 효과 레이어 가져오기 또는 자동 생성
+// 여름 효과 레이어 가져오기 또는 자동 생성
 // ========================================
 
 function getSeasonEffectLayer() {
@@ -31,6 +31,16 @@ function getSeasonEffectLayer() {
 }
 
 // ========================================
+// 모든 계절 효과 중지
+// ========================================
+
+function stopAllSeasonEffects(layer) {
+  stopSummerEffect(layer);
+  stopAutumnEffect();
+  stopWinterEffect();
+}
+
+// ========================================
 // 현재 테마에 맞는 효과 실행
 // ========================================
 
@@ -42,11 +52,21 @@ function updateSeasonEffect() {
 
   console.log("현재 테마:", currentTheme);
 
-  stopSummerEffect(layer);
+  stopAllSeasonEffects(layer);
 
   if (currentTheme === "summer") {
     console.log("여름 효과 시작");
     startSummerEffect(layer);
+  }
+
+  if (currentTheme === "autumn") {
+    console.log("가을 효과 시작");
+    startAutumnEffect();
+  }
+
+  if (currentTheme === "winter") {
+    console.log("겨울 효과 시작");
+    startWinterEffect();
   }
 }
 
@@ -70,12 +90,8 @@ themeObserver.observe(document.documentElement, {
   attributeFilter: ["data-theme"],
 });
 
-// 처음 실행
-updateSeasonEffect();
 // ========================================
-// 가을 - 낙엽 생성
+// 처음 실행
 // ========================================
 
-// ========================================
-// 겨울 - 눈송이 생성
-// ========================================
+updateSeasonEffect();
