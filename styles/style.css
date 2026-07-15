@@ -248,7 +248,7 @@ button {
   display: flex;
   gap: 10px;
 }
-  
+
 .dropdown-button {
   width: 100%;
   background-color: #ffffff;
@@ -523,15 +523,15 @@ body.dark .board-count {
     background-color: #444;
   }
 }
-/* 컨테이너 스타일 */
+/* 컨테이너 스타일
 .todo-statistics-container {
   display: flex;
   padding-bottom: 16px;
   flex-direction: row;
   align-items: flex-start;
   align-self: stretch;
-  gap: 16px; /* 카드 간격 추가 */
-}
+  gap: 16px; 
+} */
 
 /* 카드 공통 스타일 */
 .todo-statistics-card {
@@ -785,6 +785,12 @@ body.dark .board-count {
   flex-shrink: 0;
 }
 
+/* 테마 버튼과 드롭다운 기준 */
+.theme-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
 /* 테마 드롭다운 제목 영역 */
 .theme-dropdown-header {
   display: flex;
@@ -912,9 +918,14 @@ body.dark .board-count {
 /* 테마 드롭다운 메뉴 */
 .theme-dropdown-menu {
   position: absolute;
-  top: calc(100% + 10px);
+  /* top: calc(100% + 10px);
   right: 0;
-  z-index: 9999;
+  z-index: 9999; */
+
+  top: 100%; /* 버튼 바로 아래(100% 지점)에 배치 */
+  right: 0; /* 버튼 왼쪽 정렬 (오른쪽 정렬을 원하시면 right: 0; 사용) */
+  margin-top: 8px; /* 버튼과의 미세한 간격 조정 */
+  z-index: 1000;
 
   width: 240px;
   padding: 18px 12px 12px;
@@ -924,6 +935,16 @@ body.dark .board-count {
   background: #fff;
   box-shadow: 0 10px 30px rgba(27, 36, 50, 0.12);
 }
+
+/* 드롭다운 숨김 */
+.theme-dropdown-menu[hidden] {
+  display: none;
+}
+
+/* 테마 버튼과 드롭다운 기준
+.theme-dropdown {
+  position: relative;
+} */
 
 /* 테마 드롭다운 제목 영역 */
 .theme-dropdown-header {
@@ -1071,25 +1092,25 @@ body.dark .board-count {
 }
 
 /* 테마 드롭다운 메뉴 */
-.theme-dropdown-menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  z-index: 9999;
+/* .theme-dropdown-menu { */
+/* position: absolute; */
+/* top: calc(100% + 10px); */
+/* right: 0; */
+/* z-index: 9999; */
+/*  */
+/* width: 240px; */
+/* padding: 18px 12px 12px; */
 
-  width: 240px;
-  padding: 18px 12px 12px;
-
-  border: 1px solid #e0e5eb;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 10px 30px rgba(27, 36, 50, 0.12);
-}
+/* border: 1px solid #e0e5eb; */
+/* border-radius: 14px; */
+/* background: #fff; */
+/* box-shadow: 0 10px 30px rgba(27, 36, 50, 0.12); */
+/* } */
 
 /* 드롭다운 숨김 */
-.theme-dropdown-menu[hidden] {
-  display: none;
-}
+/* .theme-dropdown-menu[hidden] { */
+/* display: none; */
+/* } */
 /* hover color change*/
 .greeting-theme-toggle:hover {
   background-color: #f8fafc;
@@ -1989,6 +2010,52 @@ body.dark .todo-title {
 
   .achieve .card-count {
     color: var(--theme-text);
+  }
+
+  .todo-statistics-container {
+    /* flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 24px;*/
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 24px;
+  }
+
+  /* 개별 아이템 너비를 50%(반씩 차지)로 맞추고 순서(order) 부여 */
+  .todo {
+    /* width: calc(50% - 6px); 여백을 고려한 크기 */
+    order: 1;
+  }
+  .doing {
+    /* width: calc(50% - 6px); */
+    order: 2;
+  }
+  .done {
+    /* width: 100%; 3번째 카드는 한 줄을 다 쓰게 설정 */
+    order: 3;
+  }
+  .total {
+    /* width: calc(50% - 6px); */
+    order: 4;
+  }
+  .achieve {
+    /* width: calc(50% - 6px); */
+    order: 5;
+  }
+  .todo-statistics-card {
+    flex: 0 0 calc(50% - (16px / 2));
+    max-width: calc(50% - (16px / 2));
+    padding: 20px;
+  }
+
+  .todo-statistics-card .card-title {
+    font-size: 13.6px;
+    line-height: 20px;
+  }
+
+  .todo-statistics-card .card-count {
+    font-size: 30px;
+    line-height: 30px;
   }
 
   .board-container {
