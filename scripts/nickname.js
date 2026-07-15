@@ -1,25 +1,33 @@
 import { createStorage } from "./storage.js";
 
 const nicknameStorage = createStorage("flowdash-nickname");
-
 const nicknameElement = document.querySelector(".greeting-nickname");
 
-// 저장된 닉네임 가져오기
-const savedNickname = nicknameStorage.get("nickname");
+// 1. 성능 최적화: 텍스트 너비 측정을 위한 임시 span 요소를 단 한 번만 생성하여 재사용합니다.
+const measureSpan = document.createElement("span");
+measureSpan.style.visibility = "hidden";
+measureSpan.style.position = "absolute";
+measureSpan.style.whiteSpace = "pre";
+measureSpan.style.top = "-9999px";
+measureSpan.style.left = "-9999px";
+document.body.append(measureSpan);
 
-// 저장된 닉네임이 있으면 사용하고,
-// 없으면 기본값 "Flowdash" 사용
-nicknameElement.textContent = savedNickname || "Flowdash";
+// 저장된 닉네임 가져오기 및 초기화
+if (nicknameElement) {
+  const savedNickname = nicknameStorage.get("nickname");
+  nicknameElement.textContent = savedNickname || "Flowdash";
 
-// 닉네임 클릭 시 실행
-nicknameElement.addEventListener("click", function () {
-  // input 요소 만들기
+  // 닉네임 클릭 시 에디터 전환 이벤트 바인딩
+  nicknameElement.addEventListener("click", handleNicknameClick);
+}
+
+function handleNicknameClick() {
+  if (!nicknameElement) return;
+
+  // input 요소 생성 및 스타일 주입
   const input = document.createElement("input");
-
-  // 현재 닉네임을 input 안에 넣기
   input.value = nicknameElement.textContent.trim();
 
-  // input 스타일 설정
   input.style.color = "var(--theme-text)";
   input.style.border = "1px solid var(--theme-text)";
   input.style.font = "inherit";
@@ -28,69 +36,54 @@ nicknameElement.addEventListener("click", function () {
   input.style.outline = "none";
   input.style.boxSizing = "content-box";
 
-  // 글자 길이에 맞게 input 너비 조절하는 함수
+  // 글자 길이에 맞게 input 너비를 조절하는 함수
   function resizeInput() {
-    // 글자 너비를 재기 위한 임시 span 만들기
-    const measure = document.createElement("span");
-
-    // 현재 input의 글자를 임시 span에 넣기
-    measure.textContent = input.value || " ";
-
-    // input과 똑같은 폰트 적용
-    measure.style.font = getComputedStyle(input).font;
-
-    // 화면에서는 안 보이게 설정
-    measure.style.visibility = "hidden";
-    measure.style.position = "absolute";
-    measure.style.whiteSpace = "pre";
-
-    // 너비를 재기 위해 잠깐 body에 넣기
-    document.body.append(measure);
-
-    // 측정한 글자 너비만큼 input 너비 변경
-    input.style.width = `${measure.offsetWidth + 6}px`;
-
-    // 측정 끝난 임시 span 삭제
-    measure.remove();
+    measureSpan.textContent = input.value || " ";
+    measureSpan.style.font = getComputedStyle(input).font;
+    input.style.width = `${measureSpan.offsetWidth + 6}px`;
   }
 
   // 기존 닉네임을 input으로 교체
   nicknameElement.replaceWith(input);
-
-  // 바로 입력할 수 있게 포커스
   input.focus();
-
-  // 처음 input이 나타났을 때 너비 맞추기
   resizeInput();
 
-  // 닉네임 저장 함수
-  function saveNickname() {
-    // 사용자가 입력한 값 가져오기
-    const newNickname = input.value.trim();
+  // 중복 실행 방지 플래그 (Enter 입력 시 blur가 연달아 발생하는 중복 호출 방지)
+  let isSaving = false;
 
-    // 빈 값이면 Flowdash 사용
+  // 닉네임 저장 및 복구 함수
+  function saveNickname() {
+    if (isSaving) return;
+    isSaving = true;
+
+    const newNickname = input.value.trim();
     const finalNickname = newNickname || "Flowdash";
 
-    // localStorage에 저장
+    // 데이터 저장 및 화면 갱신
     nicknameStorage.set("nickname", finalNickname);
-
-    // 화면의 닉네임 변경
     nicknameElement.textContent = finalNickname;
 
-    // input을 다시 닉네임 요소로 교체
+    // 요소 원상 복구 및 이벤트 핸들러 정리(메모리 누수 방지)
+    cleanupEvents();
     input.replaceWith(nicknameElement);
   }
 
-  // 글자를 입력할 때마다 input 너비 다시 계산
-  input.addEventListener("input", resizeInput);
-
-  // Enter 키를 누르면 저장
-  input.addEventListener("keydown", function (event) {
+  // 엔터 키 다운 이벤트 핸들러
+  function handleKeyDown(event) {
     if (event.key === "Enter") {
       saveNickname();
     }
-  });
+  }
 
-  // input 바깥을 클릭하면 저장
+  // 메모리 누수를 완전히 방지하기 위한 리스너 정리 함수
+  function cleanupEvents() {
+    input.removeEventListener("input", resizeInput);
+    input.removeEventListener("keydown", handleKeyDown);
+    input.removeEventListener("blur", saveNickname);
+  }
+
+  // 이벤트 리스너 등록
+  input.addEventListener("input", resizeInput);
+  input.addEventListener("keydown", handleKeyDown);
   input.addEventListener("blur", saveNickname);
-});
+}

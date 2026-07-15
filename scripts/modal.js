@@ -19,8 +19,25 @@ const modalSubmitButton = document.querySelector(".modal-submit-button");
 
 let currentSelectedStatus = "TODO"; // internal status: TODO, DOING, DONE
 let editingTaskId = null;
-// 페이지 상단에 변수 선언
 let hasSubmitted = false;
+
+// [추가] 모달을 열었을 때 어떤 버튼이 포커스를 갖고 있었는지 기억할 변수
+let lastActiveElement = null;
+/**
+ * 보안 강화: 안전한 텍스트 출력을 위한 XSS 방어 새니타이저
+ */
+function sanitize(text) {
+  if (text == null) return "";
+  const map = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#x27;",
+    "/": "&#x2F;",
+  };
+  return String(text).replace(/[&<>"'/]/g, (m) => map[m]);
+}
 
 function mapStatusLabelToInternal(text) {
   if (!text) return "TODO";
@@ -60,8 +77,8 @@ function populateModal(task) {
     return;
   }
 
-  if (titleInput) titleInput.value = sanitize(task.title);
-  if (descInput) descInput.value = sanitize(task.content);
+  if (titleInput) titleInput.value = task.title || "";
+  if (descInput) descInput.value = task.content || "";
 
   const targetPriorityValue = getPriorityValue(task.priority);
 
@@ -79,13 +96,14 @@ function populateModal(task) {
   matchedLabel?.classList.add("active");
 
   const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
-  if (statusLabel)
+  if (statusLabel) {
     statusLabel.textContent =
       task.status === "DOING"
         ? "진행중"
         : task.status === "DONE"
           ? "완료"
           : "할 일";
+  }
   currentSelectedStatus = mapStatusLabelToInternal(task.status || "TODO");
   if (modalTitle) modalTitle.textContent = "할 일 수정";
   if (modalSubmitButton) modalSubmitButton.textContent = "수정하기";
@@ -94,6 +112,10 @@ function populateModal(task) {
 
 function openModal(task = null) {
   if (!modal) return;
+
+  // [추가] 모달을 열기 직전, 현재 포커스된 요소를 기록해 둡니다 ("+ 새 할 일" 버튼 등)
+  lastActiveElement = document.activeElement;
+
   modal.classList.remove("active");
 
   modal.hidden = false;
@@ -116,16 +138,22 @@ function closeModal() {
   if (!modal) return;
 
   modal.classList.remove("active");
-
-  modal.hidden = true;
-  modal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
   setDefaultModalState();
 
+  // ★ [핵심 수정] 모달이 닫히는 즉시 포커스를 안전하게 모달 외부로 돌려보냅니다.
+  // 모달 내부의 닫기 버튼에 포커스가 묶인 채 aria-hidden이 true가 되는 현상을 방지합니다.
+  if (lastActiveElement && typeof lastActiveElement.focus === "function") {
+    lastActiveElement.focus();
+  } else {
+    // 기억된 이전 포커스 요소가 없다면 안전하게 "+ 새 할 일" 버튼으로 포커스를 보냅니다.
+    openButton?.focus();
+  }
+
   setTimeout(() => {
-    // 딜레이 도중에 유저가 다시 열지 않았을 때만(active가 없을 때만) 완전히 숨깁니다.
     if (!modal.classList.contains("active")) {
       modal.hidden = true;
+      modal.setAttribute("aria-hidden", "true");
     }
   }, 300);
 }
@@ -137,11 +165,6 @@ export function getTasks() {
 
 function saveTasks(tasks) {
   flowdashTodos.set("tasks", tasks);
-  console.log(flowdashTodos);
-}
-
-function sanitize(text) {
-  return text == null ? "" : String(text);
 }
 
 function getPriorityValue(priorityText) {
@@ -179,13 +202,12 @@ function saveData(e) {
 
   const titleError = document.querySelector(".error-message");
 
-  // if (!title) return;
   if (!title) {
-    hasSubmitted = true; // 👈 이제부터 실시간 검증 가동!
-    if (titleError) titleError.style.display = "inline-block"; // 안내 문구 띄우기
-    titleInput?.classList.add("input-error"); // 인풋 테두리 빨갛게
-    titleInput?.focus(); // 포커스 이동
-    return false; // 저장을 막기 위해 false 리턴 (필요 시)
+    hasSubmitted = true;
+    if (titleError) titleError.style.display = "inline-block";
+    titleInput?.classList.add("input-error");
+    titleInput?.focus();
+    return false;
   } else {
     if (titleError) titleError.style.display = "none";
     titleInput?.classList.remove("input-error");
@@ -203,17 +225,15 @@ function saveData(e) {
   const prevTask = editingTaskId
     ? (tasks || []).find((task) => Number(task.id) === Number(editingTaskId))
     : null;
-  // 3. [해결] 블록 외부에서 먼저 모든 타임스탬프 기본값을 선언합니다 (스코프 문제 해결).
+
   let createdAt = prevTask?.createdAt || null;
   let updatedAt = prevTask?.updatedAt || null;
   let completedAt = prevTask?.completedAt || null;
 
   const now = Date.now();
 
-  // 4. [해결] 드롭다운 상태 값에 맞춰 해당되는 타임스탬프만 '그때그때' 갱신
   switch (currentSelectedStatus) {
     case "TODO":
-      // 기존에 없었을 때만 최초 생성 시간을 기록합니다.
       if (!createdAt) createdAt = now;
       break;
     case "DOING":
@@ -237,7 +257,6 @@ function saveData(e) {
     completedAt,
   };
 
-  // const tasks = getTasks();
   if (editingTaskId) {
     const index = tasks.findIndex(
       (task) => String(task.id) === String(editingTaskId),
@@ -257,11 +276,10 @@ function saveData(e) {
   return true;
 }
 
-// 4. 실시간 입력 반응 (hasSubmitted가 true일 때만 반응)
 titleInput?.addEventListener("input", function () {
-  if (!hasSubmitted) return; // 저장을 아직 한 번도 안 눌렀다면 아무 동작 안 함
+  if (!hasSubmitted) return;
 
-  const titleError = document.getElementById("titleError");
+  const titleError = document.querySelector(".error-message");
   if (titleInput.value.trim() !== "") {
     if (titleError) titleError.style.display = "none";
     titleInput.classList.remove("input-error");
@@ -276,12 +294,13 @@ function handleModalSubmit(event) {
   const saved = saveData(event);
   if (!saved) return;
 
-  // [추가] 데이터가 성공적으로 저장되었음을 브라우저 전체에 알립니다.
   window.dispatchEvent(new Event("todoUpdated"));
-
   closeModal();
 }
 
+// =========================================================================
+// 안전하게 바인딩된 글로벌 모달 리스너 모음
+// =========================================================================
 openButton?.addEventListener("click", () => openModal());
 closeButton?.addEventListener("click", closeModal);
 
@@ -289,15 +308,22 @@ modal?.addEventListener("click", (event) => {
   if (event.target === modal) closeModal();
 });
 
+// ESC 키 글로벌 리스너 단 하나로 제한하여 결합
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !modal?.hidden) closeModal();
+  if (event.key === "Escape" && modal && !modal.hidden) {
+    closeModal();
+  }
 });
 
 form?.addEventListener("submit", handleModalSubmit);
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && !modal?.hidden) {
-    handleModalSubmit(event);
+  if (event.key === "Enter" && modal && !modal.hidden) {
+    const activeEl = document.activeElement;
+    // textarea나 다른 컨트롤 내부에서의 무조건적인 전송 방지
+    if (activeEl !== descInput) {
+      handleModalSubmit(event);
+    }
   }
 });
 
@@ -321,60 +347,33 @@ priorityInputs.forEach((input) => {
   });
 });
 
-// 페이지 로드 시 드롭다운 이벤트 초기화
-function initDropdowns() {
-  const dropdowns = document.querySelectorAll(".dropdown");
-
-  dropdowns.forEach((dropdown) => {
-    const items = dropdown.querySelectorAll(".dropdown-item");
-    const button = dropdown.querySelector(".dropdown-button");
-
-    // 1. 드롭다운 내부 아이템을 클릭했을 때
-    items.forEach((item) => {
-      item.addEventListener("click", (e) => {
-        // 클릭 시 강제로 닫기 클래스 추가
-        // dropdown.classList.remove("is-open");
-        // dropdown.classList.add("is-close");
-        // button?.setAttribute("aria-expanded", "false");
-
-        // // 포커스 해제 (필요 시)
-        // document.activeElement.blur();
-        const details = item.closest(".dropdown");
-
-        if (details) {
-          details.removeAttribute("open"); // open 속성을 제거하여 드롭다운을 닫음
-        }
-      });
-    });
-
-    // 2. 마우스가 드롭다운 영역을 완전히 벗어났을 때 (상태 초기화)
-    // 이 처리를 해줘야 다음에 마우스를 다시 올렸을 때 정상적으로 열립니다.
-    dropdown.addEventListener("mouseleave", () => {
-      dropdown.classList.remove("is-close");
-      dropdown.classList.remove("is-open");
-    });
+// =========================================================================
+// 성능 최적화: 드롭다운 제어 이벤트 위임 (Event Delegation) 적용
+// =========================================================================
+function closeAllDropdowns() {
+  document.querySelectorAll(".dropdown").forEach((dropdown) => {
+    dropdown.removeAttribute("open");
+    dropdown.classList.remove("is-open", "is-close");
   });
 }
 
-// 스크립트 실행
-document.addEventListener("DOMContentLoaded", initDropdowns);
+// 이벤트 중복 추가 없이 전역 클릭 한 번으로 모든 드롭다운 통제
+document.addEventListener("click", (event) => {
+  const target = event.target;
+  const isDropdownClick = target.closest(".dropdown");
 
-document.querySelectorAll(".dropdown").forEach((dropdown) => {
-  const button = dropdown.querySelector(".dropdown-button");
-  button?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    initDropdowns(dropdown);
-  });
+  if (!isDropdownClick) {
+    closeAllDropdowns();
+    return;
+  }
 
-  dropdown.querySelectorAll(".dropdown-menu .dropdown-item").forEach((item) => {
-    item.addEventListener("click", (event) => {
-      event.stopPropagation();
-      initDropdowns(dropdown);
-    });
-  });
+  const dropdown = target.closest(".dropdown");
+  const isItemClick = target.closest(".dropdown-item");
+
+  if (isItemClick && dropdown) {
+    dropdown.removeAttribute("open");
+  }
 });
-
-document.addEventListener("click", () => initDropdowns());
 
 dropdownItems.forEach((item) => {
   item.addEventListener("click", (event) => {
@@ -383,8 +382,7 @@ dropdownItems.forEach((item) => {
     const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
     if (statusLabel) statusLabel.textContent = statusText;
     currentSelectedStatus = mapStatusLabelToInternal(statusText);
-    // closeAllDropdowns(item.closest(".dropdown"));
-    initDropdowns(item.closest(".dropdown"));
+    closeAllDropdowns();
   });
 });
 
@@ -395,7 +393,6 @@ function clearBoardLists() {
     .forEach((ul) => {
       ul.textContent = "";
 
-      // 2. 각 클래스에 맞는 텍스트 메시지 분기
       let messageText = "";
       let specificClass = "";
 
@@ -410,17 +407,13 @@ function clearBoardLists() {
         specificClass = "done-null-data";
       }
 
-      // 3. DOM 메서드를 이용해 안전하게 태그 생성 및 조립
       const li = document.createElement("li");
       li.className = "list-item";
-      // 초기 상태로 화면에 보여야 하므로 hidden 속성은 넣지 않거나 false로 설정합니다.
 
       const p = document.createElement("p");
-      // 기존 마크업의 클래스 구조 반영 (.null-data와 고유 클래스)
       p.className = `${specificClass} null-data`;
-      p.textContent = messageText; // 💡 textContent를 사용하여 XSS 완벽 방어
+      p.textContent = messageText; // XSS 방어
 
-      // 4. 구조 결합 후 ul에 추가
       li.appendChild(p);
       ul.appendChild(li);
     });
@@ -443,7 +436,6 @@ function updateCounts(tasks) {
     .querySelectorAll(".done-count")
     .forEach((el) => (el.textContent = String(doneCount)));
 
-  // statistics totals
   const totalEl = document.querySelector(".card-count-total");
   if (totalEl) totalEl.textContent = String(tasks.length);
   const achieved = tasks.length
@@ -452,11 +444,10 @@ function updateCounts(tasks) {
   const achievedEl = document.querySelector(".achieved-rate");
   if (achievedEl) achievedEl.textContent = `${achieved}%`;
 }
+
 function formatDate(ms) {
   const date = new Date(ms);
-
   const year = date.getFullYear();
-  // padStart를 사용하면 1자리 수일 때 앞에 0을 붙여줄 수 있습니다 (예: 04월, 08일)
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   const hours = String(date.getHours()).padStart(2, "0");
@@ -466,7 +457,6 @@ function formatDate(ms) {
 }
 
 function createTodoElement(todo) {
-  // 1. 상태(status)에 맞는 '데이터 없음' 안내 문구만 선택해서 숨깁니다.
   let targetNullClass = "";
   if (todo.status === "TODO") {
     targetNullClass = ".todo-null-data";
@@ -474,13 +464,10 @@ function createTodoElement(todo) {
     targetNullClass = ".doing-null-data";
   } else if (todo.status === "DONE") {
     targetNullClass = ".done-null-data";
-  } else {
-    console.log("data가 null일때 나오는 문구 삭제안됨 >>> 가서 버그잡아라~");
   }
 
   if (targetNullClass) {
     const nullItems = document.querySelectorAll(targetNullClass);
-    // NodeList 내부의 각 요소에 hidden 속성을 안전하게 부여합니다.
     nullItems.forEach((item) => {
       item.hidden = true;
     });
@@ -505,10 +492,10 @@ function createTodoElement(todo) {
     }
 
     const titleEl = cloned.querySelector(".todo-title");
-    if (titleEl) titleEl.textContent = sanitize(todo.title);
+    if (titleEl) titleEl.textContent = todo.title || "";
 
     const descEl = cloned.querySelector(".todo-desc");
-    if (descEl) descEl.textContent = sanitize(todo.content);
+    if (descEl) descEl.textContent = todo.content || "";
 
     const updateTodoTime = cloned.querySelector("#update-todo-time");
     const updateDoneTime = cloned.querySelector("#update-done-time");
@@ -592,49 +579,42 @@ function createTodoElement(todo) {
         }
 
         deleteModal.append(deleteModalContent);
-        //생성한 모달을 화면에 추가
         document.body.append(deleteModal);
-
-        //모달이 열려 있는 도앙나 뒤족 화면 스크롤 방지
         document.body.style.overflow = "hidden";
 
-        // 공통 닫기 함수 (메모리 누수 방지를 위한 이벤트 제거 포함)
+        // 메모리 누수 방지 이벤트 수거 함수 구성
         const handleClose = () => {
-          closeResetModal(deleteModal); // 모달 페이드아웃 및 remove() 처리 함수
-          document.removeEventListener("keydown", handleKeyDown); // 리스너 해제 필수!
+          closeResetModal(deleteModal);
+          document.removeEventListener("keydown", handleKeyDown); // 글로벌 리스너 즉각 수거
         };
 
-        // 공통 실행 함수
         const handleConfirm = () => {
           deleteTask();
           handleClose();
         };
 
-        // ⭐ 핵심 2: 엔터/ESC 버그를 잡기 위한 키보드 핸들러 통합
         const handleKeyDown = (event) => {
           if (event.key === "Escape") {
             handleClose();
           }
           if (event.key === "Enter") {
-            event.preventDefault(); // 엔터 키의 기본 브라우저 동작 막기
+            event.preventDefault();
             handleConfirm();
           }
         };
 
-        // 5. 이벤트 리스너 등록
         cancelDeleteBtn?.addEventListener("click", handleClose);
         doDeleteBtn?.addEventListener("click", handleConfirm);
-
         document.addEventListener("keydown", handleKeyDown);
 
-        //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
         deleteModal.addEventListener("click", (event) => {
           if (event.target === deleteModal) {
-            closeResetModal(deleteModal);
+            handleClose();
           }
         });
       });
     }
+
     function deleteTask() {
       const closestCard = closeIcon.closest(".todo-container");
       const taskId = closestCard?.dataset.id;
@@ -649,7 +629,6 @@ function createTodoElement(todo) {
 
     li.appendChild(cloned);
   } else {
-    // fallback simple element
     li.textContent = `${todo.title} - ${todo.priority}`;
   }
 
@@ -671,14 +650,15 @@ export function renderTodos(todoList) {
     else if (todoUl) todoUl.appendChild(el);
   });
 
-  // updateCounts(tasks);
   const allTasksForStats = getTasks();
   updateCounts(allTasksForStats);
 }
+
 // 전체 데이터 초기화
 const resetButton = document.querySelector(
   ".reset-data-button:not(.reset-filter-button)",
 );
+
 export function openResetModal({
   title = "데이터 초기화",
   description = "정말로 모든 데이터를 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.",
@@ -696,7 +676,6 @@ export function openResetModal({
   const originalContent = document.querySelector(".reset-modal-content");
   if (!originalContent) return;
   const resetModalContent = originalContent.cloneNode(true);
-  // const resetModalContent = document.querySelector(".reset-modal-content");
   const resetModalDesc = resetModalContent.querySelector(
     ".reset-modal-description",
   );
@@ -717,65 +696,37 @@ export function openResetModal({
   }
 
   resetModalContent.removeAttribute("hidden");
-
   resetModalTitle.textContent = title;
   resetModalDesc.textContent = description;
   confirmResetButton.textContent = confirmText;
 
   resetModal.append(resetModalContent);
   document.body.append(resetModal);
-
   document.body.style.overflow = "hidden";
-  // 공통 닫기 함수 (메모리 누수 방지를 위한 이벤트 제거 포함)
+
   const handleClose = () => {
-    closeResetModal(resetModal); // 모달 페이드아웃 및 remove() 처리 함수
-    document.removeEventListener("keydown", handleKeyDown); // 리스너 해제 필수!
+    closeResetModal(resetModal);
+    document.removeEventListener("keydown", handleKeyDown); // 리스너 완벽 수거
   };
 
-  // 공통 실행 함수
   const handleConfirm = () => {
     onConfirm();
     handleClose();
   };
 
-  // ⭐ 핵심 2: 엔터/ESC 버그를 잡기 위한 키보드 핸들러 통합
   const handleKeyDown = (event) => {
     if (event.key === "Escape") {
       handleClose();
     }
     if (event.key === "Enter") {
-      event.preventDefault(); // 엔터 키의 기본 브라우저 동작 막기
+      event.preventDefault();
       handleConfirm();
     }
   };
 
-  // 5. 이벤트 리스너 등록
   cancelButton?.addEventListener("click", handleClose);
   confirmResetButton?.addEventListener("click", handleConfirm);
 
-  // //취소 버튼 클릭 시 모달 닫기
-  // cancelButton?.addEventListener("click", () => {
-  //   closeResetModal(resetModal);
-  // });
-
-  // //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
-  // confirmResetButton?.addEventListener("click", () => {
-  //   resetAllTasks();
-  //   closeResetModal(resetModal);
-  // });
-  // //전체 삭제 버튼 클릭시 모든 할일 삭제후 모달 닫기
-  // document.addEventListener("keydown", (event) => {
-  //   if (event.key === "Escape" && !resetModal?.hidden) {
-  //     closeResetModal(resetModal);
-  //   }
-  // });
-  // document.addEventListener("keydown", (event) => {
-  //   if (event.key === "Enter" && !resetModal?.hidden) {
-  //     resetAllTasks();
-  //     closeResetModal(resetModal);
-  //   }
-  // });
-  //모달 바깥 의 어두운 배경을 클릭하면 모달 닫기
   resetModal.addEventListener("click", (event) => {
     if (event.target === resetModal) {
       handleClose();
@@ -785,38 +736,30 @@ export function openResetModal({
   document.addEventListener("keydown", handleKeyDown);
 }
 
-// 전체 초기화 확인 모달 닫기 (닫기 애니메이션 적용)
 function closeResetModal(resetModal) {
   if (!resetModal) return;
 
-  // 1. 닫기 애니메이션 클래스 추가
   resetModal.classList.add("closing");
 
-  // 2. 애니메이션 시간(0.2초 = 200ms) 뒤에 한 번에 처리
   setTimeout(() => {
     const resetModalContent = resetModal.querySelector(".reset-modal-content");
 
     if (resetModalContent) {
-      // 콘텐츠 숨기고 body로 안전하게 대피 복구
       resetModalContent.setAttribute("hidden", "true");
       document.body.append(resetModalContent);
     }
 
-    // 대피 시킨 후 오버레이 삭제 및 스크롤 복구
     resetModal.remove();
     document.body.style.overflow = "";
-  }, 200); // 👈 사용 중인 CSS 닫기 애니메이션 시간에 맞추세요 (0.3초면 300)
+  }, 200);
 }
 
-// 저장된 모든 할 일 데이터 초기화
 function resetAllTasks() {
-  // 로컬스토리지의 tasks 값을 빈 배열로 변경
   saveTasks([]);
-  //화면의 할 일 목록과 통계도 빈 배열 기준을 다시 렌더링
   renderTodos([]);
 }
 
-// 초기 렌더
+// 초기 렌더 및 트리거 바인딩
 renderTodos(getTasks());
 
 resetButton?.addEventListener("click", () => {
