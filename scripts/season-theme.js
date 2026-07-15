@@ -54,7 +54,7 @@ function updateSeasonEffect() {
     document.documentElement.getAttribute("data-theme") ||
     themeStorage.get("season") ||
     "default";
-
+  console.log(currentTheme);
   // 1. 기존 동작 중인 이펙트 리소스를 일괄 해제
   clearPreviousSeasonEffects(layer);
 
@@ -93,3 +93,6 @@ themeObserver.observe(document.documentElement, {
 // --- 초기 진입 실행부 ---
 // 페이지 최초 진입 또는 새로고침 시 저장된 테마에 맞게 첫 화면 이펙트 즉시 기동
 updateSeasonEffect();
+
+//  외부 파일(main.js)에서 이 함수를 쓸 수 있도록 내보냄
+export { updateSeasonEffect };
