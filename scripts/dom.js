@@ -1,21 +1,34 @@
-﻿import { createStorage } from "./storage.js";
+﻿/**
+ * @fileoverview 사용자의 시간대에 맞는 그리팅(인사말) 메시지를 동적으로 표출하고,
+ * 다크/라이트 모드 스위칭 및 계절별 테마 설정을 관리하는 대시보드 제어 모듈입니다.
+ */
 
+import { createStorage } from "./storage.js";
+
+/**
+ * 테마 설정을 브라우저 LocalStorage에 영구 저장하기 위한 스토리지 인스턴스입니다.
+ * @type {Object}
+ */
 const themeStorage = createStorage("flowdash-theme");
 
 /**
- * Initializes the greeting date and message based on the current time.
+ * [그리팅 영역] 현재 날짜 및 시간에 맞춰 메시지를 동적으로 초기화합니다.
  */
 const now = new Date();
 const year = now.getFullYear();
 const month = now.getMonth() + 1;
 const date = now.getDate();
 const dateElement = document.querySelector(".greeting-date");
+
+// 화면에 현재 날짜 렌더링
 if (dateElement) {
   dateElement.textContent = `${year}년 ${month}월 ${date}일`;
 }
 
 const hour = now.getHours();
 const greetingElement = document.querySelector(".greeting-message");
+
+// 시간대에 따른 맞춤형 인사말 출력
 if (greetingElement) {
   if (hour >= 5 && hour < 11) {
     greetingElement.textContent = "좋은 아침이에요 ,  ";
@@ -28,10 +41,16 @@ if (greetingElement) {
   }
 }
 
+/**
+ * 다크/라이트 모드를 토글하는 버튼 요소입니다.
+ * @type {HTMLElement|null}
+ */
 const themeButton = document.querySelector(".greeting-theme-toggle");
 
 /**
- * Updates the theme toggle button icon to match the current mode.
+ * 현재 body에 적용된 다크 모드 상태(`classList.contains("dark")`)에 맞춰 토글 버튼 내의 SVG 아이콘을 갱신합니다.
+ * @function updateThemeIcon
+ * @returns {void}
  */
 function updateThemeIcon() {
   if (!themeButton) return;
@@ -51,12 +70,15 @@ function updateThemeIcon() {
   }
 }
 
+// 초기 로드 시 저장된 테마를 불러와 클래스 및 아이콘 반영
 const savedTheme = themeStorage.get("theme") || "light";
 document.body.classList.toggle("dark", savedTheme === "dark");
 updateThemeIcon();
 
+// 라이트/다크 모드 토글 버튼 클릭 이벤트 바인딩
 if (themeButton) {
   themeButton.addEventListener("click", () => {
+    // 테마 전환 시 자연스러운 애니메이션 효과를 주기 위한 트랜지션 클래스 추가
     document.body.classList.add("theme-transitioning");
     document.body.classList.toggle("dark");
 
@@ -68,12 +90,16 @@ if (themeButton) {
 
     updateThemeIcon();
 
+    // 트랜지션 애니메이션 완료 후 임시 클래스 제거
     setTimeout(() => {
       document.body.classList.remove("theme-transitioning");
     }, 300);
   });
 }
 
+/**
+ * [계절 테마 영역] 드롭다운 및 모달 제어를 위한 DOM 요소 참조 세트입니다.
+ */
 const themeSelectButton = document.querySelector(".greeting-theme-button");
 const themeDropdownMenu = document.querySelector(".theme-dropdown-menu");
 const themeDropdown = document.querySelector(".theme-dropdown");
@@ -81,6 +107,10 @@ const themeItems = document.querySelectorAll(".theme-dropdown-item");
 const themeButtonIcon = document.querySelector(".greeting-theme-button-icon");
 const themeButtonText = document.querySelector(".greeting-theme-button-text");
 
+/**
+ * 테마가 기본값('default')일 때 적용할 팔레트 모양의 SVG 문자열입니다.
+ * @type {string}
+ */
 const defaultThemeIcon = `
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <circle cx="13.5" cy="6.5" r="1.5"></circle>
@@ -91,8 +121,13 @@ const defaultThemeIcon = `
   </svg>
 `;
 
+/**
+ * 계절 테마별 버튼에 렌더링할 이모지 맵핑 객체입니다.
+ * @type {Object.<string, string>}
+ */
 const themeIcons = { spring: "🌸", summer: "☀️", autumn: "🍂", winter: "❄️" };
 
+// 계절 테마 선택 버튼 클릭 시 드롭다운 토글 및 웹 접근성 속성(aria-expanded) 제어
 themeSelectButton?.addEventListener("click", (event) => {
   event.stopPropagation();
   if (!themeDropdownMenu) return;
@@ -103,6 +138,7 @@ themeSelectButton?.addEventListener("click", (event) => {
   );
 });
 
+// 외부 영역 클릭 시 열려 있던 계절 테마 드롭다운 메뉴 닫기
 document.addEventListener("click", (event) => {
   if (!themeDropdownMenu || !themeDropdown) return;
   if (!themeDropdown.contains(event.target)) {
@@ -112,21 +148,26 @@ document.addEventListener("click", (event) => {
 });
 
 /**
- * Applies the selected theme and updates related UI state.
- * @param {string} themeName - The theme to apply.
+ * 인자로 전달받은 계절 테마 이름을 바탕으로 문서(html)의 data attribute를 변경하고 연관된 UI 레이아웃 상태를 갱신합니다.
+ * @function applyTheme
+ * @param {string} themeName - 적용할 테마명 ('default', 'spring', 'summer', 'autumn', 'winter')
+ * @returns {void}
  */
 function applyTheme(themeName) {
+  // 1. html 태그의 데이터 속성 제어
   if (themeName === "default") {
     document.documentElement.removeAttribute("data-theme");
   } else {
     document.documentElement.setAttribute("data-theme", themeName);
   }
 
+  // 2. 드롭다운 내 아이템의 활성화 클래스(is-selected) 일괄 갱신
   themeItems.forEach((button) => {
     const buttonTheme = button.getAttribute("data-theme");
     button.classList.toggle("is-selected", buttonTheme === themeName);
   });
 
+  // 3. 버튼에 지정된 계절별 CSS 클래스명 분기 적용
   themeSelectButton?.classList.remove(
     "theme-spring",
     "theme-summer",
@@ -137,16 +178,22 @@ function applyTheme(themeName) {
     themeSelectButton?.classList.add(`theme-${themeName}`);
   }
 
+  // 4. 테마 선택 버튼 내 이모지/아이콘 교체
   if (themeButtonIcon) {
     themeButtonIcon.innerHTML =
       themeName === "default" ? defaultThemeIcon : themeIcons[themeName] || "";
   }
 }
 
+/**
+ * DOM 콘텐츠가 완전히 로드된 후 저장된 환경 설정을 복원하고 상세 커스텀 설정 모달의 이벤트들을 바인딩합니다.
+ */
 document.addEventListener("DOMContentLoaded", () => {
+  // 저장된 계절 테마 초기 반영
   const savedSeason = themeStorage.get("season") || "default";
   applyTheme(savedSeason);
 
+  // 계절 드롭다운 메뉴 아이템 클릭 핸들러 바인딩
   themeItems.forEach((item) => {
     item.addEventListener("click", () => {
       const selectedTheme = item.dataset.theme;
@@ -159,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // 상세 설정 모달 관련 DOM 요소 선언
   const themeSettingButton = document.querySelector(".theme-dropdown-setting");
   const themeSettingModal = document.querySelector(".theme-setting-modal");
   const themeSettingModalContent = document.querySelector(
@@ -178,15 +226,23 @@ document.addEventListener("DOMContentLoaded", () => {
     ".theme-setting-apply",
   );
 
+  /**
+   * 모달 내에서 '적용' 버튼을 누르기 전, 임시로 선택 상태를 들고 있는 상태 변수입니다.
+   */
   let pendingTheme = "default";
   let pendingDarkMode = false;
 
+  /**
+   * 상세 설정 모달을 열고 현재 활성화된 테마 및 라이트/다크 모드 상태로 프리뷰와 셀렉터를 동기화합니다.
+   * @function openThemeSettingModal
+   */
   function openThemeSettingModal() {
     if (!themeSettingModal) return;
     pendingTheme =
       document.documentElement.getAttribute("data-theme") || "default";
     pendingDarkMode = document.body.classList.contains("dark");
 
+    // 현재 저장 상태와 옵션 하이라이트 동기화
     themeSettingOptions.forEach((option) => {
       option.classList.toggle(
         "is-selected",
@@ -194,6 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 
+    // 다크모드 토글 스위치 동기화
     if (themeDarkSwitch) {
       themeDarkSwitch.checked = pendingDarkMode;
     }
@@ -204,11 +261,16 @@ document.addEventListener("DOMContentLoaded", () => {
     themeSelectButton?.setAttribute("aria-expanded", "false");
   }
 
+  /**
+   * 상세 설정 모달을 화면에서 숨깁니다.
+   * @function closeThemeSettingModal
+   */
   function closeThemeSettingModal() {
     if (!themeSettingModal) return;
     themeSettingModal.hidden = true;
   }
 
+  // 모달 제어 이벤트 리스너 설정
   themeSettingButton?.addEventListener("click", (event) => {
     event.stopPropagation();
     openThemeSettingModal();
@@ -217,17 +279,25 @@ document.addEventListener("DOMContentLoaded", () => {
   themeSettingCloseButton?.addEventListener("click", closeThemeSettingModal);
   themeSettingCancelButton?.addEventListener("click", closeThemeSettingModal);
 
+  // 모달 바깥의 딤드(배경) 영역 클릭 시 모달 닫기
   themeSettingModal?.addEventListener("click", (event) => {
     if (event.target === themeSettingModal) {
       closeThemeSettingModal();
     }
   });
 
+  /**
+   * 모달 내부의 특정 테마 옵션을 선택했을 때, 실제 전체 테마를 바꾸지 않고
+   * 모달 미리보기 박스 영역(`themeSettingModalContent`)에만 실시간 테마 컬러 CSS 변수를 주입합니다.
+   * @function updateThemeModalPreview
+   * @param {string} theme - 미리보기할 테마명
+   */
   function updateThemeModalPreview(theme) {
     if (!themeSettingModalContent) return;
     const root = document.documentElement;
     const previousTheme = root.getAttribute("data-theme");
 
+    // 계산된 CSS 변수를 가져오기 위해 html 태그에 임시로 데이터 속성 설정
     if (theme === "default") {
       root.removeAttribute("data-theme");
     } else {
@@ -243,11 +313,13 @@ document.addEventListener("DOMContentLoaded", () => {
       "--theme-focus",
     ];
 
+    // 추출한 CSS 테마 변수를 프리뷰 컨텐츠 레이어의 인라인 스타일로 복사 반영
     previewVariables.forEach((variableName) => {
       const value = themeStyle.getPropertyValue(variableName).trim();
       themeSettingModalContent.style.setProperty(variableName, value);
     });
 
+    // 기존에 적용 중이던 원래 테마 상태로 문서 속성 복구
     if (previousTheme) {
       root.setAttribute("data-theme", previousTheme);
     } else {
@@ -255,6 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // 모달 내 계절 테마 옵션 카드 클릭 시 임시 선택 상태 변경 및 프리뷰 연동
   themeSettingOptions.forEach((option) => {
     option.addEventListener("click", () => {
       pendingTheme = option.dataset.theme;
@@ -266,10 +339,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // 모달 내 다크 모드 토글 스위치 상태 변경 감지
   themeDarkSwitch?.addEventListener("change", () => {
     pendingDarkMode = themeDarkSwitch.checked;
   });
 
+  // 모달 내 최종 '적용' 버튼 클릭 시 임시 설정을 브라우저 스토리지 및 전체 DOM 레이아웃에 완전히 반영
   themeSettingApplyButton?.addEventListener("click", () => {
     themeStorage.set("season", pendingTheme);
     themeStorage.set("mode", pendingDarkMode ? "dark" : "light");
