@@ -9,6 +9,8 @@
   --theme-border: #4b32c3;
   /*배경 색*/
   --theme-bgc: #fff;
+  --theme-bgc-dark: #121720;
+  --theme-nav: #ffffff;
   /* focus 테두리 */
   --theme-focus: #5c4dff;
 }
@@ -266,7 +268,6 @@ button {
   vertical-align: middle;
 }
 
-.dropdown-button:checked,
 .dropdown-button.active {
   background-color: #f8fafc;
 }
@@ -280,28 +281,32 @@ button {
 
 .dropdown-menu {
   position: absolute;
-  overflow: hidden;
-  top: 102%;
+  top: calc(100% + 4px);
   left: 0;
-  /* min-width: 130px; */
-  width: 100%;
-  background-color: #ffffff;
-  border: 1px solid #e0e5eb;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 6px 0;
-  margin: 0;
-  list-style: none;
   z-index: 10;
 
-  /* 애니메이션을 위한 기본 상태 */
-  opacity: 0;
+  width: 100%;
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
   visibility: hidden;
+  opacity: 0;
   transform: translateY(-10px);
+
+  list-style: none;
+  border: 1px solid #e0e5eb;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
   transition:
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    visibility 0.3s ease;
+    max-height 0.25s ease,
+    padding 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s;
 }
 
 /* 각 항목 (li) 및 링크 스타일 */
@@ -324,13 +329,6 @@ button {
   color: #1a202c;
 }
 
-/* 마우스 올리면 메뉴 노출 */
-.dropdown:not(.is-close):hover .dropdown-menu,
-.dropdown.is-open .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
 .dropdown.is-close .dropdown-menu {
   opacity: 0;
   visibility: hidden;
@@ -342,33 +340,14 @@ button {
   background-color: #f8fafc;
 }
 
-/* 1. 메뉴의 기본 상태 (닫혀있을 때) */
-.dropdown-menu {
-  display: block; /* display: none을 쓰지 않습니다! */
-  visibility: hidden;
-  opacity: 0;
-
-  /* 높이를 0으로 만들어 닫아버리는 핵심 기술 */
-  max-height: 0;
-  overflow: hidden;
-  transform: translateY(-10px);
-
-  /* 모든 변화를 0.25초 동안 부드럽게 처리 */
-  transition:
-    max-height 0.25s ease,
-    opacity 0.25s ease,
-    transform 0.25s ease,
-    visibility 0.25s;
-}
-
 /* 2. details가 열렸을 때 (open 속성이 들어왔을 때) */
 .dropdown[open] .dropdown-menu {
+  max-height: 200px;
+  padding: 6px 0;
+
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
-
-  /* 메뉴가 열렸을 때의 넉넉한 최대 높이 설정 (메뉴 크기에 맞게 조절 가능) */
-  max-height: 200px;
 }
 
 /* 3. 화살표 시계 반대 방향 회전 (기존 코드 유지) */
@@ -384,82 +363,8 @@ button {
   transform: rotate(-180deg);
 }
 
-/* 1. 기본 메뉴 스타일 (닫혀있을 때 기본값 설정 및 부드러운 전환 효과 준비) */
-/* .dropdown-menu {
-  기존 스타일 유지...
-  opacity: 0;
-  transform: translateY(-10px);
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
-
-2. details가 열렸을 때 (open 속성이 들어왔을 때)
-.dropdown[open] .dropdown-menu {
-  display: block;
-  브라우저가 요소를 그리도록 지시
-
-  최신 브라우저를 위한 애니메이션 처리
-  animation: slideDown 0.25s ease forwards;
-}
-
-3. 부드럽게 내려오는 서서히 나타나는 효과 애니메이션 정의
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-    위에서 10px 위치에서 시작
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    원래 제자리로
-  }
-}
-
-1. 메뉴의 기본 상태 및 닫힐 때의 애니메이션 정의
-.dropdown-menu {
-  display: none; 
-  평소에는 숨김
-  opacity: 0;
-  transform: translateY(-10px);
-
-  핵심 스타일: display 전환도 부드럽게 처리하도록 브라우저에 지시
-  transition:
-    display 0.25s allow-discrete,
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
-
-2. details가 열렸을 때 (open 속성이 들어왔을 때)
-.dropdown[open] .dropdown-menu {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-3. 중요: 메뉴가 display: none에서 block으로 '막 켜지는 순간'의 시작점 정의
-@starting-style {
-  .dropdown[open] .dropdown-menu {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-} */
-/* 화살표 기본 상태
-.arrow-icon {
-  transition: transform 0.25s ease;
-  display: inline-block; /* 회전 애니메이션이 먹히려면 필요합니다 */
-/* transform: rotate(0deg); */
-/* transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
-/* } */
-
-/* 드롭다운이 열렸을 때 화살표 180도 회전 */
-/* .dropdown[open] .arrow-icon { */
-/* transform: rotate(-180deg); */
-/* }  */
 .search-sort-button {
   height: 46.22px;
-  padding: 10px 20px;
   border-radius: 99px;
   border: 1px solid #e0e5eb;
   background: #fff;
@@ -525,7 +430,6 @@ button {
   justify-content: center;
   align-items: flex-start;
 
-  color: #fff;
   text-align: center;
   font-size: 15.2px;
   font-style: normal;
@@ -533,9 +437,10 @@ button {
   line-height: normal;
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease;
-  background-color: 0.2s ease;
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
+
 .add-task-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -610,7 +515,7 @@ body.dark .board-count {
   color: #fef3f2;
 }
 @media (prefers-color-scheme: dark) {
-  .reset-data-button.hover {
+  .reset-data-button:hover {
     color: #fff;
   }
   .reset-data-button:active {
@@ -634,7 +539,7 @@ body.dark .board-count {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: -0.01px;
+  gap: 0;
   flex: 1 0 0;
   align-self: stretch;
   border-radius: 12px;
@@ -662,26 +567,6 @@ body.dark .board-count {
   line-height: 32px;
 }
 
-/* 푸터 영역 */
-.footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  align-self: stretch;
-
-  padding: 30.999px 0 31.99px 0;
-  border-top: 1.111px solid #e0e5eb;
-
-  color: #5c6f8a;
-  text-align: center;
-  font-family: "Pretendard", sans-serif;
-  font-size: 14.4px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 21.6px;
-}
-
 /*보드 전체 레이아웃*/
 .board-container {
   display: flex;
@@ -690,11 +575,7 @@ body.dark .board-count {
 
   width: 100%;
   margin: 24px auto 0;
-}
 
-/* Allow horizontal scrolling when boards overflow the container. Use scroll-snap
-   so users can move between boards smoothly while preserving existing layout */
-.board-container {
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -897,11 +778,6 @@ body.dark .board-count {
   flex-shrink: 0;
 }
 
-/* 테마 버튼과 드롭다운 기준 */
-.theme-dropdown {
-  position: relative;
-}
-
 /* 테마 드롭다운 제목 영역 */
 .theme-dropdown-header {
   display: flex;
@@ -1026,10 +902,6 @@ body.dark .board-count {
   height: 18px;
 }
 
-/* 선택된 테마  */
-/* .theme-dropdown-item.is-selected {
-} */
-
 /* 테마 드롭다운 메뉴 */
 .theme-dropdown-menu {
   position: absolute;
@@ -1044,16 +916,6 @@ body.dark .board-count {
   border-radius: 14px;
   background: #fff;
   box-shadow: 0 10px 30px rgba(27, 36, 50, 0.12);
-}
-
-/* 드롭다운 숨김 */
-.theme-dropdown-menu[hidden] {
-  display: none;
-}
-
-/* 테마 버튼과 드롭다운 기준 */
-.theme-dropdown {
-  position: relative;
 }
 
 /* 테마 드롭다운 제목 영역 */
@@ -1254,8 +1116,6 @@ body.dark .board-count {
   border: 1px solid #e0e5eb;
   background: #fff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-  /* ... 기존 속성들 ... */
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 
   /* 카드 애니매이션 움직임추가  */
   transition:
@@ -1288,29 +1148,23 @@ body.dark .board-count {
 }
 
 .footer {
-  /* 기존 레이아웃 코드 */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   align-self: stretch;
-  padding: 30.999px 0 31.99px 0;
-  border-top: 1.111px solid #e0e5eb;
 
-  /* 텍스트 스타일 적용 */
+  padding: 31px 0 32px;
+  border-top: 1px solid #e0e5eb;
+
   color: #5c6f8a;
   text-align: center;
   font-family: "Pretendard", sans-serif;
   font-size: 14.4px;
-  font-style: normal;
   font-weight: 400;
   line-height: 21.6px;
 }
 
-/*텍스트 위치 중앙설정*/
-.footer {
-  align-items: center;
-  justify-content: center;
-}
 /* ---------------------------------------------------- 모달 스타일 시이자악 ------------------------------------ */
 .new-task-modal {
   position: fixed;
@@ -1347,10 +1201,6 @@ body.dark .board-count {
 .new-task-modal.active .modal-content {
   opacity: 1;
   transform: translateY(0) scale(1);
-}
-
-.new-task-modal[hidden] {
-  display: none;
 }
 
 .modal-content {
@@ -1425,12 +1275,13 @@ body.dark .board-count {
 }
 .modal-radio-select-container {
   display: flex;
-  padding-top: 1px;
   justify-content: center;
   align-items: flex-start;
-  gap: 16px;
-  align-self: stretch;
   flex-wrap: wrap;
+
+  width: 100%;
+  padding-top: 1px;
+  gap: 20px;
 }
 .label-input-container {
   display: flex;
@@ -1440,11 +1291,7 @@ body.dark .board-count {
   gap: 8px;
   align-self: stretch;
 }
-.modal-radio-select-container {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-}
+
 .modal-radio-select-group {
   flex: 1;
   display: flex;
@@ -2137,28 +1984,6 @@ body.dark .todo-title {
     color: var(--theme-text);
   }
 
-  .todo-statistics-container {
-    flex-wrap: wrap;
-    gap: 16px;
-    padding-bottom: 24px;
-  }
-
-  .todo-statistics-card {
-    flex: 0 0 calc(50% - (16px / 2));
-    max-width: calc(50% - (16px / 2));
-    padding: 20px;
-  }
-
-  .todo-statistics-card .card-title {
-    font-size: 13.6px;
-    line-height: 20px;
-  }
-
-  .todo-statistics-card .card-count {
-    font-size: 30px;
-    line-height: 30px;
-  }
-
   .board-container {
     display: flex;
     flex-direction: column;
@@ -2286,7 +2111,7 @@ body.dark .todo-title {
 @media (max-width: 356px) {
   .dropdown-button {
     padding: 10px;
-    white-space: wrap;
+    white-space: normal;
   }
 
   .arrow-icon,
@@ -2724,12 +2549,7 @@ body.dark .radio-low:hover {
     transform: translateY(-8px) scale(0.96);
   }
 }
-.reset-modal-description {
-  margin-top: 12px;
-  margin-bottom: 32px;
 
-  line-height: 1.6;
-}
 body.dark .reset-modal-overlay {
   background: rgba(0, 0, 0, 0.65);
 }
@@ -2959,10 +2779,7 @@ body.dark .theme-switch-input:checked + .theme-switch-slider {
 #done {
   scroll-margin-top: 70px;
 }
-#top,
-#list,
-#board,
-#done {
+html {
   scroll-behavior: smooth;
 }
 .null-data {
