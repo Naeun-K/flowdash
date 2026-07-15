@@ -24,7 +24,8 @@ function clearPreviousSeasonEffects(layer) {
   stopAutumnEffect();
   stopWinterEffect();
   if (layer) {
-    layer.innerHTML = ""; // 남아있는 파티클 Element DOM들을 완벽히 지워 메모리 누수를 원천 차단
+    // layer.innerHTML = "";
+    layer.textContent = ""; // 남아있는 파티클 Element DOM들을 완벽히 지워 메모리 누수를 원천 차단
   }
 }
 

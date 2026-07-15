@@ -78,16 +78,18 @@ export function startAutumnEffect() {
     const currentLeaves = layer.querySelectorAll(".autumn-leaf");
 
     // 동시 화면에 표시될 낙엽 수 제한 (성능 최적화)
-    if (currentLeaves.length >= 8) return;
+    if (currentLeaves.length >= 20) return;
 
     const leaf = document.createElement("span");
     leaf.classList.add("autumn-leaf");
 
     // 무작위로 낙엽 모양 선택
-    // leaf.innerHTML = LEAF_SVGS[0];
-
-    leaf.innerHTML = LEAF_SVGS[Math.floor(Math.random() * LEAF_SVGS.length)];
-
+    leaf.replaceChildren(
+      createSvgFragment(
+        LEAF_SVGS[Math.floor(Math.random() * LEAF_SVGS.length)],
+      ),
+    );
+    // leaf.innerHTML=LEAF_SVGS[Math.floor(Math.random()*LEAF_SVGS.length)]
     // 크기 무작위 설정 (15px ~ 28px)
     const size = Math.floor(Math.random() * 14) + 15;
 

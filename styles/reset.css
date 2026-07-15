@@ -33,6 +33,7 @@
 html {
   scroll-behavior: smooth;
 }
+
 /* 바디태그 전체 적용 : 글자간격, 바탕색, 폰트, 글자색*/
 body {
   line-height: 1.6;

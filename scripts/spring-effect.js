@@ -45,8 +45,8 @@ export function startSpringEffect() {
 
     // 🌸 등록된 2가지 SVG 중 하나를 랜덤으로 선택해 주입
     const randomSvg = PETAL_SVGS[Math.floor(Math.random() * PETAL_SVGS.length)];
-    petal.innerHTML = randomSvg;
-
+    petal.replaceChildren(createSvgFragment(randomSvg));
+    // petal.innerHTML=randomSvg;
     // 꽃잎 크기 무작위 설정 (8px ~ 18px)
     const size = Math.floor(Math.random() * 11) + 8;
 
