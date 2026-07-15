@@ -1,5 +1,6 @@
 import { createStorage } from "./storage.js";
 import { startAutumnEffect, stopAutumnEffect } from "./autumn-effect.js";
+import { startWinterEffect, stopWinterEffect } from "./winter-effect.js";
 
 const themeStorage = createStorage("flowdash-theme");
 
@@ -341,10 +342,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 1) 테마가 바뀔 때마다 실행 중이던 이전 타이머와 낙엽 요소를 완벽히 정리합니다.
     stopAutumnEffect();
+    stopWinterEffect();
 
     // 2) 가을 테마일 때만 동적으로 배경 레이어를 만들며 효과 시작
     if (themeName === "autumn") {
       startAutumnEffect();
+    } else if (themeName === "winter") {
+      startWinterEffect();
     }
 
     // 6. 드롭다운 메뉴 안에서 어떤 버튼이 선택되었는지 체크 표시(✓) 동기화
@@ -563,8 +567,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     stopAutumnEffect();
+    stopWinterEffect();
+
+    // 모달을 통해 변경 완료된 테마가 가을/겨울일 때 효과를 켭니다.
     if (pendingTheme === "autumn") {
       startAutumnEffect();
+    } else if (pendingTheme === "winter") {
+      startWinterEffect();
     }
     // 드롭다운 체크 표시를 적용한 테마로 변경
     document.querySelectorAll(".theme-dropdown-item").forEach((item) => {
