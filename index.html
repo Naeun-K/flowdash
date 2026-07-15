@@ -200,295 +200,302 @@
           </button>
         </div>
       </header>
+      <main>
+        <section class="todo-statistics-container" aria-label="할 일 통계">
+          <h2 class="sr-only">할 일 리스트 통계 보드</h2>
+          <div class="todo-statistics-card total">
+            <span class="card-title">Total Tasks</span>
+            <span class="card-count card-count-total">0</span>
+          </div>
+          <div class="todo-statistics-card todo">
+            <span class="card-title">To Do</span>
+            <span class="card-count todo-count">0</span>
+          </div>
+          <div class="todo-statistics-card doing">
+            <span class="card-title">In Progress</span>
+            <span class="card-count doing-count">0</span>
+          </div>
+          <div class="todo-statistics-card done">
+            <span class="card-title"> Done </span>
+            <span class="card-count done-count"> 0 </span>
+          </div>
+          <div class="todo-statistics-card achieve">
+            <span class="card-title">Achieved</span>
+            <span class="card-count achieved-rate"> 0% </span>
+          </div>
+        </section>
 
-      <section class="todo-statistics-container" aria-label="할 일 통계">
-        <h2 class="sr-only">할 일 리스트 통계 보드</h2>
-        <div class="todo-statistics-card total">
-          <span class="card-title">Total Tasks</span>
-          <span class="card-count card-count-total">0</span>
-        </div>
-        <div class="todo-statistics-card todo">
-          <span class="card-title">To Do</span>
-          <span class="card-count todo-count">0</span>
-        </div>
-        <div class="todo-statistics-card doing">
-          <span class="card-title">In Progress</span>
-          <span class="card-count doing-count">0</span>
-        </div>
-        <div class="todo-statistics-card done">
-          <span class="card-title"> Done </span>
-          <span class="card-count done-count"> 0 </span>
-        </div>
-        <div class="todo-statistics-card achieve">
-          <span class="card-title">Achieved</span>
-          <span class="card-count achieved-rate"> 0% </span>
-        </div>
-      </section>
-
-      <section
-        id="list"
-        class="search-container"
-        aria-label="할 일 검색 및 필터"
-      >
-        <h2 class="sr-only">검색 및 조회 그리고 할 일을 추가할 수 있는 섹션</h2>
-        <div class="search-block-wrapper">
-          <div class="search-block">
-            <div class="search-input-container">
-              <label for="searchDataName" class="sr-only"
-                >할 일 검색어 입력</label
-              >
-              <input
-                id="searchDataName"
-                name="searchDataName"
-                class="search-input"
-                type="search"
-                placeholder="할 일 검색..."
-              />
-              <button
-                class="search-input-button"
-                type="button"
-                aria-label="검색 실행"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-search"
-                  viewBox="0 0 16 16"
-                  aria-hidden="true"
+        <section
+          id="list"
+          class="search-container"
+          aria-label="할 일 검색 및 필터"
+        >
+          <h2 class="sr-only">
+            검색 및 조회 그리고 할 일을 추가할 수 있는 섹션
+          </h2>
+          <div class="search-block-wrapper">
+            <div class="search-block">
+              <div class="search-input-container">
+                <label for="searchDataName" class="sr-only"
+                  >할 일 검색어 입력</label
                 >
-                  <path
-                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-                  />
-                </svg>
-              </button>
-            </div>
-            <!--드롭다운 묶음-->
-            <div class="dropdown_zip">
-              <details class="search-period-dropdown dropdown">
-                <summary
-                  class="search-period-dropdown-button dropdown-button"
-                  role="button"
-                  aria-haspopup="listbox"
-                  aria-expanded="false"
+                <input
+                  id="searchDataName"
+                  name="searchDataName"
+                  class="search-input"
+                  type="search"
+                  placeholder="할 일 검색..."
+                />
+                <button
+                  class="search-input-button"
+                  type="button"
+                  aria-label="검색 실행"
                 >
-                  전체 기간
-                  <span class="arrow-icon" aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-caret-down-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-                      />
-                    </svg>
-                  </span>
-                </summary>
-                <ul
-                  class="search-period-dropdown-menu dropdown-menu"
-                  role="listbox"
-                  aria-label="기간 선택"
-                >
-                  <li
-                    class="search-period-dropdown-item dropdown-item"
-                    role="option"
-                    aria-selected="true"
-                    data-value="all-days"
-                    tabindex="0"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-search"
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <!--드롭다운 묶음-->
+              <div class="dropdown_zip">
+                <details class="search-period-dropdown dropdown">
+                  <summary
+                    class="search-period-dropdown-button dropdown-button"
+                    role="button"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
                   >
                     전체 기간
-                  </li>
-                  <li
-                    class="search-period-dropdown-item dropdown-item"
-                    role="option"
-                    aria-selected="false"
-                    data-value="today"
-                    tabindex="0"
+                    <span class="arrow-icon" aria-hidden="true">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-caret-down-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                        />
+                      </svg>
+                    </span>
+                  </summary>
+                  <ul
+                    class="search-period-dropdown-menu dropdown-menu"
+                    role="listbox"
+                    aria-label="기간 선택"
                   >
-                    오늘
-                  </li>
-                  <li
-                    class="search-period-dropdown-item dropdown-item"
-                    role="option"
-                    aria-selected="false"
-                    data-value="seven-days"
-                    tabindex="0"
-                  >
-                    최근 7일
-                  </li>
-                </ul>
-              </details>
-
-              <details class="search-priority-dropdown dropdown">
-                <summary
-                  class="search-priority-dropdown-button dropdown-button"
-                  role="button"
-                  aria-haspopup="listbox"
-                  aria-expanded="false"
-                >
-                  전체 우선순위
-                  <span class="arrow-icon" aria-hidden="true">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-caret-down-fill"
-                      viewBox="0 0 16 16"
+                    <li
+                      class="search-period-dropdown-item dropdown-item"
+                      role="option"
+                      aria-selected="true"
+                      data-value="all-days"
+                      tabindex="0"
                     >
-                      <path
-                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-                      />
-                    </svg>
-                  </span>
-                </summary>
+                      전체 기간
+                    </li>
+                    <li
+                      class="search-period-dropdown-item dropdown-item"
+                      role="option"
+                      aria-selected="false"
+                      data-value="today"
+                      tabindex="0"
+                    >
+                      오늘
+                    </li>
+                    <li
+                      class="search-period-dropdown-item dropdown-item"
+                      role="option"
+                      aria-selected="false"
+                      data-value="seven-days"
+                      tabindex="0"
+                    >
+                      최근 7일
+                    </li>
+                  </ul>
+                </details>
 
-                <ul
-                  class="search-priority-dropdown-menu dropdown-menu"
-                  role="listbox"
-                  aria-label="우선순위 선택"
-                >
-                  <li
-                    class="search-priority-dropdown-item dropdown-item"
-                    role="option"
-                    aria-selected="true"
-                    data-value="all-priority"
-                    tabindex="0"
+                <details class="search-priority-dropdown dropdown">
+                  <summary
+                    class="search-priority-dropdown-button dropdown-button"
+                    role="button"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
                   >
                     전체 우선순위
-                  </li>
-                  <li
-                    class="search-priority-dropdown-item dropdown-item"
-                    role="option"
-                    aria-selected="false"
-                    data-value="HIGH"
-                    tabindex="0"
+                    <span class="arrow-icon" aria-hidden="true">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-caret-down-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                        />
+                      </svg>
+                    </span>
+                  </summary>
+
+                  <ul
+                    class="search-priority-dropdown-menu dropdown-menu"
+                    role="listbox"
+                    aria-label="우선순위 선택"
                   >
-                    HIGH (높음)
-                  </li>
-                  <li
-                    class="search-priority-dropdown-item dropdown-item"
-                    role="option"
-                    aria-selected="false"
-                    data-value="MID"
-                    tabindex="0"
+                    <li
+                      class="search-priority-dropdown-item dropdown-item"
+                      role="option"
+                      aria-selected="true"
+                      data-value="all-priority"
+                      tabindex="0"
+                    >
+                      전체 우선순위
+                    </li>
+                    <li
+                      class="search-priority-dropdown-item dropdown-item"
+                      role="option"
+                      aria-selected="false"
+                      data-value="HIGH"
+                      tabindex="0"
+                    >
+                      HIGH (높음)
+                    </li>
+                    <li
+                      class="search-priority-dropdown-item dropdown-item"
+                      role="option"
+                      aria-selected="false"
+                      data-value="MID"
+                      tabindex="0"
+                    >
+                      MID (중간)
+                    </li>
+                    <li
+                      class="search-priority-dropdown-item dropdown-item"
+                      role="option"
+                      aria-selected="false"
+                      data-value="LOW"
+                      tabindex="0"
+                    >
+                      LOW (낮음)
+                    </li>
+                  </ul>
+                </details>
+              </div>
+              <button type="button" class="search-sort-button">
+                <span class="search-sort-button-text"> 정렬: 오름차순 </span>
+                <span class="search-sort-button-icon" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-arrow-up-short"
+                    viewBox="0 0 16 16"
                   >
-                    MID (중간)
-                  </li>
-                  <li
-                    class="search-priority-dropdown-item dropdown-item"
-                    role="option"
-                    aria-selected="false"
-                    data-value="LOW"
-                    tabindex="0"
-                  >
-                    LOW (낮음)
-                  </li>
-                </ul>
-              </details>
+                    <path
+                      fill-rule="evenodd"
+                      d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5"
+                    />
+                  </svg>
+                </span>
+              </button>
             </div>
-            <button type="button" class="search-sort-button">
-              <span class="search-sort-button-text"> 정렬: 오름차순 </span>
-              <span class="search-sort-button-icon" aria-hidden="true">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-arrow-up-short"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5"
-                  />
-                </svg>
-              </span>
-            </button>
+            <div class="add-block">
+              <button class="add-task-button" type="button">+ 새 할 일</button>
+            </div>
           </div>
-          <div class="add-block">
-            <button class="add-task-button" type="button">+ 새 할 일</button>
+          <div class="search-sort-reset-container">
+            <div class="filter-info-list">
+              <p class="search-sort-info">
+                <span class="sort-title">정렬: </span> 오름차순
+              </p>
+            </div>
+            <div class="button-wrapper">
+              <button
+                type="button"
+                class="reset-data-button reset-filter-button"
+              >
+                필터 초기화
+              </button>
+              <button type="button" class="reset-data-button">
+                전체 데이터 초기화
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="search-sort-reset-container">
-          <div class="filter-info-list">
-            <p class="search-sort-info">
-              <span class="sort-title">정렬: </span> 오름차순
-            </p>
-          </div>
-          <div class="button-wrapper">
-            <button type="button" class="reset-data-button reset-filter-button">
-              필터 초기화
-            </button>
-            <button type="button" class="reset-data-button">
-              전체 데이터 초기화
-            </button>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="board" class="board-container" aria-label="할 일 보드판">
-        <h2 class="sr-only">
-          할 일 리스트 / 진행 중인 리스트 / 완료된 업무 리스트
-        </h2>
+        <section id="board" class="board-container" aria-label="할 일 보드판">
+          <h2 class="sr-only">
+            할 일 리스트 / 진행 중인 리스트 / 완료된 업무 리스트
+          </h2>
 
-        <!-- 할일 보드 -->
-        <div class="board-todo-board">
-          <div class="board-header board-todo-header">
-            <span class="board-title board-todo-title" id="todo-board-label"
-              >할일</span
-            >
-            <span class="board-count todo-count">0</span>
+          <!-- 할일 보드 -->
+          <div class="board-todo-board">
+            <div class="board-header board-todo-header">
+              <span class="board-title board-todo-title" id="todo-board-label"
+                >할일</span
+              >
+              <span class="board-count todo-count">0</span>
+            </div>
+            <div class="todo-list-container">
+              <ul class="todo-list" aria-labelledby="todo-board-label">
+                <li class="list-item todo-null-item">
+                  <p class="todo-null-data null-data">할 일이 없습니다</p>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="todo-list-container">
-            <ul class="todo-list" aria-labelledby="todo-board-label">
-              <li class="list-item todo-null-item">
-                <p class="todo-null-data null-data">할 일이 없습니다</p>
-              </li>
-            </ul>
-          </div>
-        </div>
 
-        <!-- 진행중 보드 -->
-        <div class="board-doing-board">
-          <div class="board-header board-doing-header">
-            <span class="board-title board-doing-title" id="doing-board-label"
-              >진행중</span
-            >
-            <span class="board-count doing-count">0</span>
+          <!-- 진행중 보드 -->
+          <div class="board-doing-board">
+            <div class="board-header board-doing-header">
+              <span class="board-title board-doing-title" id="doing-board-label"
+                >진행중</span
+              >
+              <span class="board-count doing-count">0</span>
+            </div>
+            <div class="doing-list-container">
+              <ul class="doing-list" aria-labelledby="doing-board-label">
+                <li class="list-item doing-null-item">
+                  <p class="doing-null-data null-data">
+                    진행 중인 일이 없습니다
+                  </p>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="doing-list-container">
-            <ul class="doing-list" aria-labelledby="doing-board-label">
-              <li class="list-item doing-null-item">
-                <p class="doing-null-data null-data">진행 중인 일이 없습니다</p>
-              </li>
-            </ul>
-          </div>
-        </div>
 
-        <!-- 완료 보드 -->
-        <div id="done" class="board-done-board">
-          <div class="board-header board-done-header">
-            <span class="board-title board-done-title" id="done-board-label"
-              >완료</span
-            >
-            <span class="board-count done-count">0</span>
+          <!-- 완료 보드 -->
+          <div id="done" class="board-done-board">
+            <div class="board-header board-done-header">
+              <span class="board-title board-done-title" id="done-board-label"
+                >완료</span
+              >
+              <span class="board-count done-count">0</span>
+            </div>
+            <div class="done-list-container">
+              <ul class="done-list" aria-labelledby="done-board-label">
+                <li class="list-item done-null-item">
+                  <p class="null-data done-null-data">완료된 일이 없습니다</p>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="done-list-container">
-            <ul class="done-list" aria-labelledby="done-board-label">
-              <li class="list-item done-null-item">
-                <p class="null-data done-null-data">완료된 일이 없습니다</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
+        </section>
+      </main>
       <footer class="footer">&copy; 2026 UIONE. All rights reserved.</footer>
     </div>
 
@@ -872,7 +879,7 @@
     <script type="module" src="./scripts/dom.js"></script>
     <script src="./scripts/icon.js" defer></script>
     <script type="module" src="./scripts/nickname.js"></script>
-    <script type="module" src="./scripts/change.js"></script>
+    <!-- <script type="module" src="./scripts/change.js"></script> -->
     <script type="module" src="./scripts/filter.js"></script>
     <script type="module" src="./scripts/season-theme.js"></script>
   </body>

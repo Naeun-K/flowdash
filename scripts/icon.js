@@ -55,6 +55,12 @@ const svgIcons = {
   `,
 };
 
+function createSvgFragment(svgString) {
+  const template = document.createElement("template");
+  template.innerHTML = svgString.trim();
+  return template.content;
+}
+
 function updateRandomIcon() {
   const iconSpan = document.querySelector(".greeting-icon");
 
@@ -68,8 +74,8 @@ function updateRandomIcon() {
   const selectedKey = keys[randomIndex];
   const selectedSvg = svgIcons[selectedKey];
 
-  // 기존 HTML을 지우고 선택된 SVG 코드를 바로 삽입 (img 태그를 생성할 필요가 없어 성능상 더 가볍습니다)
-  iconSpan.innerHTML = selectedSvg;
+  iconSpan.replaceChildren(createSvgFragment(selectedSvg));
+  // iconSpan.innerHTML=selectedSvg;
 }
 
 // 페이지가 로드될 때 실행
