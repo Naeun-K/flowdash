@@ -1,135 +1,126 @@
-/* 현재 기본 보라 테마*/
+﻿/* 디폴트 테마 화면*/
 :root {
-  /* 버튼 hover, 강조 글자 */
   --theme-text: #5f42f0;
   --theme-button-hover: #5f42f0;
 
-  /* 버튼, 보드 구분 선 */
   --theme-button: #4b32c3;
   --theme-border: #4b32c3;
-  /*배경 색*/
+
   --theme-bgc: #fff;
-  --theme-bgc-dark: #121720; /* 추가됨 */
-  --theme-nav: #ffffff; /* 추가됨 */
-  /* focus 테두리 */
+  --theme-bgc-dark: #121720;
+  --theme-nav: #ffffff;
+
   --theme-focus: #5c4dff;
 }
+/* 봄 테마 화면 */
 
-/* 봄 라이트 */
 html[data-theme="spring"] {
-  /* 버튼, 보드 구분 선 */
   --theme-button: #dc9fad;
   --theme-border: #dc9fad;
-  /*배경 색*/
+
   --theme-bgc: linear-gradient(#ffffff, #fff3f8);
-  /* 버튼 hover, 강조 글자 */
+
   --theme-button-hover: #d38798;
   --theme-text: #d38798;
-  /* focus 테두리 */
+
   --theme-focus: rgba(229, 183, 193, 0.3);
 }
-/* 봄 다크 */
+/* 봄 다크 테마 화면 */
 html[data-theme="spring"] body.dark {
-  /* 버튼, 보드 구분 선 */
   --theme-button: #efaad0;
   --theme-border: #eda4b0;
-  /*배경 색*/
+
   --theme-bgc-dark: #181818;
-  /*미디어쿼리 내비바 글자*/
+
   --theme-nav: #383239;
-  /* 버튼 hover, 강조 글자 */
+
   --theme-button-hover: #c78993;
   --theme-text: #e98ec0;
-  /* focus 테두리 */
+
   --theme-focus: #ffd6e3;
 }
-/* 여름 라이트 */
+/* 여름 테마 화면 */
 html[data-theme="summer"] {
-  /* 버튼, 보드 구분 선 */
   --theme-button: #6ec1e4;
   --theme-border: #2cacad;
-  /*배경 색*/
+
   --theme-bgc: linear-gradient(#fff, #edf8fb);
-  /* 버튼 hover, 강조 글자 */
+
   --theme-button-hover: #2cacad;
   --theme-text: #4a90e2;
-  /* focus 테두리 */
+
   --theme-focus: #d9f5f0;
 }
-/* 여름 다크 */
+/* 여름 다크 테마 화면 */
 html[data-theme="summer"] body.dark {
-  /* 버튼, 보드 구분 선 */
   --theme-button: #48769e;
   --theme-border: #6c96bc;
-  /*배경 색*/
+
   --theme-bgc-dark: #121821;
-  /* 버튼 hover, 강조 글자 */
+
   --theme-button-hover: #425b71;
   --theme-text: #8ee7e7;
-  /*미디어쿼리 내비바 글자*/
+
   --theme-nav: #0a1d2e;
-  /* focus 테두리 */
+
   --theme-focus: #b5d6e0;
 }
-/* 가을 라이트 */
-/* html[data-theme="autumn"] { */
+
+/* 가을 테마 화면 */
 html[data-theme="autumn"] {
-  /* 버튼, 보드 구분 선 */
   --theme-button: #dcb6a2;
   --theme-border: #ca9174;
-  /*배경 색*/
+
   --theme-bgc: linear-gradient(#fff, #e9d0c6);
-  /* 버튼 hover, 강조 글자 */
+
   --theme-button-hover: #ca9174;
   --theme-text: #b86c45;
-  /* focus 테두리 */
+
   --theme-focus: #eddad1;
 }
-/* 가을 다크 */
-/* html[data-theme="fall"] { */
+
+/* 가을 다크 테마 화면 */
 html[data-theme="autumn"] body.dark {
-  /* 버튼, 보드 구분 선 */
   --theme-button: #a86040;
   --theme-border: #b8721c;
-  /*배경 색*/
+
   --theme-bgc-dark: #232222;
-  /*미디어쿼리 내비바 글자*/
+
   --theme-nav: #e5effd;
-  /* 버튼 hover, 강조 글자 */
+
   --theme-button-hover: #9b6e34;
   --theme-text: #b77751;
-  /* focus 테두리 */
+
   --theme-focus: #ac7015;
 }
-/* 겨울 라이트 */
+/* 겨울 테마 화면 */
 html[data-theme="winter"] {
-  /* 버튼, 보드 구분 선 */
   --theme-button: #76a5af;
   --theme-border: #76a5af;
-  /*배경 색*/
+
   --theme-bgc: linear-gradient(#fff, #deeefd);
-  /* 버튼 hover, 강조 글자 */
+
   --theme-button-hover: #a2c4c9;
   --theme-text: #46679c;
-  /* focus 테두리 */
+
   --theme-focus: #d0e0e3;
 }
-/* 겨울 다크 */
-/* html[data-theme="winter"] { */
+
+/* 겨울 다크 테마 화면 */
 html[data-theme="winter"] body.dark {
-  /* 버튼, 보드 구분 선 */
   --theme-button: #778da9;
   --theme-border: #76a5af;
-  /*배경 색*/
+
   --theme-bgc-dark: #14181c;
-  /* 버튼 hover, 강조 글자 */
+
   --theme-button-hover: #76a5af;
   --theme-text: #415a77;
-  /*미디어쿼리 내비바 글자*/
+
   --theme-nav: #e5effd;
-  /* focus 테두리 */
+
   --theme-focus: #dce6f3;
 }
+/* 라이트 모드 스타일  */
 body {
   min-height: 100vh;
   background: var(--theme-bgc);
@@ -148,7 +139,7 @@ body {
 button {
   cursor: pointer;
 }
-/* 접근성 이슈로 스크린리더 온리 css 적용 */
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -160,7 +151,6 @@ button {
   border: 0;
 }
 
-/* 테마가 부드럽게 바뀔 때만 일시적으로 사용할 클래스 */
 .theme-transitioning,
 .theme-transitioning * {
   transition:
@@ -189,7 +179,7 @@ button {
   align-items: center;
   gap: 30px;
 }
-/*검색창*/
+
 .search-block {
   width: 70%;
   display: flex;
@@ -205,7 +195,7 @@ button {
 .search-input-container {
   display: flex;
   height: 46.22px;
-  width: 40%; /*검색창너비*/
+  width: 40%;
   padding: 8px 10px;
   gap: 8px;
   border-radius: 8px;
@@ -315,7 +305,6 @@ button {
     visibility 0.25s;
 }
 
-/* 각 항목 (li) 및 링크 스타일 */
 .dropdown-item {
   width: 100%;
   display: block;
@@ -329,7 +318,6 @@ button {
     color 0.15s ease;
 }
 
-/* 항목에 마우스 올렸을 때 효과 */
 .dropdown-item:hover {
   background-color: #edf2f7;
   color: #1a202c;
@@ -346,7 +334,6 @@ button {
   background-color: #f8fafc;
 }
 
-/* 2. details가 열렸을 때 (open 속성이 들어왔을 때) */
 .dropdown[open] .dropdown-menu {
   max-height: 200px;
   padding: 6px 0;
@@ -356,7 +343,6 @@ button {
   transform: translateY(0);
 }
 
-/* 3. 화살표 시계 반대 방향 회전 (기존 코드 유지) */
 .arrow-icon {
   display: inline-block;
   transform: rotate(0deg);
@@ -395,13 +381,11 @@ button {
   vertical-align: middle;
 }
 
-/* 마우스 오버시 테마색 테두리 강조 */
 .dropdown-button:hover,
 .search-sort-button:hover {
   border-color: var(--theme-button-hover);
 }
 
-/*클릭 시 테마색 테두리 페이드 애니*/
 .dropdown-button:active,
 .search-sort-button:active {
   animation: accent-border-fade 0.8s ease;
@@ -454,9 +438,6 @@ button {
   align-items: center;
   align-self: stretch;
 }
-/* ========================= */
-/* 적용된 필터 목록 */
-/* ========================= */
 
 .filter-info-list {
   display: flex;
@@ -504,9 +485,6 @@ button {
   gap: 8px;
 }
 
-body.dark .board-count {
-  background-color: #b6b6b6;
-}
 .reset-data-button:hover {
   background-color: #eee;
 }
@@ -523,7 +501,6 @@ body.dark .board-count {
   }
 }
 
-/* 카드 공통 스타일 */
 .todo-statistics-card {
   display: flex;
   padding: 20.111px;
@@ -539,7 +516,6 @@ body.dark .board-count {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* 제목 스타일 */
 .todo-statistics-card .card-title {
   color: #5c6f8a;
   font-size: 13.6px;
@@ -548,7 +524,6 @@ body.dark .board-count {
   line-height: 20.4px;
 }
 
-/* 숫자/수치 스타일 */
 .todo-statistics-card .card-count {
   color: #1b2432;
   font-family: "Pretendard", sans-serif;
@@ -558,7 +533,6 @@ body.dark .board-count {
   line-height: 32px;
 }
 
-/*보드 전체 레이아웃*/
 .board-container {
   display: flex;
   justify-content: center;
@@ -576,7 +550,7 @@ body.dark .board-count {
 .board-container > div {
   scroll-snap-align: start;
 }
-/*할일 진행중 완료 보드 공통 스타일*/
+
 .board-todo-board,
 .board-doing-board,
 .board-done-board {
@@ -599,7 +573,7 @@ body.dark .board-count {
   padding: 8px 0;
   overflow: visible;
 }
-/*보드 헤더 스타일*/
+
 .board-header {
   display: flex;
   justify-content: space-between;
@@ -607,18 +581,17 @@ body.dark .board-count {
   padding-bottom: 8px;
   border-bottom: 1px solid #9aa7b8;
 }
-/* 진행중 보드 구분선 색상 */
+
 .board-header.board-doing-header {
   border-bottom: 1px solid var(--theme-border);
 }
 
-/* 보드 제목 스타일 */
 .board-title {
   font-size: 16px;
   font-weight: 600;
   color: var(--color-black-1, #5c6f8a);
 }
-/* 보드별 할일 개수 */
+
 .board-count {
   display: flex;
   justify-content: center;
@@ -648,7 +621,7 @@ body.dark .board-count {
 
   text-align: center;
 }
-/*보드 헤더와 리스트 사이간격*/
+
 .todo-list-container,
 .doing-list-container,
 .done-list-container {
@@ -675,7 +648,6 @@ body.dark .board-count {
   display: flex;
   flex-direction: column;
 
-  /* 날짜와 인사말 사이 간격 */
   gap: 3.99px;
 }
 
@@ -735,7 +707,6 @@ body.dark .board-count {
   align-items: center;
   justify-content: center;
 
-  /* 버튼 크기 수정 */
   width: 40px;
   height: 40px;
   border-radius: 20px;
@@ -744,7 +715,7 @@ body.dark .board-count {
   color: #8b93a5;
   transition: 0.3s;
 }
-/* 테마 버튼 스타일 */
+
 .greeting-theme-button {
   display: flex;
   align-items: center;
@@ -772,7 +743,6 @@ body.dark .board-count {
     color 0.2s ease;
 }
 
-/* 올렸을 때만 선택된 계절 색 적용 */
 .greeting-theme-button:hover {
   border-color: var(--theme-button);
   color: var(--theme-text);
@@ -784,13 +754,11 @@ body.dark .board-count {
   flex-shrink: 0;
 }
 
-/* 테마 버튼과 드롭다운 기준 */
 .theme-dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* 테마 드롭다운 제목 영역 */
 .theme-dropdown-header {
   display: flex;
   flex-direction: column;
@@ -810,7 +778,6 @@ body.dark .board-count {
   font-size: 13px;
 }
 
-/* 테마 선택 버튼 */
 .theme-dropdown-item {
   display: grid;
   grid-template-columns: 32px 1fr 20px;
@@ -834,12 +801,10 @@ body.dark .board-count {
   transition: 0.2s;
 }
 
-/* 테마 항목  hover */
 .theme-dropdown-item:hover {
   background: #f7f5ff;
 }
 
-/* 체크 아이콘 기본 숨김 */
 .theme-dropdown-check {
   display: none;
 
@@ -849,10 +814,6 @@ body.dark .board-count {
   text-align: center;
 }
 
-/* 💡 HTML에 들어있는 체크 표시(✓) 스타일 제어 
-  선택되지 않은 버튼의 체크 표시(✓)는 숨기고, 
-  is-selected 클래스가 붙은 버튼의 체크 표시만 보이게 만듭니다. */
-
 .theme-dropdown-item .theme-dropdown-check {
   display: none;
 }
@@ -861,7 +822,6 @@ body.dark .board-count {
   display: inline-block;
 }
 
-/* 테마 아이콘 */
 .theme-dropdown-icon {
   display: flex;
   align-items: center;
@@ -873,7 +833,6 @@ body.dark .board-count {
   font-size: 17px;
 }
 
-/* 테마 설정 버튼 */
 .theme-dropdown-setting {
   display: flex;
   align-items: center;
@@ -914,13 +873,12 @@ body.dark .board-count {
   height: 18px;
 }
 
-/* 테마 드롭다운 메뉴 */
 .theme-dropdown-menu {
   position: absolute;
 
-  top: 100%; /* 버튼 바로 아래(100% 지점)에 배치 */
-  right: 0; /* 버튼 왼쪽 정렬 (오른쪽 정렬을 원하시면 right: 0; 사용) */
-  margin-top: 8px; /* 버튼과의 미세한 간격 조정 */
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
   z-index: 1000;
 
   width: 240px;
@@ -932,16 +890,10 @@ body.dark .board-count {
   box-shadow: 0 10px 30px rgba(27, 36, 50, 0.12);
 }
 
-/* 드롭다운 숨김 */
 .theme-dropdown-menu[hidden] {
   display: none;
 }
 
-/* ========================= */
-/* 현재 계절 테마 색상 적용 */
-/* ========================= */
-
-/* 선택된 계절 항목 */
 .theme-dropdown-item.is-selected {
   background: color-mix(in srgb, var(--theme-button) 14%, white);
 }
@@ -950,7 +902,6 @@ body.dark .board-count {
   color: var(--theme-button);
 }
 
-/* 테마 설정 버튼 hover */
 .theme-dropdown-setting:hover {
   background: transparent;
   color: var(--theme-text);
@@ -959,7 +910,7 @@ body.dark .board-count {
 .theme-dropdown-setting:hover {
   background: color-mix(in srgb, var(--theme-button) 14%, white);
 }
-/* 테마 설정 아이콘 hover */
+
 .theme-dropdown-setting:hover svg {
   color: var(--theme-text);
   stroke: var(--theme-text);
@@ -973,17 +924,16 @@ body.dark .board-count {
 .greeting-theme-toggle:hover path {
   fill: var(--theme-button-hover);
 }
-/* 컨테이너 스타일 */
+
 .todo-statistics-container {
   display: flex;
   padding-bottom: 16px;
   flex-direction: row;
   align-items: flex-start;
   align-self: stretch;
-  gap: 16px; /* 카드 간격 추가 */
+  gap: 16px;
 }
 
-/* 카드 공통 스타일 */
 .todo-statistics-card {
   display: flex;
   padding: 20.111px;
@@ -998,18 +948,16 @@ body.dark .board-count {
   background: #fff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 
-  /* 카드 애니매이션 움직임추가  */
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
-/*카드 호버 시 애니메이션 효과 */
+
 .todo-statistics-card:hover {
-  transform: translateY(-3px); /* 위로 이동 */
-  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.3); /* 그림자 */
+  transform: translateY(-3px);
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* 제목 스타일 */
 .todo-statistics-card .card-title {
   color: #5c6f8a;
   font-size: 13.6px;
@@ -1018,7 +966,6 @@ body.dark .board-count {
   line-height: 20.4px;
 }
 
-/* 숫자/수치 스타일 */
 .todo-statistics-card .card-count {
   color: #1b2432;
   font-family: "Pretendard", sans-serif;
@@ -1046,7 +993,6 @@ body.dark .board-count {
   line-height: 21.6px;
 }
 
-/* ---------------------------------------------------- 모달 스타일 시이자악 ------------------------------------ */
 .new-task-modal {
   position: fixed;
   inset: 0;
@@ -1057,7 +1003,6 @@ body.dark .board-count {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 99;
 
-  /* 바탕은 위치 이동이나 크기 변화 없이 투명도만 조절 */
   opacity: 0;
   transition: opacity 0.25s ease-out;
 }
@@ -1065,11 +1010,9 @@ body.dark .board-count {
   display: none;
 }
 .new-task-modal .modal-content {
-  /* 초기 상태: 투명하고, 0.9배 크기에, 20px 아래에 배치 */
   opacity: 0;
   transform: scale(0.9) translateY(20px);
 
-  /* 모달 알맹이가 사르르 커지며 올라오도록 설정 */
   transition:
     opacity 0.3s ease-out,
     transform 0.3s ease-out;
@@ -1078,7 +1021,7 @@ body.dark .board-count {
 .new-task-modal.active {
   opacity: 1;
 }
-/* 4. openModal 함수에 의해 active 클래스가 붙었을 때 (완전히 보이는 상태) */
+
 .new-task-modal.active .modal-content {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -1120,7 +1063,7 @@ body.dark .board-count {
   display: none;
 }
 .error-message {
-  color: #ff4d4f; /* 경고를 나타내는 빨간색 계열 */
+  color: #ff4d4f;
   font-size: 14px;
   font-weight: 600;
 }
@@ -1141,7 +1084,7 @@ body.dark .board-count {
   border-color: var(--theme-border);
   box-shadow: 0 0 0 3px var(--theme-focus);
 }
-/* 에러 발생 시 input 테두리도 빨갛게 변경하고 싶을 때 사용할 클래스 */
+
 .modal-input.input-error {
   border-color: #ff4d4f;
 }
@@ -1250,7 +1193,7 @@ body.dark .board-count {
   width: 100%;
   z-index: 9;
   position: absolute;
-  top: 100%; /* 버튼 바로 아래 위치 */
+  top: 100%;
   left: 0;
 }
 
@@ -1286,9 +1229,6 @@ body.dark .board-count {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* ========================= */
-/* 테마 설정 모달 배경 */
-/* ========================= */
 .theme-setting-modal {
   position: fixed;
   inset: 0;
@@ -1305,14 +1245,10 @@ body.dark .board-count {
   -webkit-backdrop-filter: blur(4px);
 }
 
-/* 모달 숨김 */
 .theme-setting-modal[hidden] {
   display: none;
 }
 
-/* ========================= */
-/* 테마 설정 모달 상자 */
-/* ========================= */
 .theme-setting-modal-content {
   width: 100%;
   max-width: 620px;
@@ -1331,9 +1267,6 @@ body.dark .board-count {
   animation: themeSettingModalOpen 0.25s ease;
 }
 
-/* ========================= */
-/* 모달 헤더 */
-/* ========================= */
 .theme-setting-modal-header {
   display: flex;
   align-items: flex-start;
@@ -1357,7 +1290,6 @@ body.dark .board-count {
   line-height: 1.5;
 }
 
-/* 닫기 버튼 */
 .theme-setting-modal-close {
   width: 40px;
   height: 40px;
@@ -1389,9 +1321,6 @@ body.dark .board-count {
   background: #f8fafc;
 }
 
-/* ========================= */
-/* 설정 구역 공통 */
-/* ========================= */
 .theme-setting-section {
   display: flex;
   flex-direction: column;
@@ -1406,16 +1335,12 @@ body.dark .board-count {
   font-weight: 700;
 }
 
-/* ========================= */
-/* 계절 테마 선택 영역 */
-/* ========================= */
 .theme-setting-options {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
 }
 
-/* 계절 선택 버튼 */
 .theme-setting-option {
   position: relative;
 
@@ -1452,14 +1377,12 @@ body.dark .board-count {
   box-shadow: 0 6px 14px rgba(27, 36, 50, 0.1);
 }
 
-/* 선택된 계절 */
 .theme-setting-option.is-selected {
   border-color: var(--theme-border);
   color: var(--theme-text);
   box-shadow: 0 0 0 2px var(--theme-focus);
 }
 
-/* 계절 아이콘 */
 .theme-setting-option-icon {
   display: flex;
   align-items: center;
@@ -1475,9 +1398,6 @@ body.dark .board-count {
   line-height: 1;
 }
 
-/* ========================= */
-/* 모달 하단 버튼 */
-/* ========================= */
 .theme-setting-modal-buttons {
   display: flex;
   align-items: center;
@@ -1487,7 +1407,6 @@ body.dark .board-count {
   padding-top: 8px;
 }
 
-/* 취소 버튼 */
 .theme-setting-cancel {
   height: 44px;
   padding: 0 18px;
@@ -1509,7 +1428,6 @@ body.dark .board-count {
   color: #1b2432;
 }
 
-/* 적용 버튼 */
 .theme-setting-apply {
   height: 44px;
   padding: 0 22px;
@@ -1536,9 +1454,6 @@ body.dark .board-count {
   background: var(--theme-button-hover);
 }
 
-/* ========================= */
-/* 모달 열림 애니메이션 */
-/* ========================= */
 @keyframes themeSettingModalOpen {
   from {
     opacity: 0;
@@ -1550,9 +1465,7 @@ body.dark .board-count {
     transform: translateY(0) scale(1);
   }
 }
-/* ========================= */
-/* 다크 모드 같이 적용 */
-/* ========================= */
+
 .theme-dark-setting {
   display: flex;
   align-items: center;
@@ -1563,7 +1476,6 @@ body.dark .board-count {
   border-top: 1px solid #e8ebef;
 }
 
-/* 설명 */
 .theme-dark-setting-info strong {
   display: block;
 
@@ -1580,10 +1492,6 @@ body.dark .board-count {
   line-height: 1.5;
 }
 
-/* ========================= */
-/* 스위치 */
-/* ========================= */
-
 .theme-switch {
   position: relative;
 
@@ -1593,12 +1501,10 @@ body.dark .board-count {
   flex-shrink: 0;
 }
 
-/* 체크박스 숨김 */
 .theme-switch-input {
   display: none;
 }
 
-/* 배경 */
 .theme-switch-slider {
   position: absolute;
   inset: 0;
@@ -1610,7 +1516,6 @@ body.dark .board-count {
   transition: 0.25s;
 }
 
-/* 동그라미 */
 .theme-switch-slider::before {
   content: "";
 
@@ -1628,18 +1533,14 @@ body.dark .board-count {
   transition: 0.25s;
 }
 
-/* ON 상태 */
 .theme-switch-input:checked + .theme-switch-slider {
   background: var(--theme-button);
 }
 
-/* 동그라미 이동 */
 .theme-switch-input:checked + .theme-switch-slider::before {
   transform: translateX(20px);
 }
 
-/* ---------------------------------------------------- 모달 스타일 끄읕 ------------------------------------ */
-/* ------------------------------------------할 일 리스트 카드 시이자악------------------------------------------------ */
 .todo-container {
   min-height: 180px;
   width: 100%;
@@ -1658,18 +1559,10 @@ body.dark .board-count {
     box-shadow 0.3s ease,
     border-color 0.3s ease;
 }
-/*todo-container 다크모드*/
-body.dark .todo-container {
-  background-color: rgba(23, 29, 38, 1);
-  border-color: rgba(38, 49, 64, 1);
-}
-body.dark .todo-container .update-time-icon svg {
-  color: rgba(255, 255, 255, 0.8);
-}
-/*todo-container 호버*/
+
 .todo-container:hover {
-  transform: translateY(-5px); /* 위로 이동 */
-  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.3); /* 그림자 */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 14px 0 rgba(0, 0, 0, 0.3);
   border-color: var(--theme-button-hover);
 }
 .todo-container.completed-task {
@@ -1701,13 +1594,11 @@ body.dark .todo-container .update-time-icon svg {
   font-size: 11.2px;
   font-style: normal;
   font-weight: 700;
-  line-height: 16.8px; /* 150% */
+  line-height: 16.8px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
-body.dark .todo-priority-icon {
-  background-color: rgba(242, 90, 90, 0.1);
-}
+
 .todo-close-icon {
   border: 1px solid #e0e5eb;
   height: fit-content;
@@ -1726,9 +1617,7 @@ body.dark .todo-priority-icon {
 .todo-close-icon svg {
   display: block;
 }
-body.dark .todo-close-icon svg {
-  color: rgba(255, 255, 255, 0.8);
-}
+
 .todo-title-desc-container {
   display: flex;
   flex-direction: column;
@@ -1739,17 +1628,15 @@ body.dark .todo-close-icon svg {
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
-  line-height: 22.4px; /* 140% */
+  line-height: 22.4px;
 }
-body.dark .todo-title {
-  color: #fff;
-}
+
 .todo-desc {
   color: #5c6f8a;
   font-size: 14.4px;
   font-style: normal;
   font-weight: 400;
-  line-height: 21.6px; /* 150% */
+  line-height: 21.6px;
 }
 .two-update-time-container {
   display: flex;
@@ -1780,7 +1667,7 @@ body.dark .todo-title {
   font-size: 12.8px;
   font-style: normal;
   font-weight: 400;
-  line-height: 12.8px; /* 100% */
+  line-height: 12.8px;
 }
 .done-time[hidden] {
   display: none;
@@ -1811,8 +1698,29 @@ body.dark .todo-title {
   color: #29a366;
   background-color: #dcfaeb;
 }
-/* ------------------------------------------할 일 리스트 카드 끄읕------------------------------------------------ */
-/* 전체 화면을 덮는 모달 배경 */
+.mobile-section-nav {
+  display: none;
+}
+
+#list,
+#board,
+#done {
+  scroll-margin-top: 70px;
+}
+
+.null-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 120px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #98a4b3;
+
+  text-align: center;
+}
 .reset-modal-overlay {
   position: fixed;
   inset: 0;
@@ -1828,7 +1736,7 @@ body.dark .todo-title {
   background: rgba(0, 0, 0, 0.45);
   animation: resetOverlayOpen 0.2s ease;
 }
-/* 초기화 확인 모달 */
+
 .reset-modal-content {
   width: 100%;
   max-width: 520px;
@@ -1843,7 +1751,6 @@ body.dark .todo-title {
 }
 
 .reset-modal-buttons {
-  /* 취소 / 삭제 버튼 영역 */
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -1852,7 +1759,6 @@ body.dark .todo-title {
   padding-top: 48px;
 }
 
-/* 전체 삭제 버튼 */
 .reset-modal-confirm {
   padding: 8px 14px;
 
@@ -1865,13 +1771,11 @@ body.dark .todo-title {
   cursor: pointer;
 }
 
-/* 전체 삭제 버튼 Hover */
 .reset-modal-confirm:hover {
   background: #fef3f2;
   color: #b6190e;
 }
 
-/* 취소 버튼 */
 .reset-modal-cancel {
   padding: 8px 12px;
 
@@ -1882,14 +1786,12 @@ body.dark .todo-title {
   cursor: pointer;
 }
 
-/* 취소 버튼 Hover */
 .reset-modal-cancel:hover {
   background: #f2f4f7;
   border-radius: 8px;
   color: #16191f;
 }
 
-/* 모달 설명 문구 */
 .reset-modal-description {
   margin-top: 12px;
   margin-bottom: 32px;
@@ -1899,9 +1801,6 @@ body.dark .todo-title {
 .reset-modal-content[hidden] {
   display: none;
 }
-/* ========================= */
-/* 모달 열릴 때 애니메이션 */
-/* ========================= */
 
 @keyframes resetOverlayOpen {
   from {
@@ -1925,9 +1824,6 @@ body.dark .todo-title {
   }
 }
 
-/* ========================= */
-/* 모달 닫힐 때 애니메이션 */
-/* ========================= */
 .reset-modal-overlay.closing {
   animation: resetOverlayClose 0.2s ease forwards;
 }
@@ -1936,7 +1832,6 @@ body.dark .todo-title {
   animation: resetModalClose 0.2s ease forwards;
 }
 
-/* 배경이 서서히 사라지는 효과 */
 @keyframes resetOverlayClose {
   from {
     opacity: 1;
@@ -1947,7 +1842,6 @@ body.dark .todo-title {
   }
 }
 
-/* 모달이 위로 살짝 올라가며 사라지는 효과 */
 @keyframes resetModalClose {
   from {
     opacity: 1;
@@ -1960,7 +1854,6 @@ body.dark .todo-title {
   }
 }
 
-/* 다크모드 */
 body.dark {
   min-height: 100vh;
   background: var(--theme-bgc-dark);
@@ -2014,9 +1907,6 @@ body.dark .greeting-theme-toggle:hover {
   border-color: var(--theme-button-hover);
 }
 
-/* ========================= */
-/* 다크모드 테마 버튼 */
-/* ========================= */
 body.dark .greeting-theme-button {
   background: #171d26;
   border: 1px solid #3d4658;
@@ -2044,14 +1934,13 @@ body.dark .add-task-button {
 body.dark input {
   background-color: transparent;
 }
-/* 전체 기간 / 전체 우선순위 버튼 */
+
 body.dark .dropdown-button {
   background-color: #171d26;
   color: #666666;
   border-color: #263140;
 }
 
-/* 다크모드 드롭다운 열림 및 선택 상태 */
 body.dark .dropdown.is-open .dropdown-button,
 body.dark .dropdown:hover .dropdown-button,
 body.dark .dropdown-button.active {
@@ -2093,7 +1982,7 @@ body.dark .dropdown-menu {
   background-color: #171d26;
   border: 0.999px solid rgba(38, 49, 64, 1);
 }
-/* 다크모드 드롭다운 hover */
+
 body.dark .dropdown-item:hover {
   background-color: #263140;
   color: #f1f2f4;
@@ -2121,17 +2010,12 @@ body.dark .sort-title {
   color: #abb1ba;
 }
 
-/* ========================= */
-/* 다크모드 테마 드롭다운 */
-/* ========================= */
-
 body.dark .theme-dropdown-menu {
   background: #1b2432;
   border: 1px solid #303b4d;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
-/*다크모드 테마 제목*/
 body.dark .theme-dropdown-header strong {
   color: #f1f2f4;
 }
@@ -2140,7 +2024,6 @@ body.dark .theme-dropdown-header span {
   color: #9aa5b5;
 }
 
-/*다크모드메뉴글자*/
 body.dark .theme-dropdown-item {
   color: #f1f2f4;
 }
@@ -2148,13 +2031,11 @@ body.dark .theme-dropdown-item {
 body.dark .theme-dropdown-item:hover {
   background: #252f3d;
 }
-/* 
-다크테마 아이콘 배경 */
+
 body.dark .theme-dropdown-icon {
   background: #252f3d;
 }
-/* 
-테마 설정 버튼 */
+
 body.dark .theme-dropdown-setting {
   color: #f1f2f4;
   border-top: 1px solid #303b4d;
@@ -2163,13 +2044,11 @@ body.dark .theme-dropdown-setting {
 body.dark .theme-dropdown-setting:hover {
   color: var(--theme-text);
 }
-/* 
-체크표시 */
+
 body.dark .theme-dropdown-check {
   color: var(--theme-text);
 }
 
-/* 선택 및 hover 배경 */
 body.dark .theme-dropdown-item:hover,
 body.dark .theme-dropdown-item.is-selected,
 body.dark .theme-dropdown-setting:hover {
@@ -2178,76 +2057,81 @@ body.dark .theme-dropdown-setting:hover {
   color: #f1f2f4;
 }
 
-/* 선택된 테마의 체크 표시 */
 body.dark .theme-dropdown-item.is-selected .theme-dropdown-check {
   color: var(--theme-button);
 }
 
-/* 테마 설정 아이콘과 글자 */
 body.dark .theme-dropdown-setting:hover,
 body.dark .theme-dropdown-setting:hover svg {
   color: var(--theme-text);
   stroke: var(--theme-text);
 }
-/* ==================== 다크모드 모달 ==================== */
-
-/* 모달 배경 */
+/* 다크 모드 화면 */
+body.dark .board-count {
+  background-color: #b6b6b6;
+}
+body.dark .todo-container {
+  background-color: rgba(23, 29, 38, 1);
+  border-color: rgba(38, 49, 64, 1);
+}
+body.dark .todo-container .update-time-icon svg {
+  color: rgba(255, 255, 255, 0.8);
+}
+body.dark .todo-priority-icon {
+  background-color: rgba(242, 90, 90, 0.1);
+}
+body.dark .todo-close-icon svg {
+  color: rgba(255, 255, 255, 0.8);
+}
+body.dark .todo-title {
+  color: #fff;
+}
 body.dark .modal-content {
   background-color: #171d26;
 }
 
-/* 제목 */
 body.dark .modal-title {
   color: #f1f2f4;
 }
 
-/* 라벨 */
 body.dark .modal-label {
   color: #f1f2f4;
 }
 
-/* 입력창 */
 body.dark .modal-input {
   background-color: #1b2432;
   border-color: #263140;
   color: #f1f2f4;
 }
 
-/* 입력창 placeholder */
 body.dark .modal-input::placeholder {
   color: #7b8ba3;
 }
 
-/* 상태 선택 버튼 */
 body.dark .modal-status-button {
   background-color: #1b2432;
   border-color: #263140;
   color: #f1f2f4;
 }
 
-/* 상태 드롭다운 메뉴 */
 body.dark .modal-status-menu {
   background-color: #171d26;
   border-color: #263140;
 }
 
-/* 드롭다운 항목 */
 body.dark .modal-status-item {
   color: #f1f2f4;
 }
 
-/* 드롭다운 hover */
 body.dark .modal-status-item:hover {
   background-color: #263140;
 }
 
-/* 취소 버튼 */
 body.dark .modal-close-button {
   color: #9aa8bb;
   background-color: transparent;
 }
 
-/* 우선순위 버튼  */
 body.dark .modal-radio-label {
   background-color: #171d26;
   border-color: #263140;
@@ -2304,9 +2188,6 @@ body.dark .reset-modal-confirm:hover {
   color: #ff8a80;
 }
 
-/* ========================= */
-/* 다크모드 테마 설정 모달 */
-/* ========================= */
 body.dark .theme-setting-modal {
   background: rgba(0, 0, 0, 0.65);
 }
@@ -2337,14 +2218,12 @@ body.dark .theme-setting-modal-close:hover {
   color: var(--theme-text);
 }
 
-/* 다크모드 계절 테마 카드 */
 body.dark .theme-setting-option {
   background: #171d26;
   border-color: #263140;
   color: #abb1ba;
 }
 
-/* 다크모드 계절 테마 카드 hover 및 선택 상태 */
 body.dark .theme-setting-option:hover,
 body.dark .theme-setting-option.is-selected {
   border-color: var(--theme-border);
@@ -2365,9 +2244,6 @@ body.dark .theme-setting-cancel:hover {
   color: #f1f2f4;
 }
 
-/* ========================= */
-/* 다크모드 테마 스위치 */
-/* ========================= */
 body.dark .theme-dark-setting {
   border-top-color: #263140;
 }
@@ -2388,35 +2264,10 @@ body.dark .theme-switch-input:checked + .theme-switch-slider {
   background: var(--theme-button);
 }
 
-/* 모바일 미디어 쿼리 서비스*/
-.mobile-section-nav {
-  display: none;
-}
-
-#list,
-#board,
-#done {
-  scroll-margin-top: 70px;
-}
-
-.null-data {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  min-height: 120px;
-
-  font-size: 14px;
-  font-weight: 500;
-  color: #98a4b3;
-
-  text-align: center;
-}
 body.dark .null-data {
   color: #737d8c;
 }
-/*태블릿: 768px ~ 1199px */
-/* min-width를 따로 두지 않고 모바일까지 사용할 수 있게 적용 */
+/* 태블릿 미디어 쿼리 : 브레이크포인트 1199px (1200px~ 데스크탑) */
 @media (max-width: 1199px) {
   .container {
     max-width: 700px;
@@ -2430,7 +2281,7 @@ body.dark .null-data {
 
   .search-block-wrapper {
     display: block;
-    width: 100%; /*30%수정*/
+    width: 100%;
   }
   .dropdown_zip {
     width: 100%;
@@ -2488,7 +2339,6 @@ body.dark .null-data {
     padding-bottom: 24px;
   }
 
-  /* 개별 아이템 너비를 50%(반씩 차지)로 맞추고 순서(order) 부여 */
   .todo {
     order: 2;
   }
@@ -2539,8 +2389,7 @@ body.dark .null-data {
     visibility: visible;
   }
 }
-
-/* 모바일 */
+/* 모바일 미디어 쿼리 (브레이크포인트: 320px~767px) */
 @media (min-width: 320px) and (max-width: 767px) {
   .button-wrapper {
     width: 100%;
@@ -2569,7 +2418,6 @@ body.dark .null-data {
     width: 100%;
   }
 
-  /* 기간 / 우선순위 / 정렬 태그 영역 */
   .filter-info-list {
     display: flex;
     flex-wrap: wrap;
@@ -2582,7 +2430,6 @@ body.dark .null-data {
     white-space: nowrap;
   }
 
-  /* 조건 초기화 */
   .reset-filter-button {
     width: 100%;
     height: 44px;
@@ -2598,7 +2445,6 @@ body.dark .null-data {
     font-weight: 600;
   }
 
-  /* 전체 초기화 */
   .reset-data-button:not(.reset-filter-button) {
     width: 100%;
     height: 44px;
@@ -2614,9 +2460,6 @@ body.dark .null-data {
     font-weight: 600;
   }
 
-  /* ========================= */
-  /* 모바일 테마 설정 모달 */
-  /* ========================= */
   .theme-setting-modal-content {
     max-height: calc(100vh - 32px);
     padding: 24px 20px;
@@ -2684,7 +2527,6 @@ body.dark .null-data {
     text-decoration: none;
   }
 
-  /* 2. 밑줄 생성 (가상 요소) */
   .mobile-section-nav a::after {
     content: "";
     position: absolute;
@@ -2693,17 +2535,14 @@ body.dark .null-data {
     width: 100%;
     height: 2px;
 
-    /* 글자 색상을 자동으로 따라감 */
     background-color: currentColor;
 
-    /* 기본 상태: 숨김 */
     transform: scaleX(0);
     transition: transform 0.3s ease;
   }
 
-  /* 3. 호버 시 밑줄 노출 */
   .mobile-section-nav a:hover::after {
-    transform: scaleX(1); /* 밑줄 등장 */
+    transform: scaleX(1);
   }
   .mobile-section-nav a.active {
     color: #ffffff;
@@ -2712,7 +2551,7 @@ body.dark .null-data {
   }
   .container {
     padding-top: 44px;
-    margin-top: 30px; /* 기존 위 여백 값 */
+    margin-top: 30px;
   }
   .greeting-container {
     height: auto;
@@ -2721,8 +2560,8 @@ body.dark .null-data {
   }
   .greeting-theme-toggle-container {
     display: flex;
-    flex-direction: column; /* 세로로 배치 (버튼 아래에 드롭다운) */
-    align-items: flex-end; /* 오른쪽 끝(우측)으로 밀어서 정렬 */
+    flex-direction: column;
+    align-items: flex-end;
     gap: 8px;
 
     margin-top: 5px;

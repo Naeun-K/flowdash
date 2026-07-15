@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -10,23 +10,24 @@
     <link rel="stylesheet" href="./styles/style.css" />
     <link rel="stylesheet" href="./styles/season-effects.css" />
     <link rel="icon" type="image/webp" href="./img/spring.webp" />
-    <!-- 1. 검색엔진(SEO) 전용 메타 설명 태그 (이게 누락되어 점수가 깎였습니다!) -->
+
     <meta
       name="description"
       content="FlowDash와 함께 하루의 할 일을 직관적으로 관리하고 대시보드 통계를 확인하세요."
     />
   </head>
   <body>
+    <!-- 모바일 전용 네비게이션 -->
     <nav class="mobile-section-nav" aria-label="모바일 빠른 이동">
       <a href="#top" class="nav-link">현황</a>
       <a href="#list" class="nav-link">목록</a>
       <a href="#board" class="nav-link">진행중</a>
       <a href="#done" class="nav-link">완료</a>
     </nav>
-
+    <!-- 본문  -->
     <div id="top" class="container">
       <h1 class="sr-only">FlowDash 할 일 관리 서비스</h1>
-
+      <!-- 헤더 : 닉네임 / 테마버튼 등 -->
       <header class="greeting-container">
         <div class="greeting-content">
           <p class="greeting">
@@ -195,7 +196,9 @@
           </button>
         </div>
       </header>
+      <!-- 메인 : 섹션 3개 - 통계보드 / 정렬 및 필터 / 할 일 보드 -->
       <main>
+        <!-- 통계보드 섹션 -->
         <section class="todo-statistics-container" aria-label="할 일 통계">
           <h2 class="sr-only">할 일 리스트 통계 보드</h2>
           <div class="todo-statistics-card total">
@@ -219,7 +222,7 @@
             <span class="card-count achieved-rate"> 0% </span>
           </div>
         </section>
-
+        <!-- 정렬 및 필터 섹션 -->
         <section
           id="list"
           class="search-container"
@@ -430,7 +433,7 @@
             </div>
           </div>
         </section>
-
+        <!-- 할 일 보드 섹션 -->
         <section id="board" class="board-container" aria-label="할 일 보드판">
           <h2 class="sr-only">
             할 일 리스트 / 진행 중인 리스트 / 완료된 업무 리스트
@@ -487,9 +490,10 @@
           </div>
         </section>
       </main>
+      <!-- 푸터 -->
       <footer class="footer">&copy; 2026 UIONE. All rights reserved.</footer>
     </div>
-
+    <!-- 새 할 일 모달 -->
     <div
       class="new-task-modal"
       role="dialog"
@@ -650,7 +654,7 @@
         </form>
       </div>
     </div>
-
+    <!-- 삭제 및 초기화 모달 -->
     <div
       class="reset-modal-content"
       role="dialog"
@@ -669,7 +673,7 @@
         <button type="button" class="reset-modal-confirm">초기화 진행</button>
       </div>
     </div>
-
+    <!-- 색 테마 전용 드롭다운 -->
     <div class="theme-setting-modal" hidden>
       <div
         class="theme-setting-modal-content"
@@ -771,7 +775,7 @@
         </div>
       </div>
     </div>
-
+    <!-- 할 일 보드에 올릴 리스트 마크업 -->
     <div
       id="hidden-card"
       class="todo-container"
