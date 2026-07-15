@@ -34,37 +34,47 @@
   animation-name: autumn-fall;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
+  /* animation-fill-mode: none; */
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 낙엽 SVG 경로 모양 (비대칭 나뭇잎 형태) */
-.autumn-leaf::before {
-  content: "";
-  display: block;
+/* 진짜 단풍잎 SVG 스타일링 */
+.autumn-leaf svg {
+  transform: rotate(45deg);
   width: 100%;
   height: 100%;
-  background-color: var(--leaf-color, #c97843);
-  border-radius: 80% 0 85% 10%; /* 나뭇잎 곡선 구현 */
-  transform: rotate(45deg);
+  fill: currentColor; /* 자바스크립트에서 준 leaf.style.color가 자동으로 입혀집니다. */
 }
-
-/* 흩날리며 떨어지는 애니메이션 (벚꽃보다 느리고 큰 회전) */
 @keyframes autumn-fall {
   0% {
-    top: -50px;
-    transform: translateX(0) rotate(0deg) scale(1);
-    opacity: 0;
+    top: -40px;
+    transform: translateX(0) rotate(0deg);
   }
-  10% {
-    opacity: 0.85;
+  /* 1. 오른쪽(또는 왼쪽)으로 크게 흔들림 */
+  25% {
+    transform: translateX(calc(var(--sway-distance) * 0.7))
+      rotate(calc(var(--max-rotation) * 0.25));
   }
-  90% {
-    opacity: 0.85;
+  /* 2. 다시 중앙을 거쳐 반대 방향으로 흔들림 (지그재그 핵심) */
+  50% {
+    transform: translateX(calc(var(--sway-distance) * -0.4))
+      rotate(calc(var(--max-rotation) * 0.5));
   }
+  /* 3. 다시 원래 흔들리던 방향으로 회전하며 이동 */
+  75% {
+    transform: translateX(calc(var(--sway-distance) * 0.9))
+      rotate(calc(var(--max-rotation) * 0.75));
+    opacity: 0.8;
+  }
+  /* 4. 최종 목적지에 도달하며 서서히 사라짐 */
   100% {
     top: 105vh;
-    transform: translateX(var(--sway-distance, 100px))
-      rotate(var(--max-rotation, 720deg)) scale(0.9);
-    opacity: 0; /* 마지막에 투명하게 사라짐 */
+    transform: translateX(calc(var(--sway-distance) * 0.2))
+      rotate(var(--max-rotation));
+    opacity: 0; /* 떨어지면서 서서히 소멸 */
   }
 }
 
@@ -80,6 +90,60 @@
 
 /* ========================= */
 /* 겨울 - 눈송이 효과 */
+
+/* 겨울 효과 컨테이너 */
+.winter-falling-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* 사용자 클릭 방해 차단 */
+  z-index: -1; /* 모든 메인 카드, 모달, 헤더보다 뒤에 위치 */
+  overflow: hidden;
+}
+
+/* 눈송이 개별 스타일 */
+.winter-snowflake {
+  position: absolute;
+  top: -40px;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation-name: winter-fall;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+
+  /* SVG 정렬 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 눈송이가 천천히 회전하며 흔들리며 내리는 애니메이션 */
+@keyframes winter-fall {
+  0% {
+    top: -40px;
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    /* 중간 지점에서 살짝 흔들림 */
+    transform: translateX(calc(var(--sway-distance) / 2))
+      rotate(calc(var(--max-rotation) / 2));
+  }
+  100% {
+    top: 105vh;
+    transform: translateX(var(--sway-distance)) rotate(var(--max-rotation));
+    opacity: 0; /* 떨어지며 마지막에 투명해짐 */
+  }
+}
+
+/* 애니메이션 감축 선호 시 숨김 처리 */
+@media (prefers-reduced-motion: reduce) {
+  .winter-snowflake {
+    display: none !important;
+    animation: none !important;
+  }
+}
 /* ========================= */
 
 /* ========================= */
