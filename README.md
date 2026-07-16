@@ -86,16 +86,18 @@ flowdash/
 |
 +-- scripts/
 |   +-- autumn-effect.js
-|   +-- dom.js
+|   +-- dashbord.js
 |   +-- filter.js
 |   +-- icon.js
+|   +-- main.js
 |   +-- modal.js
 |   +-- nickname.js
+|   +-- season-svg-utils.js
 |   +-- season-theme.js
 |   +-- spring-effect.js
 |   +-- storage.js
 |   +-- summer-effect.js
-|   \-- winter-effect.js
+|   +--winter-effect.js
 |
 +-- styles/
 |   +-- reset.css
@@ -123,8 +125,9 @@ flowdash/
 | **`filter.js`**        | 검색, 기간, 우선순위, 정렬 등 필터 기능 처리              |
 | **`modal.js`**         | 할 일 생성 및 데이터 초기화 모달 제어                   |
 | **`nickname.js`**      | 닉네임 변경 및 LocalStorage 저장 처리              |
-| **`dom.js`**           | 공통 DOM 요소 제어 및 화면 렌더링                    |
-| **`icon.js`**          | 아이콘 및 UI 아이콘 상태 변경 처리                    |
+| **`dashbord.js`**           | 공통 DOM 요소 제어 및 화면 렌더링                    |
+| **`main.js`**          |    모든js와 모듈을 통합관리                 |
+| **`season-svg-utils.js`**          | SVG 문자열을 DOM 객체(DocumentFragment)로 변환하는 모듈                   |
 
 
 ### 3-3. 데이터 흐름 (Data Flow)
@@ -266,14 +269,15 @@ Git/GitHub 브랜치 전략을 활용한 협업 및 기능별 모듈화 구현
 -주어진 가이드라인에 국한된 디자인 구성
 -프로젝트 일정으로 인해 세부적인 애니메이션과 디자인 완성도를 높이지 못한 점
 
+-한정적인 minify: node.js환경을 다루지 못해 전무적인 번들러 활용에 제약이 있었고 이로인해 미니파이가 원활하게 적용되지 않아 성능 최적화 점수를 충분히 올리지 못한 점 
+
 
 ### 7-3. 다음에 개선할 점
 - 주도적인 디자인 기획 및 프로토타이핑
 - 프로젝트 일정으로 인해 세부적인 애니메이션과 디자인 완성도를 높이지 못한 점
 - 초기 설계 단계에서 디자인 시스템을 구축하여 일관성을 높이기
 - 성능과 접근성을 함께 고려한 개발 습관을 기르기
-
-
+- node.js 환경을  학습하여 단순히 기능을 넘어 웹성능을 극대화 할 수 있는 효율적인 환경을 구축하기
 ---
 
 ## 8. 실행 방법

@@ -12,6 +12,9 @@
 
   --theme-focus: #5c4dff;
 }
+:root body.dark {
+  --theme-bgc-dark-transparent: rgba(24, 24, 24, 0.2);
+}
 /* 봄 테마 화면 */
 
 html[data-theme="spring"] {
@@ -560,7 +563,8 @@ button {
   min-height: 360px;
   padding: 16px;
   border-radius: 16px;
-  background: var(--color-black-2, rgba(0, 0, 0, 0.02));
+
+  background-color: rgba(0, 0, 0, 0.02);
   box-sizing: border-box;
 }
 
@@ -1900,9 +1904,7 @@ body.dark .card-title {
 body.dark .card-count {
   color: rgba(241, 242, 244, 1);
 }
-body.dark .search-container {
-  background: var(--theme-bgc-dark);
-}
+
 body.dark .greeting-theme-toggle:hover {
   border-color: var(--theme-button-hover);
 }
@@ -1992,11 +1994,13 @@ body.dark .search-sort-info {
   border-color: rgba(38, 49, 64, 1);
   color: var(--theme-text);
 }
-
+body.dark .search-sort-reset-container {
+  background: var(--theme-bgc-dark-transparent);
+}
 body.dark .board-todo-board,
 body.dark .board-doing-board,
 body.dark .board-done-board {
-  background-color: rgb(24, 29, 36);
+  background-color: rgba(24, 29, 36, 0.2);
 }
 body.dark .board-todo-title,
 body.dark .board-doing-title,
