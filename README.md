@@ -127,7 +127,7 @@ flowdash/
 | **`nickname.js`**      | 닉네임 변경 및 LocalStorage 저장 처리              |
 | **`dashbord.js`**           | 공통 DOM 요소 제어 및 화면 렌더링                    |
 | **`main.js`**          |    모든js와 모듈을 통합관리                 |
-| **`season-svg-utils.js '**          | SVG 문자열을 DOM 객체(DocumentFragment)로 변환하는 모듈                   |
+| **`season-svg-utils.js`**          | SVG 문자열을 DOM 객체(DocumentFragment)로 변환하는 모듈                   |
 
 
 ### 3-3. 데이터 흐름 (Data Flow)
