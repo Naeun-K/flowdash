@@ -195,34 +195,47 @@ flowchart LR
 
 ### 3-4. 데이터 흐름 (Data Flow)
 
-### 3-4. 데이터 흐름 (Data Flow)
-
-```mermaid
-flowchart TD
-    A[사용자 입력]
-    B[index.html]
-    C[main.js<br/>모든 모듈 초기화]
-    D[modal.js<br/>Todo Manager]
-    E[CRUD 처리]
-    F[storage.js<br/>createStorage()]
-    G[(Browser LocalStorage)]
-    H[renderTodos()]
-    I[Todo Board 렌더링]
-    J["dispatchEvent('todoUpdated')"]
-    K[filter.js<br/>applyFilter()]
-    L[renderTodos()<br/>필터링 후 재렌더링]
-
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-    F --> G
-    G --> H
-    H --> I
-    I --> J
-    J --> K
-    K --> L
+```text
+사용자 입력
+      │
+      ▼
+index.html
+      │
+      ▼
+main.js
+(모든 모듈 초기화)
+      │
+      ▼
+modal.js
+(TodoManager)
+      │
+      ▼
+CRUD 처리
+(Create / Read / Update / Delete)
+      │
+      ▼
+storage.js
+(createStorage)
+      │
+      ▼
+Browser LocalStorage
+      │
+      ▼
+renderTodos()
+      │
+      ▼
+Todo Board 렌더링
+      │
+      ▼
+dispatchEvent("todoUpdated")
+      │
+      ▼
+filter.js
+(applyFilter)
+      │
+      ▼
+renderTodos()
+(필터링 후 재렌더링)
 ```
 
 설명
