@@ -111,15 +111,16 @@ flowdash/
 모듈 단위의 명확한 역할 분담을 통해 코드의 의존성을 최소화했습니다.
 
 ### 3-2. 데이터 아키텍처
+```mermaid
 flowchart LR
 
     U([👤 User])
 
-    subgraph P["Presentation Layer"]
+    subgraph Presentation_Layer
         HTML[index.html]
     end
 
-    subgraph A["Application Layer"]
+    subgraph Application_Layer
         MAIN[main.js]
         DASH[dashboard.js]
         SEASON[season-theme.js]
@@ -129,21 +130,21 @@ flowchart LR
         NICK[nickname.js]
     end
 
-    subgraph B["Business Logic Layer"]
+    subgraph Business_Logic_Layer
         CRUD[Todo CRUD]
-        RENDER[renderTodos()]
-        EVENT["todoUpdated Event"]
-        APPLY[applyFilter()]
+        RENDER[renderTodos]
+        EVENT[todoUpdated Event]
+        APPLY[applyFilter]
     end
 
-    subgraph D["Data Layer"]
+    subgraph Data_Layer
         STORAGE[storage.js]
         TODOS[(flowdash-todos)]
         THEME[(flowdash-theme)]
         FILTER_STORAGE[(flowdash-filter-settings)]
     end
 
-    subgraph R["Render Layer"]
+    subgraph Render_Layer
         BOARD[Todo Board]
         DASHBOARD[Dashboard UI]
     end
@@ -159,8 +160,8 @@ flowchart LR
     MAIN --> NICK
 
     TODO --> CRUD
-    CRUD --> STORAGE
 
+    CRUD --> STORAGE
     STORAGE --> TODOS
     STORAGE --> THEME
     STORAGE --> FILTER_STORAGE
@@ -173,6 +174,7 @@ flowchart LR
     APPLY --> RENDER
 
     DASH --> DASHBOARD
+```
 
 ### 3-3. 모듈 책임 분리
 | 모듈 | 주요 역할 |
@@ -193,45 +195,35 @@ flowchart LR
 
 ### 3-4. 데이터 흐름 (Data Flow)
 
-사용자 입력
-      │
-      ▼
-index.html
-      │
-      ▼
-main.js
-(모든 모듈 초기화)
-      │
-      ▼
-modal.js (TodoManager)
-      │
-      ▼
-CRUD 처리
-(Create / Read / Update / Delete)
-      │
-      ▼
-storage.js
-(createStorage)
-      │
-      ▼
-Browser LocalStorage
-      │
-      ▼
-renderTodos()
-      │
-      ▼
-Todo Board 렌더링
-      │
-      ▼
-dispatchEvent("todoUpdated")
-      │
-      ▼
-filter.js
-(applyFilter)
-      │
-      ▼
-renderTodos()
-(필터링 후 재렌더링)
+### 3-4. 데이터 흐름 (Data Flow)
+
+```mermaid
+flowchart TD
+    A[사용자 입력]
+    B[index.html]
+    C[main.js<br/>모든 모듈 초기화]
+    D[modal.js<br/>Todo Manager]
+    E[CRUD 처리]
+    F[storage.js<br/>createStorage()]
+    G[(Browser LocalStorage)]
+    H[renderTodos()]
+    I[Todo Board 렌더링]
+    J["dispatchEvent('todoUpdated')"]
+    K[filter.js<br/>applyFilter()]
+    L[renderTodos()<br/>필터링 후 재렌더링]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+```
 
 설명
 
