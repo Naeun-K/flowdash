@@ -110,10 +110,71 @@ flowdash/
 ```
 모듈 단위의 명확한 역할 분담을 통해 코드의 의존성을 최소화했습니다.
 
+### 3-2. 데이터 아키텍처
+flowchart LR
 
+    U([👤 User])
 
+    subgraph P["Presentation Layer"]
+        HTML[index.html]
+    end
 
-### 3-2. 모듈 책임 분리
+    subgraph A["Application Layer"]
+        MAIN[main.js]
+        DASH[dashboard.js]
+        SEASON[season-theme.js]
+        ICON[icon.js]
+        TODO[modal.js]
+        FILTER[filter.js]
+        NICK[nickname.js]
+    end
+
+    subgraph B["Business Logic Layer"]
+        CRUD[Todo CRUD]
+        RENDER[renderTodos()]
+        EVENT["todoUpdated Event"]
+        APPLY[applyFilter()]
+    end
+
+    subgraph D["Data Layer"]
+        STORAGE[storage.js]
+        TODOS[(flowdash-todos)]
+        THEME[(flowdash-theme)]
+        FILTER_STORAGE[(flowdash-filter-settings)]
+    end
+
+    subgraph R["Render Layer"]
+        BOARD[Todo Board]
+        DASHBOARD[Dashboard UI]
+    end
+
+    U --> HTML
+    HTML --> MAIN
+
+    MAIN --> DASH
+    MAIN --> SEASON
+    MAIN --> ICON
+    MAIN --> TODO
+    MAIN --> FILTER
+    MAIN --> NICK
+
+    TODO --> CRUD
+    CRUD --> STORAGE
+
+    STORAGE --> TODOS
+    STORAGE --> THEME
+    STORAGE --> FILTER_STORAGE
+
+    CRUD --> RENDER
+    RENDER --> BOARD
+
+    CRUD --> EVENT
+    EVENT --> APPLY
+    APPLY --> RENDER
+
+    DASH --> DASHBOARD
+
+### 3-3. 모듈 책임 분리
 | 모듈 | 주요 역할 |
 | :--------------------- | :--------------------------------------- |
 | **`season-theme.js`**  | 계절 테마 변경, 계절 효과 활성화 및 비활성화, 선택한 테마 상태 관리 |
@@ -130,55 +191,158 @@ flowdash/
 | **`season-svg-utils.js`**          | SVG 문자열을 DOM 객체(DocumentFragment)로 변환하는 모듈                   |
 
 
-### 3-3. 데이터 흐름 (Data Flow)
+### 3-4. 데이터 흐름 (Data Flow)
 
-사용자 입력 (테마 변경, 할 일 추가·수정·삭제, 검색 및 필터)
-                ↓
-JavaScript 모듈에서 이벤트 처리
-                ↓
-LocalStorage에 데이터 저장 및 조회
-                ↓
-DOM 및 UI 렌더링
-                ↓
-변경된 화면 출력
+사용자 입력
+      │
+      ▼
+index.html
+      │
+      ▼
+main.js
+(모든 모듈 초기화)
+      │
+      ▼
+modal.js (TodoManager)
+      │
+      ▼
+CRUD 처리
+(Create / Read / Update / Delete)
+      │
+      ▼
+storage.js
+(createStorage)
+      │
+      ▼
+Browser LocalStorage
+      │
+      ▼
+renderTodos()
+      │
+      ▼
+Todo Board 렌더링
+      │
+      ▼
+dispatchEvent("todoUpdated")
+      │
+      ▼
+filter.js
+(applyFilter)
+      │
+      ▼
+renderTodos()
+(필터링 후 재렌더링)
 
 설명
 
-사용자의 입력이 발생하면 JavaScript 모듈에서 이벤트를 처리하고, 필요한 데이터를 LocalStorage에 저장하거나 조회한다.
-이후 변경된 데이터를 기반으로 할 일 목록, 계절 테마, 통계 정보 등 관련 UI를 다시 렌더링하여 화면에 최신 상태를 출력하도록 구성하였다.
-
+사용자의 입력은 **index.html**에서 시작되어 **main.js**가 각 기능 모듈을 초기화합니다. Todo의 생성, 수정, 삭제 요청은 **modal.js**에서 처리되며, 데이터는 **storage.js**를 통해 LocalStorage에 저장됩니다. 데이터 변경 후 todoUpdated 커스텀 이벤트가 발생하면 **filter.js**가 필터와 정렬을 다시 적용하고, 최종적으로 renderTodos()를 호출하여 TODO / DOING / DONE 보드와 대시보드 화면을 최신 상태로 갱신합니다.
 
   ---
 
 ## 4. 핵심 설계 결정 사항 (Design Decisions)
 
-- status 기반 보드 분리 → 상태 필터 제거
-- 모든 날짜 데이터는 timestamp(number)로 통일
-- 기간 필터 → 정렬 → 검색 순서의 고정 파이프라인 적용
-- 통계는 기간 필터와 무관하게 전체 Todo 기준으로 계산
+- **단일 진입점(Entry Point) 구조**
+  - `main.js`를 중심으로 모든 모듈을 초기화하여 애플리케이션의 실행 흐름을 일관되게 관리
+  - 초기화 로직을 한 곳에서 관리함으로써 유지보수성과 확장성을 향상
+
+- **기능별 모듈화(Module Separation)**
+  - Dashboard, Todo, Filter, Theme, Icon, Nickname 등 기능 단위로 모듈을 분리
+  - 각 모듈이 하나의 책임(Single Responsibility)만 수행하도록 설계하여 응집도를 높이고 결합도를 낮춤
+
+- **Storage 추상화(Storage Abstraction)**
+  - `storage.js`의 `createStorage()`를 통해 LocalStorage 접근을 캡슐화
+  - 저장 방식이 변경되더라도 다른 모듈의 수정 없이 대응할 수 있도록 설계
+
+- **이벤트 기반(Event-Driven) 구조**
+  - Todo 데이터 변경 시 `todoUpdated` 커스텀 이벤트를 발생시켜 모듈 간 통신
+  - 직접적인 함수 호출을 최소화하여 모듈 간 의존성을 줄이고 확장성을 확보
+
+- **렌더링과 비즈니스 로직 분리**
+  - CRUD 처리와 화면 렌더링을 분리하여 동일한 렌더링 로직을 재사용
+  - 데이터 변경 이후 항상 `renderTodos()`를 통해 일관된 UI를 유지
+
+- **상태(State) 영속성 유지**
+  - Todo 목록뿐만 아니라 테마, 필터, 정렬 상태를 LocalStorage에 저장
+  - 새로고침 이후에도 사용자 설정과 작업 상태를 유지하여 사용자 경험(UX)을 향상
+
+- **필터 재적용 구조**
+  - Todo 추가, 수정, 삭제 이후 항상 `applyFilter()`를 통해 데이터를 재가공
+  - 현재 적용 중인 검색, 기간, 우선순위, 정렬 조건을 유지한 상태로 화면을 갱신
+
+- **재사용 가능한 공통 컴포넌트**
+  - 확인 모달, Storage 관리, 렌더링 함수 등을 공통 로직으로 구성
+  - 기능 추가 시 기존 컴포넌트를 재사용할 수 있도록 설계하여 코드 중복을 최소화
+
+- **브라우저 환경 최적화**
+  - 별도의 서버 없이 LocalStorage 기반으로 데이터를 관리
+  - GitHub Pages와 같은 정적 호스팅 환경에서도 독립적으로 실행 가능하도록 구현
 
 ---
 ## 5. 수행 결과 (Implementation Result)
 
 ### 구현 결과
-CRUD(Create, Read, Update, Delete) 기반의 할 일 관리 기능 구현
-검색, 기간, 우선순위, 정렬 기능을 통한 데이터 필터링 제공
-LocalStorage를 활용한 데이터 영속성 구현
-닉네임 변경 및 사용자 설정 저장 기능 구현
-라이트/다크 모드 및 계절 테마(봄·여름·가을·겨울) 지원
-계절별 애니메이션 효과(벚꽃, 물결, 낙엽, 눈) 적용
-반응형 웹 구현으로 PC, 태블릿, 모바일 환경 지원
-Git/GitHub 브랜치 전략을 활용한 협업 및 기능별 모듈화 구현
+- CRUD(Create, Read, Update, Delete) 기반의 할 일 관리 기능 구현
+- 검색, 기간, 우선순위, 정렬 기능을 통한 데이터 필터링 제공
+- LocalStorage를 활용한 데이터 영속성 구현
+- 닉네임 변경 및 사용자 설정 저장 기능 구현
+- 라이트/다크 모드 및 계절 테마(봄·여름·가을·겨울) 지원
+- 계절별 애니메이션 효과(벚꽃, 물결, 낙엽, 눈) 적용
+- 반응형 웹 구현으로 PC, 태블릿, 모바일 환경 지원
+- Git/GitHub 브랜치 전략을 활용한 협업 및 기능별 모듈화 구현
 
-### 5-1. 구현 완료 기능
+### 5-1. # 구현 완료 기능 (Implemented Features)
 
-- CRUD 전 기능
-- TODO / DOING / DONE 칸반 보드
-- 기간 필터 / 검색 / 정렬
-- 통계 대시보드 및 달성률
-- 라이트 / 다크 테마
-- 인사말 및 닉네임 UX
-- 반응형 레이아웃
+- **Todo 관리 기능**
+  - Todo 생성(Create), 조회(Read), 수정(Update), 삭제(Delete) 기능 구현
+  - TODO / DOING / DONE 상태별 보드 관리
+  - 드래그 앤 드롭을 통한 상태 변경 지원
+  - 우선순위(HIGH / MID / LOW) 설정 기능
+  - 완료 여부에 따른 실시간 화면 갱신
+
+- **검색 및 필터 기능**
+  - 제목 및 내용 기반 실시간 검색
+  - 기간(전체 / 오늘 / 최근 7일) 필터 제공
+  - 우선순위별 필터 기능 제공
+  - 제목 기준 오름차순 / 내림차순 정렬 기능
+  - 적용된 필터 조건 요약 정보 표시
+  - 필터 초기화 기능 제공
+
+- **데이터 저장 및 상태 유지**
+  - LocalStorage를 활용한 Todo 데이터 저장
+  - 테마(다크/라이트) 설정 저장
+  - 계절 테마 설정 저장
+  - 검색 및 필터 상태 저장
+  - 닉네임 정보 저장
+  - 새로고침 이후에도 사용자 설정 및 데이터 유지
+
+- **대시보드 기능**
+  - 현재 날짜 및 시간 표시
+  - 시간대별 맞춤 인사(Greeting) 제공
+  - Todo 진행 현황 및 상태 정보 표시
+  - 닉네임 기반 개인화 UI 제공
+
+- **테마 및 UI 커스터마이징**
+  - 다크 모드 / 라이트 모드 전환
+  - 계절별(Spring, Summer, Autumn, Winter) 테마 적용
+  - 테마 설정 모달 제공
+  - 사용자 설정에 따른 UI 상태 유지
+
+- **시각 효과 및 사용자 경험(UX)**
+  - 계절별 애니메이션 효과 적용
+  - 랜덤 SVG 아이콘 표시
+  - 모달 기반 사용자 인터랙션 제공
+  - 자연스러운 화면 전환 및 애니메이션 적용
+
+- **이벤트 기반 데이터 동기화**
+  - Todo 변경 시 `todoUpdated` 커스텀 이벤트 발생
+  - 변경된 데이터에 대해 필터 및 정렬 자동 재적용
+  - 화면을 최신 상태로 자동 갱신
+
+- **모듈 기반 구조**
+  - 기능별 JavaScript 모듈 분리
+  - `main.js`를 중심으로 모든 모듈 초기화
+  - `storage.js`를 통한 공통 Storage 관리
+  - 유지보수와 기능 확장을 고려한 구조 설계
 
 
 ### 5-2. 요구사항 충족 범위
