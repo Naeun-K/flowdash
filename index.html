@@ -269,9 +269,7 @@
                 <details class="search-period-dropdown dropdown">
                   <summary
                     class="search-period-dropdown-button dropdown-button"
-                    role="button"
                     aria-haspopup="listbox"
-                    aria-expanded="false"
                   >
                     전체 기간
                     <span class="arrow-icon" aria-hidden="true">
@@ -327,9 +325,7 @@
                 <details class="search-priority-dropdown dropdown">
                   <summary
                     class="search-priority-dropdown-button dropdown-button"
-                    role="button"
                     aria-haspopup="listbox"
-                    aria-expanded="false"
                   >
                     전체 우선순위
                     <span class="arrow-icon" aria-hidden="true">
@@ -590,9 +586,7 @@
               <p class="modal-label" id="status-select-label">상태</p>
               <details class="dropdown modal-status">
                 <summary
-                  role="button"
                   aria-haspopup="listbox"
-                  aria-expanded="false"
                   aria-labelledby="status-select-label"
                   class="dropdown-button modal-status-button"
                 >
@@ -779,10 +773,10 @@
     <!-- 할 일 보드에 올릴 리스트 마크업 -->
     <div
       id="hidden-card"
+      role="dialog"
       class="todo-container"
       aria-modal="true"
       aria-labelledby="todo-container"
-      aria-hidden="true"
       hidden
     >
       <div class="todo-icon-container">
@@ -791,7 +785,6 @@
           type="button"
           class="todo-close-icon"
           aria-label="할 일 삭제"
-          aria-hidden="true"
           hidden
         >
           <svg
@@ -809,7 +802,7 @@
         </button>
       </div>
       <div class="todo-title-desc-container">
-        <h2 class="todo-title"></h2>
+        <h2 class="todo-title">할 일</h2>
         <p class="todo-desc"></p>
       </div>
       <div class="two-update-time-container">
@@ -831,7 +824,7 @@
               />
             </svg>
           </span>
-          <time class="update-time" id="update-todo-time" datetime=""> </time>
+          <time class="update-time" id="update-todo-time"> </time>
         </p>
         <p class="update-time-container update-time" hidden>
           <span class="update-time-icon">
@@ -848,7 +841,7 @@
               />
             </svg>
           </span>
-          <time class="update-time" id="update-update-time" datetime=""> </time>
+          <time class="update-time" id="update-update-time"> </time>
         </p>
         <p class="update-time-container done-time" hidden>
           <span class="update-time-icon">
@@ -868,7 +861,7 @@
               />
             </svg>
           </span>
-          <time class="update-time" id="update-done-time" datetime=""> </time>
+          <time class="update-time" id="update-done-time"> </time>
         </p>
       </div>
     </div>
