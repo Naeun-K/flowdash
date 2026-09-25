@@ -1,3 +1,8 @@
+import "../styles/reset.css";
+import "../styles/variables.css";
+import "../styles/style.css";
+import "../styles/season-effects.css";
+
 import { updateSeasonEffect } from "./season-theme.js"; //계절테마 제어 모듈
 import { initDashboardTheme } from "./dashboard.js"; // 대시보드 테마/그리팅 통합 제어 모듈 경로
 import { initFilterAndSort } from "./filter.js"; // 필터 및 검색 정렬 모듈
