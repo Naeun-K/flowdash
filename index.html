@@ -23,7 +23,8 @@
     <nav class="mobile-section-nav" aria-label="모바일 빠른 이동">
       <a href="#top" class="nav-link">현황</a>
       <a href="#list" class="nav-link">목록</a>
-      <a href="#board" class="nav-link">진행중</a>
+      <a href="#todo" class="nav-link">할일</a>
+      <a href="#doing" class="nav-link">진행중</a>
       <a href="#done" class="nav-link">완료</a>
     </nav>
     <!-- 본문  -->
@@ -432,12 +433,12 @@
           </div>
         </section>
         <!-- 할 일 보드 섹션 -->
-        <section id="board" class="board-container" aria-label="할 일 보드판">
+        <section class="board-container" aria-label="할 일 보드판">
           <h2 class="sr-only">
             할 일 리스트 / 진행 중인 리스트 / 완료된 업무 리스트
           </h2>
 
-          <div class="board-todo-board">
+          <div class="board-todo-board" id="todo">
             <div class="board-header board-todo-header">
               <span class="board-title board-todo-title" id="todo-board-label"
                 >할일</span
@@ -453,7 +454,7 @@
             </div>
           </div>
 
-          <div class="board-doing-board">
+          <div class="board-doing-board" id="doing">
             <div class="board-header board-doing-header">
               <span class="board-title board-doing-title" id="doing-board-label"
                 >진행중</span
