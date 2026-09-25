@@ -1,0 +1,128 @@
+/* =========================================================
+   CSS VARIABLES
+   - 공통 색상 변수
+   - 기본 테마 변수
+   - 기본 다크 테마 변수
+   - 봄 / 여름 / 가을 / 겨울 테마 변수
+   - 변수 선언만 이 파일에서 관리
+========================================================= */
+
+:root {
+  /* 공통 라이트 컬러 */
+  --color-white: #fff;
+  --color-text-primary: #1b2432;
+  --color-text-secondary: #5c6f8a;
+  --color-text-muted: #98a4b3;
+  --color-border: #e0e5eb;
+  --color-bg-hover: #f8fafc;
+
+  /* 공통 다크 컬러 */
+  --dark-bg-primary: #171d26;
+  --dark-bg-hover: #1f2733;
+  --dark-border: #263140;
+  --dark-text-primary: #f1f2f4;
+  --dark-text-secondary: #abb1ba;
+
+  /* 기본 테마 */
+  --theme-text: #5f42f0;
+  --theme-button-hover: #5f42f0;
+  --theme-button: #4b32c3;
+  --theme-border: #4b32c3;
+  --theme-bgc: var(--color-white);
+  --theme-bgc-dark: #121720;
+  --theme-nav: var(--color-white);
+  --theme-focus: #5c4dff;
+}
+
+/* 기본 다크 테마 */
+:root body.dark {
+  --theme-bgc-dark-transparent: rgba(24, 24, 24, 0.2);
+}
+
+/* =========================================================
+   봄 테마 변수
+========================================================= */
+html[data-theme="spring"] {
+  --theme-button: #dc9fad;
+  --theme-border: #dc9fad;
+  --theme-bgc: linear-gradient(#ffffff, #fff3f8);
+  --theme-button-hover: #d38798;
+  --theme-text: #d38798;
+  --theme-focus: rgba(229, 183, 193, 0.3);
+}
+
+html[data-theme="spring"] body.dark {
+  --theme-button: #efaad0;
+  --theme-border: #eda4b0;
+  --theme-bgc-dark: #181818;
+  --theme-nav: #383239;
+  --theme-button-hover: #c78993;
+  --theme-text: #e98ec0;
+  --theme-focus: #ffd6e3;
+}
+
+/* =========================================================
+   여름 테마 변수
+========================================================= */
+html[data-theme="summer"] {
+  --theme-button: #6ec1e4;
+  --theme-border: #2cacad;
+  --theme-bgc: linear-gradient(#fff, #edf8fb);
+  --theme-button-hover: #2cacad;
+  --theme-text: #4a90e2;
+  --theme-focus: #d9f5f0;
+}
+
+html[data-theme="summer"] body.dark {
+  --theme-button: #48769e;
+  --theme-border: #6c96bc;
+  --theme-bgc-dark: #121821;
+  --theme-button-hover: #425b71;
+  --theme-text: #8ee7e7;
+  --theme-nav: #0a1d2e;
+  --theme-focus: #b5d6e0;
+}
+
+/* =========================================================
+   가을 테마 변수
+========================================================= */
+html[data-theme="autumn"] {
+  --theme-button: #dcb6a2;
+  --theme-border: #ca9174;
+  --theme-bgc: linear-gradient(#fff, #e9d0c6);
+  --theme-button-hover: #ca9174;
+  --theme-text: #b86c45;
+  --theme-focus: #eddad1;
+}
+
+html[data-theme="autumn"] body.dark {
+  --theme-button: #a86040;
+  --theme-border: #b8721c;
+  --theme-bgc-dark: #232222;
+  --theme-nav: #e5effd;
+  --theme-button-hover: #9b6e34;
+  --theme-text: #b77751;
+  --theme-focus: #ac7015;
+}
+
+/* =========================================================
+   겨울 테마 변수
+========================================================= */
+html[data-theme="winter"] {
+  --theme-button: #76a5af;
+  --theme-border: #76a5af;
+  --theme-bgc: linear-gradient(#fff, #deeefd);
+  --theme-button-hover: #a2c4c9;
+  --theme-text: #46679c;
+  --theme-focus: #d0e0e3;
+}
+
+html[data-theme="winter"] body.dark {
+  --theme-button: #778da9;
+  --theme-border: #76a5af;
+  --theme-bgc-dark: #14181c;
+  --theme-button-hover: #76a5af;
+  --theme-text: #415a77;
+  --theme-nav: #e5effd;
+  --theme-focus: #dce6f3;
+}
