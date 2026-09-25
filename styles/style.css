@@ -545,13 +545,14 @@ button {
 .greeting-icon {
   width: 40px;
   height: 40px;
-  padding-left: 4.41px;
-}
 
-.greeting-icon,
-.greeting-icon svg {
-  display: inline-block;
-  vertical-align: baseline;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding-left: 8px;
+
+  color: var(--theme-text);
 }
 
 .greeting-date {
@@ -717,7 +718,6 @@ button {
   font-family: inherit;
   font-size: 15px;
   text-align: left;
-
 }
 
 .greeting-theme-button-icon {
@@ -1241,7 +1241,6 @@ button {
   font-family: inherit;
   font-size: 15px;
   font-weight: 600;
-
 }
 
 .theme-setting-cancel:hover {
@@ -1517,7 +1516,6 @@ button {
   display: none;
 }
 
-
 .reset-modal-overlay {
   position: fixed;
   inset: 0;
@@ -1564,7 +1562,6 @@ button {
 
   background: var(--color-white);
   color: #f04438;
-
 }
 
 .reset-modal-confirm:hover {
@@ -1578,7 +1575,6 @@ button {
   border: 0;
   background: transparent;
   color: #667085;
-
 }
 
 .reset-modal-cancel:hover {
@@ -2077,7 +2073,10 @@ body.dark .null-data {
   .dropdown_zip {
     width: 100%;
   }
-
+  .greeting-icon {
+    width: 35px;
+    height: 35px;
+  }
   .search-block {
     display: grid;
     grid-template-columns: 1fr;
@@ -2283,21 +2282,23 @@ body.dark .null-data {
   }
 
   .mobile-section-nav {
-    display: flex;
+    width: 100%;
 
     position: fixed;
     top: 0;
     left: 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    height: 44px;
 
+    display: flex;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
-    gap: 50px;
+
+    padding: 15px;
+
     background-color: var(--theme-text);
+
     border-bottom: 1px solid #eeeeee;
-    z-index: 1000;
+    z-index: 100;
   }
   body.dark .mobile-section-nav {
     background-color: var(--theme-text);
@@ -2391,9 +2392,8 @@ body.dark .null-data {
   }
 
   .greeting-icon {
-    width: 33.59px;
-    height: 33.59px;
-    margin-left: 4.41px;
+    width: 30px;
+    height: 30px;
   }
 
   .search-container {
