@@ -11,6 +11,7 @@ import { initTodoManager } from "./modal.js"; // 할 일(Todo) 생성 및 관리
 // 2. 닉네임 관리 기능 가져오기
 // (이렇게 import 해오는 것만으로도 nickname.js 내부의 로직이 자동으로 기동됩니다!)
 import "./nickname.js";
+import initLocateMiddle from "./locate-contents.js";
 
 // 3. 페이지 로드 시 통합 초기화
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,4 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 검색, 필터 드롭다운 상태 복원 및 이벤트 등록
   initFilterAndSort();
+
+  // 모바일 이동 시 콘텐츠 화면 가운데 위치
+  initLocateMiddle();
 });
