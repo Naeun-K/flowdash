@@ -78,6 +78,7 @@ async function syncTodoNotifications(user, task) {
     body: JSON.stringify({
       title: task.title,
       status: task.status,
+      dueAt: task.dueAt,
       notifications: task.status === "DONE" ? [] : notifications,
     }),
   });
