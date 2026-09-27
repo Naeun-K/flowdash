@@ -98,7 +98,7 @@ async function sendDueNotifications(env) {
 
 	const { results } = await db
 		.prepare(
-			`SELECT id, user_id, todo_id, title
+			`SELECT id, user_id, todo_id, title, due_at
        FROM notifications
        WHERE status = 'pending' AND notify_at <= ?
        ORDER BY notify_at
@@ -120,6 +120,15 @@ async function sendDueNotifications(env) {
 
 			if (!current) continue;
 
+			const dueText = new Intl.DateTimeFormat('ko-KR', {
+				timeZone: 'Asia/Seoul',
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+				hour: 'numeric',
+				minute: '2-digit',
+			}).format(new Date(notification.due_at));
+
 			const response = await fetch('https://api.onesignal.com/notifications', {
 				method: 'POST',
 				headers: {
@@ -132,8 +141,10 @@ async function sendDueNotifications(env) {
 					include_aliases: {
 						external_id: [notification.user_id],
 					},
-					headings: { en: 'FlowDash 할 일 알림' },
-					contents: { en: notification.title },
+					headings: { en: 'FlowDash 알림' },
+					contents: {
+						en: `${notification.title}\n만기일: ${dueText}`,
+					},
 					url: 'https://naeun-k.github.io/flowdash/',
 					idempotency_key: notification.id,
 				}),
@@ -230,6 +241,10 @@ export default {
 			}
 
 			const body = await request.json();
+			if (!Number.isSafeInteger(body.dueAt)) {
+				return json({ error: '만기일이 올바르지 않습니다.' }, 400, corsHeaders);
+			}
+
 			const notifications = parseNotifications(body);
 			const now = Date.now();
 			const title = body.title.trim();
@@ -250,14 +265,15 @@ export default {
 					db
 						.prepare(
 							`INSERT INTO notifications (
-                id, user_id, todo_id, notification_id,
-                title, notify_at, status, sent_at, created_at, updated_at
-              )
-              VALUES (?, ?, ?, ?, ?, ?, 'pending', NULL, ?, ?)
-              ON CONFLICT (user_id, todo_id, notification_id)
-              DO UPDATE SET
-                title = excluded.title,
-                notify_at = excluded.notify_at,
+  id, user_id, todo_id, notification_id,
+  title, notify_at, due_at, status, sent_at, created_at, updated_at
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', NULL, ?, ?)
+ON CONFLICT (user_id, todo_id, notification_id)
+DO UPDATE SET
+  title = excluded.title,
+  notify_at = excluded.notify_at,
+  due_at = excluded.due_at,
                 status = CASE
                   WHEN notifications.title = excluded.title
                    AND notifications.notify_at = excluded.notify_at
@@ -278,7 +294,7 @@ export default {
                 END,
                 updated_at = excluded.updated_at`,
 						)
-						.bind(crypto.randomUUID(), userId, todoId, notification.id, title, notification.notifyAt, now, now),
+						.bind(crypto.randomUUID(), userId, todoId, notification.id, title, notification.notifyAt, body.dueAt, now, now),
 				);
 			}
 
