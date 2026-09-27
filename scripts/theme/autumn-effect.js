@@ -1,4 +1,4 @@
-﻿import { createSvgFragment } from "./season-svg-utils.js";
+﻿import { createSvgFragment } from "../utils/season-svg-utils.js";
 
 /**
  * @fileoverview 가을 낙엽 떨어짐 효과 애니메이션을 관리하는 모듈입니다.

@@ -35,9 +35,9 @@ export function initDashboardTheme() {
 
   // 시간대에 따른 맞춤형 인사말 출력
   if (greetingElement) {
-    if (hour >= 5 && hour < 11) {
+    if (hour >= 5 && hour < 12) {
       greetingElement.textContent = "좋은 아침이에요 ,  ";
-    } else if (hour >= 11 && hour < 17) {
+    } else if (hour >= 12 && hour < 18) {
       greetingElement.textContent = "좋은 오후에요 ,  ";
     } else if (hour >= 17 && hour < 22) {
       greetingElement.textContent = "좋은 저녁이에요 ,  ";
