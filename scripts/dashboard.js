@@ -3,7 +3,7 @@
  * 다크/라이트 모드 스위칭 및 계절별 테마 설정을 관리하는 대시보드 제어 모듈입니다.
  */
 
-import { createStorage } from "./storage.js";
+import { createStorage } from "./utils/storage.js";
 
 /**
  * 테마 설정을 브라우저 LocalStorage에 영구 저장하기 위한 스토리지 인스턴스입니다.
