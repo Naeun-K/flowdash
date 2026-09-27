@@ -101,8 +101,8 @@ import { startSummerEffect, stopSummerEffect } from "./summer-effect.js";
 import { startAutumnEffect, stopAutumnEffect } from "./autumn-effect.js";
 import { startWinterEffect, stopWinterEffect } from "./winter-effect.js";
 import { startSpringEffect, stopSpringEffect } from "./spring-effect.js";
-import { createStorage } from "./storage.js";
-import { updateRandomIcon } from "./icons/random-icons.js";
+import { createStorage } from "../storage.js";
+import { updateRandomIcon } from "../icons/random-icons.js";
 
 /**
  * @namespace themeStorage
@@ -190,8 +190,5 @@ themeObserver.observe(document.documentElement, {
   attributes: true,
   attributeFilter: ["data-theme"],
 });
-
-// 최초 페이지 진입 시 실행
-updateSeasonEffect();
 
 export { updateSeasonEffect };

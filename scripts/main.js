@@ -3,31 +3,48 @@ import "../styles/variables.css";
 import "../styles/style.css";
 import "../styles/season-effects.css";
 
-import { updateSeasonEffect } from "./season-theme.js"; //계절테마 제어 모듈
+import { updateSeasonEffect } from "./theme/season-theme.js";
 import { initDashboardTheme } from "./dashboard.js"; // 대시보드 테마/그리팅 통합 제어 모듈 경로
 import { initFilterAndSort } from "./filter.js"; // 필터 및 검색 정렬 모듈
-import { initTodoManager } from "./modal.js"; // 할 일(Todo) 생성 및 관리 모듈
+import { initTodoManager, loadUserTodos } from "./todo-manager.js"; // 할 일(Todo) 생성 및 관리 모듈
+import initLocateMiddle from "./utils/locate-contents.js";
+import initAuth from "./auth-ui.js";
+import { initNickname } from "./nickname.js";
 
-// 2. 닉네임 관리 기능 가져오기
-// (이렇게 import 해오는 것만으로도 nickname.js 내부의 로직이 자동으로 기동됩니다!)
-import "./nickname.js";
-import initLocateMiddle from "./locate-contents.js";
+const oneSignalAppId = import.meta.env.VITE_ONESIGNAL_APP_ID;
 
-// 3. 페이지 로드 시 통합 초기화
+const isFlowDashSite =
+  window.location.origin === "https://naeun-k.github.io" &&
+  window.location.pathname.startsWith("/flowdash/");
+
+if (oneSignalAppId && isFlowDashSite) {
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+  window.OneSignalDeferred.push(async function (OneSignal) {
+    await OneSignal.init({
+      appId: oneSignalAppId,
+      serviceWorkerPath: "flowdash/push/onesignal/OneSignalSDKWorker.js",
+      serviceWorkerParam: {
+        scope: "/flowdash/push/onesignal/",
+      },
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
+}
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("FlowDash 서비스가 성공적으로 시작되었습니다! 🚀");
-
-  // 시간대 그리팅 메시지 및 테마 제어 통합 초기화
   initDashboardTheme();
-  // 계절 효과 테마 실행
   updateSeasonEffect();
+  initLocateMiddle();
 
-  // 할 일(Todo) 목록 렌더링 및 모달 컨트롤 개시
+  // 이벤트 리스너는 앱 실행 시 한 번만 등록
   initTodoManager();
-
-  // 검색, 필터 드롭다운 상태 복원 및 이벤트 등록
   initFilterAndSort();
 
-  // 모바일 이동 시 콘텐츠 화면 가운데 위치
-  initLocateMiddle();
+  // 사용자별 데이터는 로그인 사용자가 확인될 때마다 다시 로드
+  initAuth(async () => {
+    await loadUserTodos();
+    await initNickname();
+  });
 });
