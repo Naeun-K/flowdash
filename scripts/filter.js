@@ -3,7 +3,7 @@
  * 필터링하여 동적으로 렌더링하고, 설정 값을 LocalStorage에 저장하여 유지하는 모듈입니다.
  */
 
-import { getTasks, renderTodos, openResetModal } from "./modal.js";
+import { getTasks, renderTodos, openResetModal } from "./todo-manager.js";
 
 /**
  * 필터 및 검색 설정을 브라우저 LocalStorage에 영구 저장하기 위한 키 값입니다.
@@ -106,6 +106,7 @@ function getSevenDaysAgo() {
  * @returns {void}
  */
 function updateFilterInfo() {
+  if (!filterInfoContainer) return;
   // 기존에 그려져 있던 정보 태그 노드 일괄 제거
   filterInfoContainer
     .querySelectorAll(".search-sort-info")
@@ -165,19 +166,21 @@ export function applyFilter() {
   let tasks = getTasks();
   console.log(tasks);
 
-  // 1. 기간 필터링 처리 (task.id의 타임스탬프 값을 기준으로 분류)
+  // 1. 기간 필터링 처리 (task.createdAt의 생성 시간을 기준으로 분류)
   if (selectedPeriod === "today") {
     const todayStart = getTodayStart();
+
     tasks = tasks.filter((task) => {
-      const taskDate = new Date(Number(task.id));
+      const taskDate = new Date(task.createdAt);
       return taskDate >= todayStart;
     });
   }
 
   if (selectedPeriod === "seven-days") {
     const sevenDaysAgo = getSevenDaysAgo();
+
     tasks = tasks.filter((task) => {
-      const taskDate = new Date(Number(task.id));
+      const taskDate = new Date(task.createdAt);
       return taskDate >= sevenDaysAgo;
     });
   }
@@ -225,44 +228,6 @@ export function applyFilter() {
   updateFilterInfo();
 }
 
-// 검색 창에 텍스트가 입력될 때마다 실시간으로 키워드를 업데이트하고 목록을 필터링합니다.
-searchInput?.addEventListener("input", () => {
-  selectedKeyword = searchInput.value.trim();
-  saveSettingsToStorage();
-  applyFilter();
-});
-
-// 기간 드롭다운의 세부 항목 선택 시 트리거되는 클릭 이벤트 핸들러입니다.
-periodItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    selectedPeriod = item.dataset.value;
-    console.log("선택된 기간:", selectedPeriod);
-    periodButton.childNodes[0].textContent = `${item.textContent.trim()} `;
-    saveSettingsToStorage();
-    applyFilter();
-  });
-});
-
-// 우선순위 드롭다운의 세부 항목 선택 시 트리거되는 클릭 이벤트 핸들러입니다.
-priorityItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    selectedPriority = item.dataset.value;
-    priorityButton.childNodes[0].textContent = `${item.textContent.trim()} `;
-    saveSettingsToStorage();
-    applyFilter();
-  });
-});
-
-// 정렬 조건(오름차순/내림차순) 버튼 클릭 시, 스위칭 및 아이콘 180도 회전 애니메이션을 제어합니다.
-sortButton?.addEventListener("click", () => {
-  isAscending = !isAscending;
-  const sortText = isAscending ? "오름차순" : "내림차순";
-  sortButtonText.textContent = `정렬: ${sortText}`;
-  sortIcon.style.transform = isAscending ? "rotate(0deg)" : "rotate(180deg)";
-  saveSettingsToStorage();
-  applyFilter();
-});
-
 /**
  * 모든 검색 조건, 드롭다운 텍스트, 정렬 상태를 초기 상태로 리셋하고 스토리지에 재저장합니다.
  * @function resetFilters
@@ -270,41 +235,40 @@ sortButton?.addEventListener("click", () => {
  */
 function resetFilters() {
   selectedKeyword = "";
-  searchInput.value = "";
+
+  if (searchInput) {
+    searchInput.value = "";
+  }
 
   selectedPeriod = "all-days";
-  periodButton.childNodes[0].textContent = "전체 기간 ";
+
+  if (periodButton?.childNodes[0]) {
+    periodButton.childNodes[0].textContent = "전체 기간 ";
+  }
 
   selectedPriority = "all-priority";
-  priorityButton.childNodes[0].textContent = "전체 우선순위 ";
+
+  if (priorityButton?.childNodes[0]) {
+    priorityButton.childNodes[0].textContent = "전체 우선순위 ";
+  }
 
   isAscending = true;
-  sortButtonText.textContent = "정렬: 오름차순";
-  sortIcon.style.transform = "rotate(0deg)";
+
+  if (sortButtonText) {
+    sortButtonText.textContent = "정렬: 오름차순";
+  }
+
+  if (sortIcon) {
+    sortIcon.style.transform = "rotate(0deg)";
+  }
 
   saveSettingsToStorage();
   applyFilter();
 }
 
-// 필터 초기화 버튼 클릭 시 공통 컨펌 모달 창을 띄우고 사용자의 최종 동의 시 초기화를 진행합니다.
-resetFilterButton?.addEventListener("click", () => {
-  openResetModal({
-    title: "조건 초기화",
-    description:
-      "현재 적용된 검색, 기간, 우선순위, 정렬 조건을 초기화하시겠습니까?\n저장된 할 일 데이터는 삭제되지 않습니다.",
-    confirmText: "초기화",
-    onConfirm: resetFilters,
-  });
-});
-
-// 새로운 할 일이 등록되거나 수정/삭제되어 외부에서 전역 이벤트가 발생할 경우 필터를 재적용합니다.
-window.addEventListener("todoUpdated", () => {
-  applyFilter();
-});
-
 /**
  * [핵심 초기화 모듈 함수]
- * 저장된 필터 UI 복구 및 이벤트 리스너 세팅을 진행합니다.
+ * 저장된 필터 UI를 복구하고 필터 관련 이벤트 리스너를 등록합니다.
  */
 export function initFilterAndSort() {
   // 기존 검색어 복원
@@ -321,6 +285,7 @@ export function initFilterAndSort() {
     const savedPeriodItem = Array.from(periodItems).find(
       (item) => item.dataset.value === selectedPeriod,
     );
+
     if (savedPeriodItem) {
       periodButton.childNodes[0].textContent = `${savedPeriodItem.textContent.trim()} `;
     }
@@ -335,6 +300,7 @@ export function initFilterAndSort() {
     const savedPriorityItem = Array.from(priorityItems).find(
       (item) => item.dataset.value === selectedPriority,
     );
+
     if (savedPriorityItem) {
       priorityButton.childNodes[0].textContent = `${savedPriorityItem.textContent.trim()} `;
     }
@@ -342,12 +308,87 @@ export function initFilterAndSort() {
 
   // 기존 정렬 방향 상태 복원
   if (!isAscending) {
-    if (sortButtonText) sortButtonText.textContent = "정렬: 내림차순";
-    if (sortIcon) sortIcon.style.transform = "rotate(180deg)";
+    if (sortButtonText) {
+      sortButtonText.textContent = "정렬: 내림차순";
+    }
+
+    if (sortIcon) {
+      sortIcon.style.transform = "rotate(180deg)";
+    }
   }
 
-  // 외부 스크립트 로드 시차를 감안하여 미세한 타이밍 지연(디바운스성) 후 최종 목록 렌더링
-  setTimeout(() => {
+  // 검색어 입력
+  searchInput?.addEventListener("input", () => {
+    selectedKeyword = searchInput.value.trim();
+
+    saveSettingsToStorage();
     applyFilter();
-  }, 50);
+  });
+
+  // 기간 필터 선택
+  periodItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      selectedPeriod = item.dataset.value;
+
+      if (periodButton?.childNodes[0]) {
+        periodButton.childNodes[0].textContent = `${item.textContent.trim()} `;
+      }
+
+      saveSettingsToStorage();
+      applyFilter();
+    });
+  });
+
+  // 우선순위 필터 선택
+  priorityItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      selectedPriority = item.dataset.value;
+
+      if (priorityButton?.childNodes[0]) {
+        priorityButton.childNodes[0].textContent = `${item.textContent.trim()} `;
+      }
+
+      saveSettingsToStorage();
+      applyFilter();
+    });
+  });
+
+  // 정렬 방향 변경
+  sortButton?.addEventListener("click", () => {
+    isAscending = !isAscending;
+
+    const sortText = isAscending ? "오름차순" : "내림차순";
+
+    if (sortButtonText) {
+      sortButtonText.textContent = `정렬: ${sortText}`;
+    }
+
+    if (sortIcon) {
+      sortIcon.style.transform = isAscending
+        ? "rotate(0deg)"
+        : "rotate(180deg)";
+    }
+
+    saveSettingsToStorage();
+    applyFilter();
+  });
+
+  // 필터 초기화
+  resetFilterButton?.addEventListener("click", () => {
+    openResetModal({
+      title: "조건 초기화",
+      description:
+        "현재 적용된 검색, 기간, 우선순위, 정렬 조건을 초기화하시겠습니까?\n저장된 할 일 데이터는 삭제되지 않습니다.",
+      confirmText: "초기화",
+      onConfirm: resetFilters,
+    });
+  });
+
+  // Todo 생성 / 수정 / 삭제 시 현재 필터 다시 적용
+  window.addEventListener("todoUpdated", () => {
+    applyFilter();
+  });
+
+  // 초기 필터 적용
+  applyFilter();
 }

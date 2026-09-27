@@ -1,15 +1,19 @@
 ﻿/**
  * @fileoverview 할 일(Todo) 생성, 수정, 삭제 모달 관리 및
- * 보드 렌더링, 로컬 스토리지 동기화를 담당하는 모듈입니다.
+ * 보드 렌더링, Firestore 데이터 동기화를 담당하는 모듈입니다.
  */
-import { createStorage } from "./storage.js";
-import { applyFilter } from "./filter.js";
 
-/**
- * @namespace flowdashTodos
- * @description 'flowdash-todos' 키를 사용하는 로컬 스토리지 인스턴스
- */
-const flowdashTodos = createStorage("flowdash-todos");
+import { applyFilter } from "./filter.js";
+import {
+  getTodos as getFirestoreTodos,
+  saveTodo as saveFirestoreTodo,
+  deleteTodo as deleteFirestoreTodo,
+  deleteAllTodos as deleteAllFirestoreTodos,
+} from "./lib/firestore.js";
+import {
+  openNotificationSettings,
+  recalculateNotifications,
+} from "./notification-setting.js";
 
 // --- DOM 요소 선택 ---
 const modal = document.querySelector(".new-task-modal");
@@ -18,12 +22,18 @@ const closeButton = document.querySelector(".modal-close-button");
 const form = document.querySelector(".modal-form");
 const titleInput = document.querySelector('.modal-input[name="task-title"]');
 const descInput = document.querySelector(".modal-textarea");
+const dueAtInput = document.querySelector("#todo-due-at");
+// const notificationSettingButton = document.querySelector(
+//   "#notification-setting-button",
+// );
 const dropdownToggle = document.querySelector(".modal-status-button");
 const dropdownItems = document.querySelectorAll(".modal-status-item");
 const priorityInputs = document.querySelectorAll(".task-priority");
 const priorityLabels = document.querySelectorAll(".modal-radio-label");
 const modalTitle = document.querySelector(".modal-title");
 const modalSubmitButton = document.querySelector(".modal-submit-button");
+// 상태 변수 영역에 추가
+let tasks = [];
 
 // --- 모달 제어용 상태 변수 ---
 /** @type {string} 현재 모달에서 선택된 태스크 상태 ('TODO' | 'DOING' | 'DONE') */
@@ -78,6 +88,9 @@ function setDefaultModalState() {
   form?.reset();
   if (titleInput) titleInput.value = "";
   if (descInput) descInput.value = "";
+  if (dueAtInput) dueAtInput.value = "";
+
+  // updateNotificationButtonState();
 
   priorityInputs.forEach((input) => (input.checked = false));
   priorityLabels.forEach((label) => label.classList.remove("active"));
@@ -97,7 +110,11 @@ function setDefaultModalState() {
   currentSelectedStatus = "TODO";
   editingTaskId = null;
 }
+// function updateNotificationButtonState() {
+//   if (!dueAtInput || !notificationSettingButton) return;
 
+//   // notificationSettingButton.disabled = !dueAtInput.value;
+// }
 /**
  * 특정 태스크 데이터를 전달받아 모달 폼에 값을 채워 넣습니다. (수정 모드 전환용)
  * @param {object|null} task - 모달에 반영할 태스크 객체. null이면 기본 폼(등록 모드)으로 초기화합니다.
@@ -116,6 +133,11 @@ function populateModal(task) {
   if (titleInput) titleInput.value = task.title || "";
   if (descInput) descInput.value = task.content || "";
 
+  if (dueAtInput) {
+    dueAtInput.value = formatDateTimeLocal(task.dueAt);
+  }
+
+  // updateNotificationButtonState();
   const targetPriorityValue = getPriorityValue(task.priority);
 
   priorityInputs.forEach((input) => {
@@ -204,20 +226,32 @@ function closeModal() {
 }
 
 /**
- * 로컬 스토리지로부터 저장된 태스크 목록 전체를 읽어옵니다.
- * @returns {Array<object>} 저장되어 있는 태스크 배열 (데이터가 없을 경우 빈 배열 반환)
+ * 현재 메모리에 로드된 태스크 목록을 반환합니다.
+ *
+ * @returns {Array<object>} 현재 태스크 목록
  */
 export function getTasks() {
-  const stored = flowdashTodos.get("tasks");
-  return Array.isArray(stored) ? stored : [];
+  return tasks;
 }
-
 /**
- * 새로운 태스크 배열을 로컬 스토리지에 동기화하여 영구 저장합니다.
- * @param {Array<object>} tasks - 스토리지에 저장할 태스크 배열
+ * Firestore에서 현재 사용자의 Todo 목록을 불러와
+ * 메모리 상태에 저장합니다.
+ *
+ * @returns {Promise<void>}
  */
-function saveTasks(tasks) {
-  flowdashTodos.set("tasks", tasks);
+async function loadTasks() {
+  tasks = await getFirestoreTodos();
+}
+/**
+ * 현재 로그인한 사용자의 Todo를 Firestore에서 불러와
+ * 메모리 상태와 화면을 갱신합니다.
+ *
+ * @returns {Promise<void>}
+ */
+export async function loadUserTodos() {
+  await loadTasks();
+
+  renderTodos(getTasks());
 }
 
 /**
@@ -250,28 +284,41 @@ function getPriorityClass(priority) {
 }
 
 /**
- * 특정 ID를 가진 태스크를 로컬 스토리지 및 화면 데이터에서 영구 삭제합니다.
- * @param {string|number} taskId - 삭제 대상 태스크의 고유 ID
+ * 특정 ID를 가진 태스크를 Firestore에서 삭제하고
+ * 메모리 상태 및 화면을 갱신합니다.
  */
-function deleteTaskById(taskId) {
-  const storedTasks = getTasks();
-  const nextTasks = storedTasks.filter(
-    (task) => String(task.id) !== String(taskId),
-  );
-  saveTasks(nextTasks);
-  renderTodos(nextTasks);
-}
+async function deleteTaskById(taskId) {
+  try {
+    // Firestore에서 먼저 삭제
+    await deleteFirestoreTodo(taskId);
 
+    // Firestore 삭제 성공 후 메모리 상태 갱신
+    tasks = tasks.filter((task) => String(task.id) !== String(taskId));
+
+    // 변경된 메모리 상태로 다시 렌더링
+    renderTodos(tasks);
+
+    // 필터/검색 등 관련 UI 갱신
+    window.dispatchEvent(new Event("todoUpdated"));
+
+    return true;
+  } catch (error) {
+    console.error("Todo 삭제 실패:", error);
+
+    return false;
+  }
+}
 /**
- * 모달 입력값 검증 후 신규 생성 혹은 수정한 태스크 정보를 수집하여 스토리지에 반영합니다.
- * - 입력 상태(상태값 변화)에 맞춰 생성일, 수정일, 완료일 타임스탬프를 자동 제어합니다.
- * @param {Event} [e] - 폼 Submit 이벤트 객체
- * @returns {boolean} 데이터 유효성 검사 통과 및 저장 완료 여부 (성공 시 true)
+ * 모달 입력값 검증 후 신규 생성 혹은 수정한 태스크 정보를 수집하여
+ * Firestore에 저장하고 메모리 상태를 갱신합니다.
  */
-function saveData(e) {
+async function saveData(e) {
   if (e) e.preventDefault();
   const title = titleInput?.value.trim();
   const content = descInput?.value.trim();
+
+  const dueAtValue = dueAtInput?.value;
+  const enteredDueAt = dueAtValue ? new Date(dueAtValue).getTime() : null;
 
   const titleError = document.querySelector(".error-message");
 
@@ -298,138 +345,143 @@ function saveData(e) {
   }
   const tasks = getTasks() || [];
   const prevTask = editingTaskId
-    ? (tasks || []).find((task) => Number(task.id) === Number(editingTaskId))
+    ? tasks.find((task) => String(task.id) === String(editingTaskId))
     : null;
 
-  let createdAt = prevTask?.createdAt || null;
-  let updatedAt = prevTask?.updatedAt || null;
-  let completedAt = prevTask?.completedAt || null;
-
   const now = Date.now();
+  const previousStatus = prevTask?.status ?? null;
 
-  // 상태 변경에 따른 생명주기 타임스탬프 변경 로직
-  switch (currentSelectedStatus) {
-    case "TODO":
-      if (!createdAt) createdAt = now;
-      break;
-    case "DOING":
-      if (!createdAt) createdAt = now;
-      updatedAt = now;
-      break;
-    case "DONE":
-      if (!createdAt) createdAt = now;
-      if (!updatedAt) updatedAt = now;
-      completedAt = now;
-      break;
+  // 생성 시간
+  const createdAt = prevTask?.createdAt ?? now;
+
+  const dueAt =
+    enteredDueAt ?? prevTask?.dueAt ?? createdAt + 24 * 60 * 60 * 1000;
+
+  const previousDueAt =
+    prevTask?.dueAt ?? (prevTask ? createdAt + 24 * 60 * 60 * 1000 : null);
+
+  const dueAtChanged = prevTask !== null && dueAt !== previousDueAt;
+
+  // 업무 시작 시간
+  let startedAt = prevTask?.startedAt ?? null;
+
+  // 업무 완료 시간
+  let completedAt = prevTask?.completedAt ?? null;
+
+  // 일반 정보 마지막 수정 시간
+  const updatedAt = prevTask ? now : null;
+
+  /**
+   * 상태 변경에 따른 업무 이력 관리
+   */
+
+  // TODO → DOING
+  if (previousStatus === "TODO" && currentSelectedStatus === "DOING") {
+    startedAt = now;
   }
 
+  // TODO에서 바로 DONE으로 변경한 경우
+  if (previousStatus === "TODO" && currentSelectedStatus === "DONE") {
+    startedAt = startedAt ?? now;
+    completedAt = now;
+  }
+
+  // DOING → DONE
+  if (previousStatus === "DOING" && currentSelectedStatus === "DONE") {
+    completedAt = now;
+  }
+
+  // DOING → TODO
+  if (previousStatus === "DOING" && currentSelectedStatus === "TODO") {
+    startedAt = null;
+  }
+
+  // DONE → DOING
+  if (previousStatus === "DONE" && currentSelectedStatus === "DOING") {
+    completedAt = null;
+  }
+
+  // DONE → TODO
+  if (previousStatus === "DONE" && currentSelectedStatus === "TODO") {
+    startedAt = null;
+    completedAt = null;
+  }
+  // 신규 업무를 DOING 상태로 바로 생성
+  if (!prevTask && currentSelectedStatus === "DOING") {
+    startedAt = now;
+  }
+
+  // 신규 업무를 DONE 상태로 바로 생성
+  if (!prevTask && currentSelectedStatus === "DONE") {
+    startedAt = now;
+    completedAt = now;
+  }
   const taskData = {
-    id: editingTaskId ? Number(editingTaskId) : Date.now(),
+    // 식별자
+    id: editingTaskId || crypto.randomUUID(),
+
+    // 업무 정보
     title,
     content,
     priority,
     status: currentSelectedStatus,
+
+    // 업무 일정
+    dueAt,
+
+    // 업무 이력
     createdAt,
-    updatedAt,
+    startedAt,
     completedAt,
+    updatedAt,
+
+    notifications: recalculateNotifications(
+      prevTask?.notifications,
+      dueAt,
+      dueAtChanged,
+    ),
   };
+  try {
+    await saveFirestoreTodo(taskData);
 
-  if (editingTaskId) {
-    const index = tasks.findIndex(
-      (task) => String(task.id) === String(editingTaskId),
-    );
+    if (editingTaskId) {
+      const index = tasks.findIndex(
+        (task) => String(task.id) === String(editingTaskId),
+      );
 
-    if (index >= 0) {
-      tasks[index] = { ...tasks[index], ...taskData };
+      if (index >= 0) {
+        tasks[index] = { ...tasks[index], ...taskData };
+      } else {
+        tasks.push(taskData);
+      }
     } else {
       tasks.push(taskData);
     }
-  } else {
-    tasks.push(taskData);
-  }
 
-  saveTasks(tasks);
-  renderTodos(tasks);
-  return true;
+    renderTodos(tasks);
+
+    return true;
+  } catch (error) {
+    console.error("Todo 저장 실패:", error);
+
+    return false;
+  }
 }
-
-// --- 이벤트 리스너: 실시간 제목 입력 유효성 검사 ---
-titleInput?.addEventListener("input", function () {
-  if (!hasSubmitted) return; // 제출 시도 전에는 경고 메시지를 노출하지 않음
-
-  const titleError = document.querySelector(".error-message");
-  if (titleInput.value.trim() !== "") {
-    if (titleError) titleError.style.display = "none";
-    titleInput.classList.remove("input-error");
-  } else {
-    if (titleError) titleError.style.display = "inline";
-    titleInput.classList.add("input-error");
-  }
-});
 
 /**
  * 모달의 최종 저장을 핸들링하고 후속 이벤트를 트리거합니다.
  * @param {Event} [event] - submit 이벤트 객체
  */
-function handleModalSubmit(event) {
+async function handleModalSubmit(event) {
   if (event) event.preventDefault();
-  const saved = saveData(event);
+
+  const saved = await saveData(event);
+
   if (!saved) return;
 
-  // 전체 애플리케이션 화면 갱신을 유도하는 커스텀 이벤트 발송
   window.dispatchEvent(new Event("todoUpdated"));
   closeModal();
 }
-
-// --- 모달 노출/비노출 바인딩 ---
-openButton?.addEventListener("click", () => openModal());
-closeButton?.addEventListener("click", closeModal);
-
-// 백드롭(모달 바깥 영역) 클릭 시 모달이 닫히도록 바인딩
-modal?.addEventListener("click", (event) => {
-  if (event.target === modal) closeModal();
-});
-
-// ESC 키 입력 시 모달 닫기 제어
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && modal && !modal.hidden) {
-    closeModal();
-  }
-});
-
-form?.addEventListener("submit", handleModalSubmit);
-
-// 모달 활성화 시 'Enter'키 제출 지원 (단, 여러 줄 설명 작성창(textarea)은 제외)
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && modal && !modal.hidden) {
-    const activeEl = document.activeElement;
-    if (activeEl !== descInput) {
-      handleModalSubmit(event);
-    }
-  }
-});
-
-// --- 우선순위 라디오 버튼 커스텀 스타일링 동기화 ---
-priorityLabels.forEach((label) => {
-  label.addEventListener("click", () => {
-    const inputId = label.getAttribute("for");
-    const input = document.querySelector(`#${inputId}`);
-    if (input) {
-      input.checked = true;
-      priorityLabels.forEach((lbl) => lbl.classList.remove("active"));
-      label.classList.add("active");
-    }
-  });
-});
-
-priorityInputs.forEach((input) => {
-  input.addEventListener("change", () => {
-    priorityLabels.forEach((label) => label.classList.remove("active"));
-    const checkedLabel = document.querySelector(`label[for="${input.id}"]`);
-    checkedLabel?.classList.add("active");
-  });
-});
-
 /**
  * 현재 모달 UI 내에서 열려 있는 모든 드롭다운 요소를 닫습니다.
  */
@@ -439,36 +491,6 @@ function closeAllDropdowns() {
     dropdown.classList.remove("is-open", "is-close");
   });
 }
-
-// 드롭다운 외부 클릭 시 드롭다운 일괄 닫기 제어
-document.addEventListener("click", (event) => {
-  const target = event.target;
-  const isDropdownClick = target.closest(".dropdown");
-
-  if (!isDropdownClick) {
-    closeAllDropdowns();
-    return;
-  }
-
-  const dropdown = target.closest(".dropdown");
-  const isItemClick = target.closest(".dropdown-item");
-
-  if (isItemClick && dropdown) {
-    dropdown.removeAttribute("open");
-  }
-});
-
-// 상태 변경 드롭다운 내부 아이템 선택 시 업데이트 처리
-dropdownItems.forEach((item) => {
-  item.addEventListener("click", (event) => {
-    event.stopPropagation();
-    const statusText = item.textContent.trim();
-    const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
-    if (statusLabel) statusLabel.textContent = statusText;
-    currentSelectedStatus = mapStatusLabelToInternal(statusText);
-    closeAllDropdowns();
-  });
-});
 
 /**
  * 3가지 상태(TODO, DOING, DONE) 보드의 리스트 영역을 비우고,
@@ -556,6 +578,18 @@ function formatDate(ms) {
 
   return `${year}. ${month}. ${day} ${hours}:${minutes}`;
 }
+function formatDateTimeLocal(ms) {
+  if (!ms) return "";
+
+  const date = new Date(ms);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
 
 /**
  * 개별 태스크 데이터를 기반으로 보드에 렌더링될 실제 DOM 요소를 조작 및 생성합니다.
@@ -618,9 +652,10 @@ function createTodoElement(todo) {
     if (todo.status === "DOING") {
       cloned.classList.add("update-task");
       const updateTimeContainer = cloned.querySelector(".update-time");
-      if (updateTimeContainer) {
+
+      if (updateTimeContainer && todo.startedAt) {
         if (updateUpdateTime) {
-          updateUpdateTime.textContent = sanitize(formatDate(todo.updatedAt));
+          updateUpdateTime.textContent = sanitize(formatDate(todo.startedAt));
           updateTimeContainer.removeAttribute("hidden");
         }
       }
@@ -635,7 +670,56 @@ function createTodoElement(todo) {
         }
       }
     }
+    // 이전 데이터에 dueAt이 없으면 생성 시간 + 24시간으로 표시
+    const effectiveDueAt =
+      Number(todo.dueAt) || Number(todo.createdAt) + 24 * 60 * 60 * 1000;
 
+    const dueTime = cloned.querySelector(".todo-due-time");
+
+    if (dueTime && Number.isFinite(effectiveDueAt)) {
+      dueTime.textContent = formatDate(effectiveDueAt);
+      dueTime.dateTime = new Date(effectiveDueAt).toISOString();
+    }
+
+    const notificationButton = cloned.querySelector(
+      ".todo-notification-button",
+    );
+
+    if (notificationButton) {
+      notificationButton.disabled = todo.status === "DONE";
+
+      notificationButton.setAttribute(
+        "aria-label",
+        notificationButton.disabled
+          ? "완료된 업무는 알림을 설정할 수 없습니다"
+          : "알림 설정",
+      );
+
+      notificationButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        openNotificationSettings(todo, async (notifications) => {
+          const updatedTask = {
+            ...todo,
+            dueAt: effectiveDueAt,
+            notifications,
+          };
+
+          await saveFirestoreTodo(updatedTask);
+
+          const index = tasks.findIndex(
+            (item) => String(item.id) === String(todo.id),
+          );
+
+          if (index >= 0) {
+            tasks[index] = updatedTask;
+          }
+
+          renderTodos(tasks);
+          window.dispatchEvent(new Event("todoUpdated"));
+        });
+      });
+    }
     // 복사 대상에서 전파된 불필요한 ID 일괄 제거 (중복 ID 생성 방지)
     cloned.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
 
@@ -706,12 +790,14 @@ function createTodoElement(todo) {
           document.removeEventListener("keydown", handleKeyDown);
         };
 
-        // 실제 스토리지 데이터 삭제 로직 처리
-        const handleConfirm = () => {
-          deleteTask();
+        // ① 개별 Todo 삭제 모달
+        const handleConfirm = async () => {
+          const deleted = await deleteTask();
+
+          if (!deleted) return;
+
           handleClose();
         };
-
         // 삭제 모달 단축키 조작 (ESC: 취소, Enter: 즉시 삭제)
         const handleKeyDown = (event) => {
           if (event.key === "Escape") {
@@ -738,12 +824,13 @@ function createTodoElement(todo) {
     /**
      * DOM 탐색을 통해 소속 카드의 고유 ID를 조회하고 삭제 작업을 호출합니다.
      */
-    function deleteTask() {
+    async function deleteTask() {
       const closestCard = closeIcon.closest(".todo-container");
       const taskId = closestCard?.dataset.id;
-      if (taskId) {
-        deleteTaskById(taskId);
-      }
+
+      if (!taskId) return false;
+
+      return await deleteTaskById(taskId);
     }
 
     // 카드 영역 클릭 시 태스크 상세 수정 모달 오픈 바인딩
@@ -786,11 +873,6 @@ export function renderTodos(todoList) {
   const allTasksForStats = getTasks();
   updateCounts(allTasksForStats);
 }
-
-// 필터 버튼과 구분되는 순수 데이터 리셋 버튼 핸들러 선택
-const resetButton = document.querySelector(
-  ".reset-data-button:not(.reset-filter-button)",
-);
 
 /**
  * 치명적이거나 되돌릴 수 없는 영구 파괴 조작(예: 전체 초기화, 할 일 삭제) 시 사용자 동의를 구하는 모달 창을 엽니다.
@@ -850,10 +932,12 @@ export function openResetModal({
     closeResetModal(resetModal);
     document.removeEventListener("keydown", handleKeyDown);
   };
+  // ② 전체 Todo 초기화 모달
+  const handleConfirm = async () => {
+    const confirmed = await onConfirm();
 
-  // 실행 의지 최종 확인 시 전달받은 콜백 함수(onConfirm)를 최종 기동
-  const handleConfirm = () => {
-    onConfirm();
+    if (!confirmed) return;
+
     handleClose();
   };
 
@@ -905,11 +989,25 @@ function closeResetModal(resetModal) {
 }
 
 /**
- * 로컬 스토리지 내 모든 태스크 배열을 초기화하고 화면을 깨끗하게 갱신합니다.
+ * Firestore의 모든 Todo 데이터를 삭제하고
+ * 메모리 상태 및 화면을 초기화합니다.
  */
-function resetAllTasks() {
-  saveTasks([]);
-  renderTodos([]);
+async function resetAllTasks() {
+  try {
+    await deleteAllFirestoreTodos();
+
+    tasks = [];
+
+    renderTodos(tasks);
+
+    window.dispatchEvent(new Event("todoUpdated"));
+
+    return true;
+  } catch (error) {
+    console.error("전체 Todo 삭제 실패:", error);
+
+    return false;
+  }
 }
 
 /**
@@ -917,20 +1015,21 @@ function resetAllTasks() {
  * 페이지 기동 시 저장 데이터를 기반으로 렌더링을 지시하고 모달 이벤트 세팅을 처리합니다.
  */
 export function initTodoManager() {
-  // 1. 최초 데이터 렌더링 기동
-  renderTodos(getTasks());
-
-  // 2. 이벤트 리스너 세트 바인딩
+  // 전체 데이터 초기화
   const resetButton = document.querySelector(
     ".reset-data-button:not(.reset-filter-button)",
   );
+
   resetButton?.addEventListener("click", () => {
     openResetModal();
   });
 
+  // 제목 실시간 유효성 검사
   titleInput?.addEventListener("input", function () {
     if (!hasSubmitted) return;
+
     const titleError = document.querySelector(".error-message");
+
     if (titleInput.value.trim() !== "") {
       if (titleError) titleError.style.display = "none";
       titleInput.classList.remove("input-error");
@@ -939,51 +1038,73 @@ export function initTodoManager() {
       titleInput.classList.add("input-error");
     }
   });
-
+  // dueAtInput?.addEventListener("change", updateNotificationButtonState);
+  // 모달 열기
   openButton?.addEventListener("click", () => openModal());
+
+  // 모달 닫기
   closeButton?.addEventListener("click", closeModal);
 
+  // 백드롭 클릭 시 모달 닫기
   modal?.addEventListener("click", (event) => {
-    if (event.target === modal) closeModal();
+    if (event.target === modal) {
+      closeModal();
+    }
   });
 
+  // ESC 키로 모달 닫기
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && modal && !modal.hidden) {
       closeModal();
     }
   });
 
+  // 폼 제출
   form?.addEventListener("submit", handleModalSubmit);
 
+  // Enter 키 제출
   document.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && modal && !modal.hidden) {
       const activeEl = document.activeElement;
+
       if (activeEl !== descInput) {
         handleModalSubmit(event);
       }
     }
   });
 
+  // 우선순위 label 클릭
   priorityLabels.forEach((label) => {
     label.addEventListener("click", () => {
       const inputId = label.getAttribute("for");
       const input = document.querySelector(`#${inputId}`);
+
       if (input) {
         input.checked = true;
-        priorityLabels.forEach((lbl) => lbl.classList.remove("active"));
+
+        priorityLabels.forEach((lbl) => {
+          lbl.classList.remove("active");
+        });
+
         label.classList.add("active");
       }
     });
   });
 
+  // 우선순위 input 변경
   priorityInputs.forEach((input) => {
     input.addEventListener("change", () => {
-      priorityLabels.forEach((label) => label.classList.remove("active"));
+      priorityLabels.forEach((label) => {
+        label.classList.remove("active");
+      });
+
       const checkedLabel = document.querySelector(`label[for="${input.id}"]`);
+
       checkedLabel?.classList.add("active");
     });
   });
 
+  // 드롭다운 외부 클릭
   document.addEventListener("click", (event) => {
     const target = event.target;
     const isDropdownClick = target.closest(".dropdown");
@@ -1001,13 +1122,21 @@ export function initTodoManager() {
     }
   });
 
+  // 상태 드롭다운 선택
   dropdownItems.forEach((item) => {
     item.addEventListener("click", (event) => {
       event.stopPropagation();
+
       const statusText = item.textContent.trim();
+
       const statusLabel = dropdownToggle?.querySelector(".modal-status-label");
-      if (statusLabel) statusLabel.textContent = statusText;
+
+      if (statusLabel) {
+        statusLabel.textContent = statusText;
+      }
+
       currentSelectedStatus = mapStatusLabelToInternal(statusText);
+
       closeAllDropdowns();
     });
   });

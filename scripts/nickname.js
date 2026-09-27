@@ -1,10 +1,4 @@
-﻿import { createStorage } from "./storage.js";
-
-/**
- * @namespace nicknameStorage
- * @description 로컬 스토리지에 사용자 지정 닉네임을 저장하고 불러오기 위한 스토리지 인스턴스
- */
-const nicknameStorage = createStorage("flowdash-nickname");
+﻿import { getUserProfile, saveUserProfile } from "./lib/firestore.js";
 
 /**
  * 대시보드 환영 인사 영역에 표시될 닉네임 DOM 요소입니다.
@@ -25,18 +19,31 @@ measureSpan.style.top = "-9999px";
 measureSpan.style.left = "-9999px";
 document.body.append(measureSpan);
 
-// 닉네임 요소가 존재할 경우, 스토리지 데이터를 로드하고 클릭 이벤트를 연동합니다.
-if (nicknameElement) {
-  const savedNickname = nicknameStorage.get("nickname");
-  nicknameElement.textContent = savedNickname || "Flowdash";
+/**
+ * 현재 로그인한 사용자의 닉네임 기능을 초기화합니다.
+ *
+ * @returns {Promise<void>}
+ */
+export async function initNickname() {
+  if (!nicknameElement) return;
 
+  try {
+    const profile = await getUserProfile();
+
+    nicknameElement.textContent = profile?.nickname || "Flowdash";
+  } catch (error) {
+    console.error("닉네임 불러오기 실패:", error);
+    nicknameElement.textContent = "Flowdash";
+  }
+
+  nicknameElement.removeEventListener("click", handleNicknameClick);
   nicknameElement.addEventListener("click", handleNicknameClick);
 }
 
 /**
  * 닉네임 텍스트 영역 클릭 시, 인라인 텍스트를 즉시 편집 가능한 `<input>` 박스로 변경합니다.
  * - 입력 상자의 크기를 입력 글자 길이에 맞춰 실시간으로 반응형 리사이징 처리합니다.
- * - 포커스를 잃거나(`blur`), `Enter` 입력 시 자동으로 내용을 로컬 스토리지에 세이브하고 원래 상태로 복원합니다.
+ * - 포커스를 잃거나(`blur`), `Enter` 입력 시 변경된 닉네임을 Firestore에 저장하고 원래 상태로 복원합니다.
  *
  * @function handleNicknameClick
  * @returns {void}
@@ -78,20 +85,27 @@ function handleNicknameClick() {
    * 사용자가 입력을 완료한 시점에 변경된 닉네임을 최종 검증하고 영구 보관합니다.
    * - 비어있는 값은 강제로 디폴트 이름('Flowdash')으로 수렴합니다.
    */
-  function saveNickname() {
+  async function saveNickname() {
     if (isSaving) return;
     isSaving = true;
 
     const newNickname = input.value.trim();
     const finalNickname = newNickname || "Flowdash";
 
-    // 데이터 저장 및 렌더링 텍스트 업데이트
-    nicknameStorage.set("nickname", finalNickname);
-    nicknameElement.textContent = finalNickname;
+    try {
+      await saveUserProfile({
+        nickname: finalNickname,
+      });
 
-    // 이벤트 리스너 리소스를 일괄 해제하고 복귀 처리
-    cleanupEvents();
-    input.replaceWith(nicknameElement);
+      nicknameElement.textContent = finalNickname;
+
+      cleanupEvents();
+      input.replaceWith(nicknameElement);
+    } catch (error) {
+      console.error("닉네임 저장 실패:", error);
+
+      isSaving = false;
+    }
   }
 
   /**
