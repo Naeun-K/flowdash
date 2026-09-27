@@ -6,6 +6,7 @@ import {
   observeAuthState,
 } from "./lib/auth.js";
 import { saveUserProfile } from "./lib/firestore.js";
+import { syncOneSignalUser } from "./lib/onesignal-user.js";
 
 /**
  * Firebase Authentication과 인증 화면을 연결합니다.
@@ -257,6 +258,7 @@ export default async function initAuth(onAuthenticated) {
    */
   observeAuthState(async (user) => {
     clearError();
+    syncOneSignalUser(user);
 
     if (user) {
       // 로그인 상태
