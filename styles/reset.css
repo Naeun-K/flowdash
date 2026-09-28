@@ -34,18 +34,18 @@ html {
   scroll-behavior: smooth;
 }
 
-
+a {
+  text-decoration: none;
+}
 body {
   line-height: 1.6;
   font-family: "Pretendard", sans-serif;
   color: var(--color-text-primary);
 }
 
-
 ul {
   list-style: none;
 }
-
 
 button,
 input,

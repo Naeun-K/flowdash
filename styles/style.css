@@ -40,11 +40,26 @@ body {
 }
 
 .auth-container[hidden],
-.auth-error-message[hidden],
-.auth-password-toggle svg[hidden] {
+.auth-error-message[hidden] {
+  display: none;
+}
+/* 기본 상태: 비밀번호 숨김 → 눈 뜬 아이콘 */
+.auth-password-toggle .password-show-icon {
+  display: block;
+}
+
+.auth-password-toggle .password-hide-icon {
   display: none;
 }
 
+/* 비밀번호 표시 상태 → 눈 가린 아이콘 */
+.auth-password-toggle[aria-pressed="true"] .password-show-icon {
+  display: none;
+}
+
+.auth-password-toggle[aria-pressed="true"] .password-hide-icon {
+  display: block;
+}
 .auth-card {
   width: min(100%, 420px);
   padding: 40px 32px;
@@ -1257,22 +1272,115 @@ body.dark .notification-settings-actions button:last-child {
 
 .footer {
   display: flex;
-  flex-direction: column;
+
   align-items: center;
   justify-content: center;
   align-self: stretch;
-
+  gap: 16px;
   padding: 31px 0 32px;
   border-top: 1px solid var(--color-border);
 
   color: var(--color-text-secondary);
   text-align: center;
-  font-family: "Pretendard", sans-serif;
+
   font-size: 14.4px;
-  font-weight: 400;
+
   line-height: 21.6px;
 }
 
+.footer p {
+  color: var(--color-text-secondary);
+}
+
+/* GitHub 링크 */
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 40px;
+  padding: 8px 14px;
+
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.github-svg-wrapper {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Hover */
+.github-link:hover {
+  color: var(--theme-text);
+  background-color: var(--theme-bgc-secondary);
+  border-color: var(--theme-border);
+
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* 키보드 접근성 */
+.github-link:focus-visible {
+  outline: 3px solid var(--theme-focus);
+  outline-offset: 3px;
+}
+
+/* 클릭 */
+.github-link:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+:root body.dark .github-link {
+  color: #e6edf3;
+  background-color: #21262d;
+  border-color: #30363d;
+
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+:root body.dark .github-link:hover {
+  color: #ffffff;
+  background-color: #30363d;
+  border-color: var(--theme-border);
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 0 0 1px color-mix(in srgb, var(--theme-border) 20%, transparent);
+
+  transform: translateY(-2px);
+}
+
+:root body.dark .github-link:active {
+  background-color: #262c33;
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+:root body.dark .github-link:focus-visible {
+  outline-color: var(--theme-focus);
+}
 .new-task-modal {
   position: fixed;
   inset: 0;
@@ -1530,28 +1638,11 @@ body.dark .notification-settings-actions button:last-child {
   cursor: not-allowed;
 }
 .todo-due-input-wrapper {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-
-.todo-due-clear-button {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  font-size: 22px;
-  line-height: 1;
-}
-
-.todo-due-clear-button[hidden] {
+.todo-due-placeholder[hidden] {
   display: none;
 }
 
@@ -1899,14 +1990,51 @@ body.dark .notification-settings-actions button:last-child {
   border-radius: 4px;
   background-color: #ffebeb;
 
-  color: #b42332;
   font-size: 11.2px;
   font-weight: 700;
   line-height: 16.8px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+/* 낮음 */
+.todo-priority-icon.priority-low {
+  background-color: #d9f2e6;
+  color: #17603a;
+}
 
+/* 중간 */
+.todo-priority-icon.priority-mid {
+  background-color: #f5e6cc;
+  color: #714600;
+}
+
+/* 높음 */
+.todo-priority-icon.priority-high {
+  background-color: #f5dada;
+  color: #8f2525;
+}
+
+/* =========================
+   다크 테마
+========================= */
+
+/* 낮음 */
+body.dark .todo-priority-icon.priority-low {
+  background-color: #193b2d;
+  color: #a9dfc2;
+}
+
+/* 중간 */
+body.dark .todo-priority-icon.priority-mid {
+  background-color: #45351e;
+  color: #f0ce91;
+}
+
+/* 높음 */
+body.dark .todo-priority-icon.priority-high {
+  background-color: #472727;
+  color: #efb2b2;
+}
 .todo-close-icon {
   border: 1px solid var(--color-border);
   height: fit-content;
@@ -2193,6 +2321,7 @@ body.dark .footer {
   color: var(--dark-text-secondary);
   border-top: 1.11px solid var(--dark-border);
 }
+
 body.dark .search-block-wrapper {
   background-color: var(--dark-bg-primary);
   border: 0.999px solid var(--dark-border);
@@ -2795,15 +2924,13 @@ body.dark .null-data {
   .greeting-theme-button-text {
     display: none;
   }
-  .greeting-theme-button {
-    width: 40px;
-    height: 40px;
-  }
-
+  .greeting-theme-button,
   .todo-notification-button {
     width: 40px;
     height: 40px;
+    padding: 0;
   }
+
   .dropdown-button {
     display: flex;
     align-items: center;
@@ -3317,5 +3444,21 @@ body.dark .null-data {
     .mobile-section-nav a:hover::after {
       transform: scaleX(1);
     }
+  }
+}
+@media (pointer: coarse) {
+  .todo-due-input-wrapper {
+    position: relative;
+  }
+  .todo-due-placeholder:not([hidden]) {
+    display: block;
+    position: absolute;
+    left: 16px;
+
+    /* input 영역의 세로 중앙에 맞춤 */
+    bottom: 14px;
+
+    color: var(--color-text-secondary);
+    pointer-events: none;
   }
 }

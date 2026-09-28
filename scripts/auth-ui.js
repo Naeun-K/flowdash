@@ -21,6 +21,8 @@ export default async function initAuth(onAuthenticated) {
   const passwordInput = document.querySelector("#auth-password");
 
   const passwordToggle = document.querySelector(".auth-password-toggle");
+  const passwordShowIcon = passwordToggle?.querySelector(".password-show-icon");
+  const passwordHideIcon = passwordToggle?.querySelector(".password-hide-icon");
   const passwordRequirements = {
     length: document.querySelector('[data-requirement="length"]'),
     letter: document.querySelector('[data-requirement="letter"]'),
@@ -56,15 +58,21 @@ export default async function initAuth(onAuthenticated) {
    */
   passwordToggle.addEventListener("click", () => {
     const isPasswordVisible = passwordInput.type === "text";
+    const willShowPassword = !isPasswordVisible;
 
-    passwordInput.type = isPasswordVisible ? "password" : "text";
+    passwordInput.type = willShowPassword ? "text" : "password";
+
+    if (passwordShowIcon && passwordHideIcon) {
+      passwordShowIcon.hidden = willShowPassword;
+      passwordHideIcon.hidden = !willShowPassword;
+    }
 
     passwordToggle.setAttribute(
       "aria-label",
-      isPasswordVisible ? "비밀번호 보기" : "비밀번호 숨기기",
+      willShowPassword ? "비밀번호 숨기기" : "비밀번호 보기",
     );
 
-    passwordToggle.setAttribute("aria-pressed", String(!isPasswordVisible));
+    passwordToggle.setAttribute("aria-pressed", String(willShowPassword));
   });
   /**
    * 비밀번호 입력 시 조건 충족 여부를 실시간으로 표시합니다.
@@ -265,6 +273,17 @@ export default async function initAuth(onAuthenticated) {
       authContainer.hidden = true;
 
       authForm.reset();
+
+      passwordInput.type = "password";
+
+      if (passwordShowIcon && passwordHideIcon) {
+        passwordShowIcon.hidden = false;
+        passwordHideIcon.hidden = true;
+      }
+
+      passwordToggle.setAttribute("aria-label", "비밀번호 보기");
+      passwordToggle.setAttribute("aria-pressed", "false");
+
       updatePasswordRequirements("");
 
       if (typeof onAuthenticated === "function") {
