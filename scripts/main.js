@@ -12,20 +12,17 @@ import initAuth from "./auth-ui.js";
 import { initNickname } from "./nickname.js";
 
 const oneSignalAppId = import.meta.env.VITE_ONESIGNAL_APP_ID;
+const isOneSignalEnabled = import.meta.env.VITE_ENABLE_ONESIGNAL === "true";
 
-const isFlowDashSite =
-  window.location.origin === "https://naeun-k.github.io" &&
-  window.location.pathname.startsWith("/flowdash/");
-
-if (oneSignalAppId && isFlowDashSite) {
+if (oneSignalAppId && isOneSignalEnabled) {
   window.OneSignalDeferred = window.OneSignalDeferred || [];
 
   window.OneSignalDeferred.push(async function (OneSignal) {
     await OneSignal.init({
       appId: oneSignalAppId,
-      serviceWorkerPath: "flowdash/push/onesignal/OneSignalSDKWorker.js",
+      serviceWorkerPath: "/push/onesignal/OneSignalSDKWorker.js",
       serviceWorkerParam: {
-        scope: "/flowdash/push/onesignal/",
+        scope: "/push/onesignal/",
       },
       notifyButton: {
         enable: true,
