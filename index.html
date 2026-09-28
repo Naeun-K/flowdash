@@ -681,10 +681,40 @@
                 rows="4"
               ></textarea>
             </div>
-            <div class="todo-due-field">
-              <label for="todo-due-at">업무 만기일</label>
+            <div class="label-input-container todo-due-field">
+              <label for="todo-due-at" class="modal-label">업무 만기일</label>
 
-              <input type="datetime-local" id="todo-due-at" name="dueAt" />
+              <div class="todo-due-input-wrapper">
+                <p id="todo-due-help" class="input-help">
+                  날짜와 시간을 선택한 뒤 달력 바깥을 눌러 닫아주세요.
+                </p>
+                <input
+                  type="datetime-local"
+                  id="todo-due-at"
+                  name="dueAt"
+                  class="modal-input todo-due-input"
+                  aria-describedby="todo-due-help"
+                />
+                <button
+                  type="button"
+                  class="todo-due-clear-button"
+                  aria-label="업무 만기일 지우기"
+                  hidden
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="100%"
+                    height="100%"
+                    fill="currentColor"
+                    class="bi bi-x-lg"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             <div class="modal-radio-select-container">
@@ -964,64 +994,35 @@
           <h2 class="todo-title">할 일</h2>
           <p class="todo-desc"></p>
         </div>
-        <button
-          type="button"
-          class="todo-notification-button"
-          aria-label="알림 설정"
-        >
-          <div class="notification-icon" aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="100%"
-              height="100%"
-              fill="currentColor"
-              class="bi bi-bell"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"
-              />
-            </svg>
-          </div>
-
-          <span class="todo-notification-button-text">알림 설정</span>
-        </button>
-        <!-- <div class="modal-notification">
-              <label class="modal-notification-toggle">
-                <input
-                  type="checkbox"
-                  id="todo-notification-enabled"
-                  name="notification-enabled"
+        <div class="notification-wrapper">
+          <p class="todo-due-date">
+            만기일
+            <time class="todo-due-time"></time>
+          </p>
+          <button
+            type="button"
+            class="todo-notification-button"
+            aria-label="알림 설정"
+          >
+            <div class="notification-icon" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="100%"
+                height="100%"
+                fill="currentColor"
+                class="bi bi-bell"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"
                 />
-                <span>알림 받기</span>
-              </label>
+              </svg>
+            </div>
 
-              <div class="modal-notification-options" hidden>
-                <label for="todo-notification-value">알림 시점</label>
+            <span class="todo-notification-button-text">알림 설정</span>
+          </button>
+        </div>
 
-                <div class="modal-notification-setting">
-                  <input
-                    type="number"
-                    id="todo-notification-value"
-                    name="notification-value"
-                    min="1"
-                    value="30"
-                  />
-
-                  <select id="todo-notification-unit" name="notification-unit">
-                    <option value="minute">분</option>
-                    <option value="hour">시간</option>
-                    <option value="day">일</option>
-                  </select>
-
-                  <span>전</span>
-                </div>
-              </div>
-            </div> -->
-        <p class="todo-due-date">
-          만기일
-          <time class="todo-due-time"></time>
-        </p>
         <div class="two-update-time-container">
           <p class="update-time-container todo-time">
             <span class="update-time-icon">
