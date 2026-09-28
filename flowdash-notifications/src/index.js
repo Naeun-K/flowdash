@@ -145,7 +145,7 @@ async function sendDueNotifications(env) {
 					contents: {
 						en: `${notification.title}\n만기일: ${dueText}`,
 					},
-					url: 'https://naeun-k.github.io/flowdash/',
+					url: 'https://flowdash-tau.vercel.app/',
 					idempotency_key: notification.id,
 				}),
 			});
