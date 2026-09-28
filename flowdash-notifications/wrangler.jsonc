@@ -10,9 +10,10 @@
 	"observability": {
 		"enabled": true,
 	},
+
 	"vars": {
+		"APP_ORIGIN": "https://flowdash-tau.vercel.app",
 		"FIREBASE_PROJECT_ID": "flowdash-web",
-		"APP_ORIGIN": "https://naeun-k.github.io",
 		"ONESIGNAL_APP_ID": "96a607f1-b213-43f8-baf2-73698d1b34f6",
 	},
 	"triggers": {
