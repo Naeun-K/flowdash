@@ -2888,6 +2888,182 @@ body.dark .null-data {
     justify-content: center;
     align-items: flex-start;
   }
+  /* =========================================================
+   새 할 일 모달 - 모바일
+========================================================= */
+
+  /* 모달 전체 오버레이 */
+  .new-task-modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  /* 실제 모달 */
+  .new-task-modal .modal-content {
+    width: 100%;
+    min-width: 0;
+    height: min(92dvh, 800px);
+    max-height: 92dvh;
+
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+
+    overflow: hidden;
+
+    border-radius: 20px 20px 0 0;
+  }
+
+  /* 모바일에서는 아래에서 올라오는 애니메이션 */
+  .new-task-modal .modal-content {
+    transform: translateY(100%);
+  }
+
+  .new-task-modal.active .modal-content {
+    transform: translateY(0);
+  }
+
+  /* 제목 영역 */
+  .new-task-modal .modal-title {
+    flex-shrink: 0;
+
+    padding: 20px 20px 16px;
+
+    font-size: 20px;
+    line-height: 1.4;
+
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-white);
+  }
+
+  /*
+   * form 자체가 남은 높이를 사용한다.
+   * 버튼을 sticky 처리하기 위해 form이 스크롤 영역이 된다.
+   */
+  .new-task-modal .modal-form {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 18px;
+
+    padding: 20px 20px 0;
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 각 입력 영역 */
+  .new-task-modal .label-input-container {
+    gap: 6px;
+    padding-bottom: 0;
+  }
+
+  /* 제목 / 일반 input */
+  .new-task-modal .modal-input {
+    min-height: 46px;
+  }
+
+  /* 내용 textarea는 모바일에서 조금 압축 */
+  .new-task-modal .modal-textarea {
+    height: 96px;
+    min-height: 96px;
+  }
+
+  /* 만기일 설명 */
+  .new-task-modal .input-help {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  /* 우선순위 + 상태 */
+  .new-task-modal .modal-radio-select-container {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 18px;
+    padding-top: 0;
+  }
+
+  .new-task-modal .modal-radio-select-group {
+    width: 100%;
+    flex: none;
+  }
+
+  /* 우선순위 버튼 */
+  .new-task-modal .radio-container {
+    gap: 8px;
+  }
+
+  .new-task-modal .modal-radio-label {
+    min-height: 44px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 12px;
+  }
+
+  /* 상태 dropdown */
+  .new-task-modal .modal-status {
+    width: 100%;
+  }
+
+  .new-task-modal .modal-status-button {
+    min-height: 46px;
+  }
+
+  /*
+   * 하단 버튼 영역
+   * form을 스크롤해도 화면 아래에 계속 표시
+   */
+  .new-task-modal .modal-button-container {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+
+    flex-shrink: 0;
+
+    width: calc(100% + 40px);
+    margin-left: -20px;
+
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    background: var(--color-white);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .new-task-modal .modal-close-button,
+  .new-task-modal .modal-submit-button {
+    width: 100%;
+    min-height: 46px;
+
+    flex-direction: row;
+  }
+
+  /* 상단 제목 */
+  body.dark .new-task-modal .modal-title {
+    background: var(--dark-bg-primary);
+    color: var(--dark-text-primary);
+    border-bottom-color: var(--dark-border);
+  }
+  body.dark .new-task-modal .modal-button-container {
+    background: var(--dark-bg-primary);
+    color: var(--dark-text-primary);
+    border-top: 1px solid var(--dark-border);
+  }
 }
 /* Hover effects only on devices that support precise hovering. */
 @media (hover: hover) and (pointer: fine) {
