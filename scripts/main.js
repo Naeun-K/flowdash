@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 사용자별 데이터는 로그인 사용자가 확인될 때마다 다시 로드
   initAuth(async () => {
-    await loadUserTodos();
-    await initNickname();
+    await Promise.all([loadUserTodos(), initNickname()]);
   });
 });

@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
   font-family: "Pretendard";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2")
     format("woff2");
@@ -38,7 +38,7 @@ html {
 body {
   line-height: 1.6;
   font-family: "Pretendard", sans-serif;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 
