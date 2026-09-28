@@ -1,477 +1,538 @@
-# FlowDash | 칸반 태스크 관리 대시보드
+# FlowDash
 
-# 1조 UIONE 
+> **할 일의 흐름부터 일정과 알림까지 관리하는 개인 생산성 대시보드**
 
-> 공통 과제: 칸반 기반 태스크 관리 대시보드  
-> 팀원: 김나은, 김민지, 송유림, 박진솔 
-> 저장소: GitHub
-> 배포: GitHub Pages
+FlowDash는 `TODO → DOING → DONE`의 작업 흐름을 기반으로 할 일을 관리하고,  
+검색·필터·정렬, 만기일, 예약 알림, 사용자 인증 및 개인화 테마를 제공하는 웹 애플리케이션입니다.
 
+초기에는 **UIONE 팀의 칸반 기반 Todo 프로젝트**로 시작했으며,  
+이후 개인 리팩터링을 통해 Firebase 기반 사용자 인증 및 데이터 저장,  
+Web Push 예약 알림, 사계절 테마, 접근성 및 반응형 UX 등을 추가하여 확장했습니다.
 
-**1조 UIONE**의 공통 과제 프로젝트입니다.  
-효율적인 업무 관리를 위한 칸반 기반의 태스크 대시보드를 구현하였습니다.
+![FlowDash 메인 화면](./img/readme-main.webp)
 
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/링크주소/)
-[![Live Demo](https://img.shields.io/badge/Live_Demo-4285F4?style=flat-square&logo=google-chrome&logoColor=white)](https://링크주소)
+## 🔗 서비스
 
----
-
-##  프로젝트 개요
-저희 팀은 여러 업무를 동시에 진행할 때 현재 진행 상황을 한눈에 파악하기 어렵다는 문제에 주목했습니다. 이를 해결하기 위해 작업의 상태를 시각적으로 분리하고, 프로젝트 전체의 달성률을 수치화하여 업무 현황을 직관적으로 확인 가능한 관리 도구를 기획하게 되었습니다.
-
-###  서비스 소개
-**FlowDash**는 작업 흐름과 달성률을 하나의 화면에서 직관적으로 관리할 수 있는 **칸반 기반의 태스크 관리 대시보드**입니다.
-**FlowDash**는 파편화된 작업들을 칸반 보드 형태로 시각화하여 업무 흐름을 체계적으로 관리하고, 사용자가 본인의 진행도를 한눈에 파악함으로써 보다**효율적이고 생산적인 업무 환경을 경험**할 수 있도록 지원합니다.
-
-###  기획 배경
-- **문제점**: 다중 프로젝트 진행 시 각 업무의 현황 파악이 어렵고 효율적인 관리가 힘듦
-- **해결책**: 업무 상태를 시각적으로 분리하고, 달성률을 수치화하여 직관적인 업무 경험 제공
-
-###  핵심 목표
-- [ ] **시각적 관리**: 작업 흐름을 칸반 보드로 명확하게 구분
-- [ ] **달성률 모니터링**: 프로젝트 진행률을 실시간으로 확인
-- [ ] **효율성 증대**: 사용자 중심의 직관적인 대시보드 환경 구축
+- **Live Demo**: [FlowDash 바로가기](https://flowdash-tau.vercel.app/)
+- **GitHub**: [Naeun-K/flowdash](https://github.com/Naeun-K/flowdash)
 
 ---
 
-## 팀 구성 및 역할 분담
+## 📌 프로젝트 소개
 
-| 이름 | 역할 | 주요 담당 |
-| :--- | :--- | :--- |
-| **김나은** | Core Logic | HTML, css, 모달, 반응형디자인,js  |
-| **김민지** | Board UI | HTML, css, ,반응형 디자인,js   |
-| **송유림** | UX / Theme | HTML, css, 반응형 디자인, ppt|
-| **박진솔** | UX / Theme | Reset css, css , 반응형 디자인  |
+여러 업무를 동시에 관리할 때 현재 해야 할 일과 진행 중인 일,  
+완료한 일을 빠르게 구분하기 어렵고 마감 일정을 놓치기 쉽습니다.
+
+FlowDash는 업무 상태를 **TODO / DOING / DONE**으로 시각적으로 구분하고,  
+우선순위와 만기일을 함께 관리할 수 있도록 설계했습니다.
+
+단순한 Todo 기록을 넘어 사용자별 데이터 저장과 예약 알림을 지원하여  
+자신의 작업 흐름을 지속적으로 관리할 수 있는 개인 생산성 도구로 확장했습니다.
+
+### 핵심 목표
+
+- **작업 흐름 시각화** — TODO / DOING / DONE 기반 상태 관리
+- **일정 관리** — Todo별 우선순위와 만기일 관리
+- **작업 탐색** — 검색, 필터 및 정렬
+- **사용자별 데이터 관리** — Firebase 기반 인증 및 데이터 저장
+- **일정 알림** — 만기일 기준 Web Push 예약 알림
+- **개인화** — Light / Dark 및 사계절 테마
+- **접근성** — 키보드, ARIA, 터치 환경을 고려한 UI
 
 ---
 
-## 수행 절차 및 방법 (Process & Strategy)
+## ✨ 주요 기능
 
-### 1. 진행 순서
-팀 프로젝트의 효율적인 진행을 위해 아래와 같은 6단계 프로세스를 준수했습니다.
+### 🔐 사용자 인증
 
-1. **요구사항 분석**: 필수 및 가산 요구사항 분류 및 우선순위 선정
-2. **데이터 설계**: 데이터 모델링 및 LocalStorage 키 규칙 합의
-3. **구조 설계**: 칸반 보드 구조 및 컴포넌트 렌더링 전략 결정
-4. **기능 구현**: 필터, 정렬, 검색 파이프라인 로직 개발
-5. **UX/UI 구현**: 테마 엔진, 닉네임 수정, 반응형 레이아웃 적용
-6. **통합 및 QA**: 코드 통합 및 버그 수정(QA)
+- 이메일 / 비밀번호 회원가입 및 로그인
+- 로그인 상태 유지
+- 사용자별 Todo 데이터 관리
+- 비밀번호 조건 실시간 확인
+- 인증 오류별 사용자 피드백
 
+### ✅ Todo 관리
 
+- Todo 생성 / 수정 / 삭제
+- `TODO / DOING / DONE` 상태 관리
+- 높음 / 중간 / 낮음 우선순위 설정
+- 만기일 설정
+- 생성 / 수정 / 완료 시간 관리
+- 완료 Todo의 알림 설정 비활성화
 
-### 2. 협업 규칙 (Collaboration Rules)
+### 🔍 검색 · 필터 · 정렬
 
-원활한 팀 시너지를 위해 다음의 규칙을 엄격히 준수하였습니다.
+- 제목 및 내용 검색
+- 기간별 필터
+- 우선순위별 필터
+- Todo 정렬
+- 검색 및 필터 상태 유지
 
-* **Git 전략**: `main` (배포), `dev` (개발), `feature/*` (기능 단위) 브랜치 전략 채택
-* **PR 규정**: 기능 단위(Feature)로 1개의 PR을 원칙으로 함
-* **코드 관리**: PR 생성 전 `rebase`를 수행하여 커밋 히스토리의 깔끔함을 유지
-* **변경 정책**: 명세 스펙 변경은 `dev` 브랜치 병합 전 팀 합의를 통해서만 허용
+### 🔔 예약 알림
+
+- Todo별 만기일 설정
+- 만기일 기준 복수 알림 예약
+- 만기일 변경 시 알림 시간 자동 재계산
+- OneSignal을 이용한 Web Push
+- 완료된 Todo의 예약 알림 해제
+
+### 📊 대시보드
+
+- 전체 Todo 현황
+- TODO / DOING / DONE 상태별 확인
+- Todo 달성률
+- 현재 날짜 및 시간
+- 시간대별 Greeting
+- 사용자 닉네임
+
+### 🎨 개인화
+
+- 사용자 닉네임
+- Light / Dark 테마
+- Spring / Summer / Autumn / Winter 테마
+- 계절별 애니메이션
+- 테마별 SVG 아이콘
+
+### 📱 반응형 · 접근성
+
+- Desktop / Tablet / Mobile 대응
+- 키보드 접근성
+- ARIA 적용
+- Dialog 및 포커스 관리
+- Light / Dark 환경의 색상 대비 개선
+- Touch 환경의 날짜·시간 입력 UX 대응
+
 ---
 
-## 아키텍처 및 데이터 흐름 (Architecture)
+## 📖 사용 방법
 
-본 프로젝트는 상태 관리와 UI 렌더링의 관심사 분리(Separation of Concerns)를 통해 유지보수성과 확장성을 고려하여 설계되었습니다.
+### 1. 회원가입 및 로그인
 
-### 3-1. 디렉터리 구조
+FlowDash에 처음 접속했다면 이메일과 비밀번호를 입력하여 회원가입합니다.
+
+로그인 후 Todo를 생성하면 로그인한 사용자별로 데이터가 저장되며,  
+로그아웃하기 전까지 로그인 상태가 유지됩니다.
+
+### 2. Todo 등록
+
+`새 할 일 추가` 버튼을 눌러 Todo를 등록합니다.
+
+Todo에는 다음 정보를 설정할 수 있습니다.
+
+- 제목
+- 내용
+- 우선순위
+- 만기일
+
+등록된 Todo는 `TODO` 상태에서 시작하며 작업 진행 상황에 따라 다음과 같이 상태를 변경할 수 있습니다.
+
+```text
+TODO → DOING → DONE
+```
+
+### 3. 알림 권한 허용 🔔
+
+> [!IMPORTANT]
+> 예약 알림을 사용하려면 **브라우저의 알림 권한을 먼저 허용해야 합니다.**
+
+FlowDash 화면 **우측 하단에 있는 빨간색 종 아이콘**을 누릅니다.
+
+```text
+화면 우측 하단
+      ↓
+  🔔 종 아이콘
+      ↓
+브라우저 알림 권한 요청
+      ↓
+    [허용]
+```
+
+브라우저에서 알림 권한 요청이 나타나면 **허용**을 선택해주세요.
+
+알림 권한을 허용하지 않으면 Todo에 알림을 예약하더라도  
+Web Push 알림을 받을 수 없습니다.
+
+이미 브라우저에서 알림을 차단한 경우에는 브라우저의 사이트 권한 설정에서  
+FlowDash의 알림 권한을 다시 허용해야 합니다.
+
+### 4. 만기일 및 알림 설정
+
+Todo의 만기일을 지정한 뒤 `알림 설정` 버튼을 통해 원하는 알림 시간을 추가할 수 있습니다.
+
+예를 들어 다음과 같이 여러 개의 알림을 설정할 수 있습니다.
+
+```text
+만기일
+2026. 09. 30. 18:00
+
+알림
+├── 1일 전
+├── 1시간 전
+└── 10분 전
+```
+
+알림은 Todo의 만기일을 기준으로 계산됩니다.
+
+만기일을 변경하면 기존 알림 시간도 새로운 만기일을 기준으로 다시 계산되며,  
+Todo를 `DONE` 상태로 변경하면 해당 Todo의 알림 설정이 비활성화됩니다.
+
+### 5. 검색 및 필터
+
+검색창과 필터 기능을 이용하여 원하는 Todo를 빠르게 찾을 수 있습니다.
+
+- 키워드 검색
+- 기간별 필터
+- 우선순위별 필터
+- 정렬
+
+조건을 조합하여 현재 필요한 Todo만 확인할 수 있습니다.
+
+### 6. 테마 변경
+
+테마 메뉴에서 기본 Light / Dark 테마와 사계절 테마를 선택할 수 있습니다.
+
+```text
+Light / Dark
+
+🌸 Spring
+🌊 Summer
+🍂 Autumn
+❄️ Winter
+```
+
+선택한 테마에 따라 화면의 색상, 계절 애니메이션 및 일부 SVG 아이콘이 변경됩니다.
+
+---
+
+## 🛠 기술 스택
+
+![FlowDash 기술 스택](./img/2nd-tech.webp)
+
+### Frontend
+
+**JavaScript · HTML5 · CSS3 · Vite**
+
+애플리케이션의 UI와 Todo 관리 기능을 구현하고 Vite를 통해 프로젝트를 빌드합니다.
+
+### Firebase
+
+**Firebase Authentication · Cloud Firestore**
+
+Firebase Authentication을 통해 사용자 인증을 처리하고,  
+Cloud Firestore에 사용자별 Todo 데이터를 저장합니다.
+
+### Notification
+
+**Cloudflare Workers · Cloudflare D1 · OneSignal**
+
+Cloudflare Workers와 D1을 이용해 예약 알림을 관리하고,  
+OneSignal을 통해 Web Push 알림을 발송합니다.
+
+### Deployment & Collaboration
+
+**Vercel · Git · GitHub**
+
+Frontend 배포와 프로젝트 버전 관리 및 협업에 사용합니다.
+
+---
+
+## 🏗 시스템 아키텍처
+
+```mermaid
+flowchart LR
+    USER([User])
+    APP[FlowDash]
+
+    AUTH[Firebase Authentication]
+    DB[(Cloud Firestore)]
+
+    WORKER[Cloudflare Worker]
+    D1[(Cloudflare D1)]
+    CRON[Cloudflare Cron]
+
+    PUSH[OneSignal]
+    DEVICE([Web Push])
+
+    USER --> APP
+
+    APP --> AUTH
+    APP --> DB
+
+    APP --> WORKER
+    WORKER --> D1
+
+    CRON --> WORKER
+    WORKER --> PUSH
+    PUSH --> DEVICE
+```
+
+FlowDash의 데이터와 기능은 목적에 따라 역할을 분리했습니다.
+
+**Firebase**는 사용자 인증과 Todo 데이터 저장을 담당하며,  
+**Cloudflare Workers와 D1**은 미래 시점에 처리해야 하는 예약 알림을 관리합니다.
+
+예약 시간이 되면 Cloudflare Worker가 OneSignal을 통해  
+사용자의 브라우저로 Web Push 알림을 전달합니다.
+
+---
+
+## 🗃 데이터 구조
+
+### Cloud Firestore
+
+Todo는 Firebase UID를 기준으로 사용자별로 분리하여 저장합니다.
+
+```text
+users
+└── {uid}
+    └── todos
+        └── {todoId}
+            ├── id
+            ├── title
+            ├── content
+            ├── priority
+            ├── status
+            ├── dueAt
+            ├── notifications
+            ├── createdAt
+            ├── updatedAt
+            └── completedAt
+```
+
+이를 통해 각 사용자의 Todo 데이터를 독립적으로 관리합니다.
+
+### Cloudflare D1
+
+예약된 알림은 Todo 데이터와 분리하여 D1에서 관리합니다.
+
+```text
+notifications
+├── user_id
+├── todo_id
+├── notification_id
+├── title
+├── notify_at
+├── due_at
+├── status
+└── sent_at
+```
+
+**Firestore**는 Todo 자체의 데이터를 관리하고,  
+**D1**은 미래에 발송해야 하는 예약 알림 데이터를 관리합니다.
+
+---
+
+## 💡 주요 기술 구현
+
+### LocalStorage → Firestore
+
+초기 팀 프로젝트에서는 Todo 데이터를 브라우저의 LocalStorage에 저장했습니다.
+
+이 방식은 구현이 간단하지만 데이터가 특정 브라우저에 종속되고  
+사용자별 데이터를 관리하기 어렵다는 한계가 있었습니다.
+
+개인 리팩터링 과정에서 Firebase Authentication과 Firestore를 도입하여  
+로그인한 사용자별로 Todo 데이터를 관리할 수 있도록 변경했습니다.
+
+```text
+Before
+
+Browser
+└── LocalStorage
+```
+
+```text
+After
+
+Firebase Authentication
+        ↓
+    사용자 UID
+        ↓
+Cloud Firestore
+        ↓
+users/{uid}/todos/{todoId}
+```
+
+이를 통해 특정 브라우저에 종속되었던 Todo 데이터를  
+사용자 계정을 기준으로 관리할 수 있게 되었습니다.
+
+### 서버리스 예약 알림
+
+브라우저의 `setTimeout()`과 같은 타이머에만 의존하면  
+페이지가 닫히거나 브라우저가 백그라운드 상태가 되었을 때  
+미래 시점의 알림을 안정적으로 처리하기 어렵습니다.
+
+이를 해결하기 위해 예약 알림 정보를 Cloudflare D1에 저장하고,  
+Cloudflare Cron과 Worker가 발송해야 할 알림을 확인하도록 구성했습니다.
+
+```text
+Todo 만기일
+    ↓
+알림 예약
+    ↓
+Cloudflare D1
+    ↓
+Cloudflare Worker
+    ↓
+OneSignal
+    ↓
+Web Push
+```
+
+따라서 사용자가 FlowDash 페이지를 계속 열어 두지 않아도  
+예약된 알림을 처리할 수 있습니다.
+
+### Todo와 예약 알림 동기화
+
+Todo는 Firestore, 예약 알림은 D1에서 관리하기 때문에  
+두 데이터의 상태가 서로 달라지지 않도록 동기화했습니다.
+
+```text
+만기일 변경
+└── 예약 알림 시간 재계산
+
+Todo 완료
+└── 예약 알림 해제
+
+Todo 삭제
+└── 예약 알림 함께 삭제
+```
+
+이를 통해 Todo의 상태 변화가 예약 알림에도 함께 반영되도록 구성했습니다.
+
+### 기능별 모듈화
+
+JavaScript 코드를 기능별 모듈로 분리하여 각 파일의 책임을 명확하게 구성했습니다.
+
+```text
+Application
+├── Authentication
+├── Todo
+├── Filter & Sort
+├── Dashboard
+├── Notification
+├── Theme
+└── Nickname
+```
+
+`main.js`는 각 기능을 직접 구현하기보다 필요한 모듈을 초기화하고 연결하는  
+애플리케이션의 진입점 역할을 담당합니다.
+
+---
+
+## 📂 프로젝트 구조
 
 ```text
 flowdash/
-|
-+-- img/
-|   +-- spring.webp
-|   +-- summer.webp
-|   +-- autumn.webp
-|   \-- winter.webp
-|
-+-- scripts/
-|   +-- autumn-effect.js
-|   +-- dashbord.js
-|   +-- filter.js
-|   +-- icon.js
-|   +-- main.js
-|   +-- modal.js
-|   +-- nickname.js
-|   +-- season-svg-utils.js
-|   +-- season-theme.js
-|   +-- spring-effect.js
-|   +-- storage.js
-|   +-- summer-effect.js
-|   +--winter-effect.js
-|
-+-- styles/
-|   +-- reset.css
-|   +-- season-effects.css
-|   \-- style.css
-|
-+-- index.html
-+-- .prettierrc.js
-\-- README.md
-```
-모듈 단위의 명확한 역할 분담을 통해 코드의 의존성을 최소화했습니다.
-
-### 3-2. 데이터 아키텍처
-```mermaid
-flowchart LR
-
-    U([👤 User])
-
-    subgraph Presentation_Layer
-        HTML[index.html]
-    end
-
-    subgraph Application_Layer
-        MAIN[main.js]
-        DASH[dashboard.js]
-        SEASON[season-theme.js]
-        ICON[icon.js]
-        TODO[modal.js]
-        FILTER[filter.js]
-        NICK[nickname.js]
-    end
-
-    subgraph Business_Logic_Layer
-        CRUD[Todo CRUD]
-        RENDER[renderTodos]
-        EVENT[todoUpdated Event]
-        APPLY[applyFilter]
-    end
-
-    subgraph Data_Layer
-        STORAGE[storage.js]
-        TODOS[(flowdash-todos)]
-        THEME[(flowdash-theme)]
-        FILTER_STORAGE[(flowdash-filter-settings)]
-    end
-
-    subgraph Render_Layer
-        BOARD[Todo Board]
-        DASHBOARD[Dashboard UI]
-    end
-
-    U --> HTML
-    HTML --> MAIN
-
-    MAIN --> DASH
-    MAIN --> SEASON
-    MAIN --> ICON
-    MAIN --> TODO
-    MAIN --> FILTER
-    MAIN --> NICK
-
-    TODO --> CRUD
-
-    CRUD --> STORAGE
-    STORAGE --> TODOS
-    STORAGE --> THEME
-    STORAGE --> FILTER_STORAGE
-
-    CRUD --> RENDER
-    RENDER --> BOARD
-
-    CRUD --> EVENT
-    EVENT --> APPLY
-    APPLY --> RENDER
-
-    DASH --> DASHBOARD
+│
+├── img/
+│   ├── 2nd-tech.webp
+│   ├── autumn.webp
+│   ├── readme-main.webp
+│   ├── spring.webp
+│   ├── summer.webp
+│   └── winter.webp
+│
+├── public/
+│   ├── push/
+│   │   └── onesignal
+│   │        └── OneSignalSDKWorker.js
+│   └── favicon.webp
+│
+├── scripts/
+│   ├── icon/
+│   │   └── 기본 / 계절별 SVG 아이콘
+│   │
+│   ├── lib/
+│   │   ├── Firebase Authentication
+│   │   ├── Cloud Firestore
+│   │   └── OneSignal
+│   │
+│   ├── theme/
+│   │   └── 사계절 테마 및 애니메이션
+│   │
+│   ├── utils/
+│   │   └── 공통 유틸리티
+│   │
+│   ├── auth-ui.js
+│   ├── dashboard.js
+│   ├── filter.js
+│   ├── main.js
+│   ├── nickname.js
+│   └── todo-manager.js
+│
+├── styles/
+│   ├── reset.css
+│   ├── variables.css
+│   ├── style.css
+│   └── season-effects.css
+│
+├── flowdash-notifications/
+│   ├── migrations/
+│   │   └── D1 Migration
+│   │
+│   ├── src/
+│   │   └── index.js
+│   │
+│   ├── package.json
+│   └── wrangler.jsonc
+│
+├── index.html
+└── README.md
 ```
 
-### 3-3. 모듈 책임 분리
-| 모듈 | 주요 역할 |
-| :--------------------- | :--------------------------------------- |
-| **`season-theme.js`**  | 계절 테마 변경, 계절 효과 활성화 및 비활성화, 선택한 테마 상태 관리 |
-| **`spring-effect.js`** | 봄 테마의 벚꽃 애니메이션 생성 및 제거                   |
-| **`summer-effect.js`** | 여름 테마의 물결 애니메이션 생성 및 제거                  |
-| **`autumn-effect.js`** | 가을 테마의 낙엽 애니메이션 생성 및 제거                  |
-| **`winter-effect.js`** | 겨울 테마의 눈 애니메이션 생성 및 제거                   |
-| **`storage.js`**       | LocalStorage 데이터 저장 및 조회 처리              |
-| **`filter.js`**        | 검색, 기간, 우선순위, 정렬 등 필터 기능 처리              |
-| **`modal.js`**         | 할 일 생성 및 데이터 초기화 모달 제어                   |
-| **`nickname.js`**      | 닉네임 변경 및 LocalStorage 저장 처리              |
-| **`dashbord.js`**           | 공통 DOM 요소 제어 및 화면 렌더링                    |
-| **`main.js`**          |    모든js와 모듈을 통합관리                 |
-| **`season-svg-utils.js`**          | SVG 문자열을 DOM 객체(DocumentFragment)로 변환하는 모듈                   |
-
-
-### 3-4. 데이터 흐름 (Data Flow)
-
-```text
-사용자 입력
-      │
-      ▼
-index.html
-      │
-      ▼
-main.js
-(모든 모듈 초기화)
-      │
-      ▼
-modal.js
-(TodoManager)
-      │
-      ▼
-CRUD 처리
-(Create / Read / Update / Delete)
-      │
-      ▼
-storage.js
-(createStorage)
-      │
-      ▼
-Browser LocalStorage
-      │
-      ▼
-renderTodos()
-      │
-      ▼
-Todo Board 렌더링
-      │
-      ▼
-dispatchEvent("todoUpdated")
-      │
-      ▼
-filter.js
-(applyFilter)
-      │
-      ▼
-renderTodos()
-(필터링 후 재렌더링)
-```
-
-설명
-
-사용자의 입력은 **index.html**에서 시작되어 **main.js**가 각 기능 모듈을 초기화합니다. Todo의 생성, 수정, 삭제 요청은 **modal.js**에서 처리되며, 데이터는 **storage.js**를 통해 LocalStorage에 저장됩니다. 데이터 변경 후 todoUpdated 커스텀 이벤트가 발생하면 **filter.js**가 필터와 정렬을 다시 적용하고, 최종적으로 renderTodos()를 호출하여 TODO / DOING / DONE 보드와 대시보드 화면을 최신 상태로 갱신합니다.
-
-  ---
-
-## 4. 핵심 설계 결정 사항 (Design Decisions)
-
-- **단일 진입점(Entry Point) 구조**
-  - `main.js`를 중심으로 모든 모듈을 초기화하여 애플리케이션의 실행 흐름을 일관되게 관리
-  - 초기화 로직을 한 곳에서 관리함으로써 유지보수성과 확장성을 향상
-
-- **기능별 모듈화(Module Separation)**
-  - Dashboard, Todo, Filter, Theme, Icon, Nickname 등 기능 단위로 모듈을 분리
-  - 각 모듈이 하나의 책임(Single Responsibility)만 수행하도록 설계하여 응집도를 높이고 결합도를 낮춤
-
-- **Storage 추상화(Storage Abstraction)**
-  - `storage.js`의 `createStorage()`를 통해 LocalStorage 접근을 캡슐화
-  - 저장 방식이 변경되더라도 다른 모듈의 수정 없이 대응할 수 있도록 설계
-
-- **이벤트 기반(Event-Driven) 구조**
-  - Todo 데이터 변경 시 `todoUpdated` 커스텀 이벤트를 발생시켜 모듈 간 통신
-  - 직접적인 함수 호출을 최소화하여 모듈 간 의존성을 줄이고 확장성을 확보
-
-- **렌더링과 비즈니스 로직 분리**
-  - CRUD 처리와 화면 렌더링을 분리하여 동일한 렌더링 로직을 재사용
-  - 데이터 변경 이후 항상 `renderTodos()`를 통해 일관된 UI를 유지
-
-- **상태(State) 영속성 유지**
-  - Todo 목록뿐만 아니라 테마, 필터, 정렬 상태를 LocalStorage에 저장
-  - 새로고침 이후에도 사용자 설정과 작업 상태를 유지하여 사용자 경험(UX)을 향상
-
-- **필터 재적용 구조**
-  - Todo 추가, 수정, 삭제 이후 항상 `applyFilter()`를 통해 데이터를 재가공
-  - 현재 적용 중인 검색, 기간, 우선순위, 정렬 조건을 유지한 상태로 화면을 갱신
-
-- **재사용 가능한 공통 컴포넌트**
-  - 확인 모달, Storage 관리, 렌더링 함수 등을 공통 로직으로 구성
-  - 기능 추가 시 기존 컴포넌트를 재사용할 수 있도록 설계하여 코드 중복을 최소화
-
-- **브라우저 환경 최적화**
-  - 별도의 서버 없이 LocalStorage 기반으로 데이터를 관리
-  - GitHub Pages와 같은 정적 호스팅 환경에서도 독립적으로 실행 가능하도록 구현
-
----
-## 5. 수행 결과 (Implementation Result)
-
-### 구현 결과
-- CRUD(Create, Read, Update, Delete) 기반의 할 일 관리 기능 구현
-- 검색, 기간, 우선순위, 정렬 기능을 통한 데이터 필터링 제공
-- LocalStorage를 활용한 데이터 영속성 구현
-- 닉네임 변경 및 사용자 설정 저장 기능 구현
-- 라이트/다크 모드 및 계절 테마(봄·여름·가을·겨울) 지원
-- 계절별 애니메이션 효과(벚꽃, 물결, 낙엽, 눈) 적용
-- 반응형 웹 구현으로 PC, 태블릿, 모바일 환경 지원
-- Git/GitHub 브랜치 전략을 활용한 협업 및 기능별 모듈화 구현
-
-### 5-1. # 구현 완료 기능 (Implemented Features)
-
-- **Todo 관리 기능**
-  - Todo 생성(Create), 조회(Read), 수정(Update), 삭제(Delete) 기능 구현
-  - TODO / DOING / DONE 상태별 보드 관리
-  - 드래그 앤 드롭을 통한 상태 변경 지원
-  - 우선순위(HIGH / MID / LOW) 설정 기능
-  - 완료 여부에 따른 실시간 화면 갱신
-
-- **검색 및 필터 기능**
-  - 제목 및 내용 기반 실시간 검색
-  - 기간(전체 / 오늘 / 최근 7일) 필터 제공
-  - 우선순위별 필터 기능 제공
-  - 제목 기준 오름차순 / 내림차순 정렬 기능
-  - 적용된 필터 조건 요약 정보 표시
-  - 필터 초기화 기능 제공
-
-- **데이터 저장 및 상태 유지**
-  - LocalStorage를 활용한 Todo 데이터 저장
-  - 테마(다크/라이트) 설정 저장
-  - 계절 테마 설정 저장
-  - 검색 및 필터 상태 저장
-  - 닉네임 정보 저장
-  - 새로고침 이후에도 사용자 설정 및 데이터 유지
-
-- **대시보드 기능**
-  - 현재 날짜 및 시간 표시
-  - 시간대별 맞춤 인사(Greeting) 제공
-  - Todo 진행 현황 및 상태 정보 표시
-  - 닉네임 기반 개인화 UI 제공
-
-- **테마 및 UI 커스터마이징**
-  - 다크 모드 / 라이트 모드 전환
-  - 계절별(Spring, Summer, Autumn, Winter) 테마 적용
-  - 테마 설정 모달 제공
-  - 사용자 설정에 따른 UI 상태 유지
-
-- **시각 효과 및 사용자 경험(UX)**
-  - 계절별 애니메이션 효과 적용
-  - 랜덤 SVG 아이콘 표시
-  - 모달 기반 사용자 인터랙션 제공
-  - 자연스러운 화면 전환 및 애니메이션 적용
-
-- **이벤트 기반 데이터 동기화**
-  - Todo 변경 시 `todoUpdated` 커스텀 이벤트 발생
-  - 변경된 데이터에 대해 필터 및 정렬 자동 재적용
-  - 화면을 최신 상태로 자동 갱신
-
-- **모듈 기반 구조**
-  - 기능별 JavaScript 모듈 분리
-  - `main.js`를 중심으로 모든 모듈 초기화
-  - `storage.js`를 통한 공통 Storage 관리
-  - 유지보수와 기능 확장을 고려한 구조 설계
-
-
-### 5-2. 요구사항 충족 범위
-
-- 필수 요구사항: 충족
-- [x] Todo CRUD 기능이 모두 정상 동작한다 (생성 / 조회 / 수정 / 삭제)
-- [x] TODO / DOING / DONE 상태별 칸반 보드가 분리되어 렌더링된다
-- [x] status 변경 시 Todo가 즉시 해당 보드로 이동한다
-- [x] DONE 전환 시 completedAt이 기록되며, 해제 시 null로 초기화된다
-- [x] 우선순위(HIGH / MID / LOW)를 설정 및 수정할 수 있다
-- [x] 기간 필터(전체 / 오늘 / 7일)가 createdAt 기준으로 동작한다
-- [x] 필터 적용 순서(기간 → 정렬 → 검색)가 항상 유지된다
-- [x] 제목/내용 기준 검색이 필터 결과 내에서 정상 동작한다
-- [x] 제목 기준 오름차순 / 내림차순 정렬이 가능하다
-- [x] 통계 대시보드에 전체 / TODO / DOING / DONE / 달성률이 표시된다
-- [x] 달성률은 (DONE / 전체) * 100 기준으로 계산된다
-- [x] 전체 초기화 시 Todo 데이터만 삭제되며 확인 절차가 존재한다
-- [x] 테마(Light / Dark) 전환이 가능하며 LocalStorage에 저장된다
-- [x] 인사말이 시간대 기준으로 표시된다
-- [x] 닉네임을 인라인으로 수정할 수 있으며 LocalStorage에 저장된다
-- [x] 새로고침 후에도 Todo / 테마 / 닉네임 상태가 유지된다
-- [x] 반응형 레이아웃이 Mobile / Tablet / Desktop 기준으로 동작한다
-- [x] 콘솔에 치명적인 에러가 발생하지 않는다
-- [x] 가산 요소: (해당 시 작성)
-  필터 초기화 기능 추가 : 검색, 기간, 우선순위, 정렬 조건을 한 번에 초기화할 수 있는 기능을 구현했습니다.
-  
-  키보드 접근성 개선 : Esc 키를 이용해 모달을 닫을 수 있도록 구현하고, Enter 키로 확인 동작을 수행하여 키보드만으로도 조작할 수 있도록 개선했습니다.
-  
-  포커스 관리 : 모달이 열릴 때 제목에 포커스를 이동시켜 스크린 리더 사용자와 키보드 사용자의 접근성을 향상시켰습니다.
-  
-  계절 테마 설정 기능 : 봄, 여름, 가을, 겨울 테마를 선택할 수 있도록 구현하고, 선택한 테마를 LocalStorage에 저장하여 새로고침 후에도 유지되도록 했습니다.
-  
-  UI 디자인 개선: 계절별 색상과 아이콘을 적용하여 직관성을 높였으며, Light / Dark 모드를 지원하여 사용자 환경에 맞는 화면을 제공했습니다.
-  
-- [x] 디자인 커스터마이징
-- [x] UX 개선 아이디어 적용
-- [x] 예외 처리 강화 (빈 상태, 입력 검증 등)
-- [x] 추가 기능 구현 (명세 외)
-
----
-## 6. 트러블슈팅 (Troubleshooting)
-
-
-
-### 6-1. (삭제 초기화 기능 충돌)
-
-- 증상: 삭제. 초기화 기능 충돌
-        삭제 기능을 실행 시 초기화 기능이 함께 동작하는 버그가 발생
-        초기화 안내 모달에서 Enter키를 입력할 경우 화면에 null텍스트가 생성되는 문제
-- 원인: 삭제 모달과 초기화 모달이 동일한 마크업과 이벤트를 공유하면서 기능 간 충돌이 발생 
-- 해결:clonenode(true)를 사용해 모달구조를 복제
-  삭제기능& 초기화 기능의 이벤트 분리 , 각각 독립적으로 동작하도록 수정  
-- 회고:이번 경험을 통해 컴포넌트나 모달의 재사용성도 중요하지만, 공유되는 리소스가 많아질 경우 발생할 수 있는 '의도치 않은 부수 효과(Side Effect)'에 대해 깊이 고민하게 되었습니다.
-  단순히 기능을 구현하는 것에 그치지 않고, 이벤트 발생 지점과 DOM 구조가 예상대로 동작하는지 검증하는 것이 얼마나 중요한지 깨달았습니다.
-  앞으로는 초기 기획 단계에서 공통 요소가 많을 경우, 이벤트 관리 전략을 더 신중하게 설계해야겠다고 다짐했습니다.
-
-### 6-2. (테마 변경 시 아이콘이 함께 변경되지 않는 문제)
-
-- 증상: 계절 테마를 변경하면 버튼의 테두리와 색상은 변경되었지만,
-        아이콘은 기본 SVG 상태로 유지되어 테마를 직관적으로 구분하기 어려움
-- 원인: CSS는 변경하고 SVG는 일반 텍스트처럼 내용을 변경할 수 없어 적용안되는 문제
-- 해결: SVG를 span으로 분리하고, JavaScript에서 테마에 맞게 아이콘을 변경하도록 수정
-- 회고:CSS는 버튼의 스타일만 변경하고 있었으며, SVG 아이콘 자체는 변경하지 않고 있었습니다.
-또한 기존 SVG 요소에 textContent나 이모지를 넣어 아이콘을 변경하려 했지만, SVG는 일반 텍스트처럼 내용을 변경할 수 없어 적용되지 않았습니다.
-
----
-## 7. 자체 평가 및 회고 (Self Review)
-
-이번 프로젝트를 통해 Git 브랜치 전략을 활용한 협업과 기능별 모듈 분리의 중요성을 경험할 수 있었다. 
-개발 과정에서는 LocalStorage를 활용한 데이터 관리, 반응형 UI 구현, 계절 테마 및 애니메이션 효과를 적용하며 JavaScript와 DOM 조작에 대한 이해를 더욱 높일 수 있었다.
-
-특히 계절 효과 구현과 테마 상태 유지, Git 병합 과정에서 다양한 문제를 경험했지만, 원인을 분석하고 해결하는 과정을 반복하며 문제 해결 능력을 키울 수 있었다.
-또한 팀원들과 지속적으로 의견을 공유하고 기능을 분담하면서 협업 능력과 코드 관리의 중요성을 배울 수 있었다.
-
-앞으로는 공통 로직을 더욱 효율적으로 관리하여 코드의 재사용성과 유지보수성을 높이고, 사용자 경험(UX)을 고려한 기능을 추가하여 프로젝트를 지속적으로 개선해 나갈 계획이다.
-
-
-### 7-1. 잘한 점
-- 협업 및 이슈 해결 능력
-- 책임감 있는 역할 수행
-- 업무 분배의 균형
-- 상호 피드백 문화
-- 사용자 중심 개발
-- Git/GitHub 브랜치 전략을 활용하여 원활한 협업 진행
-- 코드 리뷰와 피드백을 통해 기능을 지속적으로 개선
-
-### 7-2. 아쉬운 점
--주어진 가이드라인에 국한된 디자인 구성
--프로젝트 일정으로 인해 세부적인 애니메이션과 디자인 완성도를 높이지 못한 점
-
--한정적인 minify: node.js환경을 다루지 못해 전무적인 번들러 활용에 제약이 있었고 이로인해 미니파이가 원활하게 적용되지 않아 성능 최적화 점수를 충분히 올리지 못한 점 
-
-
-### 7-3. 다음에 개선할 점
-- 주도적인 디자인 기획 및 프로토타이핑
-- 프로젝트 일정으로 인해 세부적인 애니메이션과 디자인 완성도를 높이지 못한 점
-- 초기 설계 단계에서 디자인 시스템을 구축하여 일관성을 높이기
-- 성능과 접근성을 함께 고려한 개발 습관을 기르기
-- node.js 환경을  학습하여 단순히 기능을 넘어 웹성능을 극대화 할 수 있는 효율적인 환경을 구축하기
 ---
 
-## 8. 실행 방법
+## 👥 프로젝트 진행 과정
 
-### 실행 환경
+FlowDash는 **UIONE 4인 팀 프로젝트**로 시작했으며,  
+프로젝트 종료 이후 개인적으로 기능과 구조를 확장했습니다.
 
--Visual Studio Code
--Live Server Extension
+### 초기 팀 프로젝트
 
-### 실행 방법
+- 칸반 기반 Todo Dashboard
+- Todo 생성 / 수정 / 삭제
+- TODO / DOING / DONE 상태 관리
+- 검색 / 필터 / 정렬
+- 반응형 UI
+- LocalStorage 기반 데이터 저장
 
-1.프로젝트를 Visual Studio Code에서 실행한다.
-2.index.html 파일을 연다.
-3.Live Server를 실행하거나 index.html을 브라우저에서 직접 실행한다.
-4.브라우저에서 FlowDash 서비스를 이용할 수 있다.
+### 개인 확장 및 리팩터링
+
+- Firebase Authentication 적용
+- Firestore 기반 사용자별 Todo 저장
+- 로그인 상태 유지
+- 로그인 / 회원가입 UX 개선
+- Todo 만기일 기능
+- 복수 예약 알림
+- OneSignal Web Push 연동
+- Cloudflare Workers + D1 예약 알림 시스템 구축
+- Todo와 예약 알림 동기화
+- 완료 Todo의 알림 설정 비활성화
+- Light / Dark 테마 개선
+- 사계절 테마 및 SVG 아이콘 적용
+- Mobile / Touch 환경 개선
+- ARIA 및 키보드 접근성 개선
+- Lighthouse 기반 접근성 개선
+- JavaScript 모듈 구조 리팩터링
 
 ---
 
-## 9. 결론
+## 👨‍👩‍👧‍👦 초기 팀 구성
 
-이번 프로젝트를 통해 Git/GitHub를 활용한 협업 방식과 브랜치 전략의 중요성을 경험할 수 있었습니다.
+| 이름       | 주요 담당                                    |
+| ---------- | -------------------------------------------- |
+| **김나은** | HTML, CSS, Todo Modal, JavaScript, 반응형 UI |
+| 김민지     | HTML, CSS, JavaScript, 반응형 UI             |
+| 송유림     | HTML, CSS, 반응형 UI, Presentation           |
+| 박진솔     | Reset CSS, CSS, 반응형 UI                    |
 
-또한 LocalStorage를 활용한 데이터 관리, 반응형 UI 구현, 다크 모드 및 계절 테마 기능 개발, 다양한 버그 해결 과정을 통해 요구사항을 실제 코드로 구현하는 경험을 쌓을 수 있었습니다.
+---
 
-팀원들과 지속적으로 의견을 공유하고 문제를 해결하면서 협업 능력과 문제 해결 능력을 향상시킬 수 있었으며, 앞으로는 사용자 경험(UX)과 코드의 재사용성, 유지보수성을 더욱 고려한 개발을 진행하고자 합니다.
+## 🔮 개선 예정
 
-이 정도면 단순히 "느낀 점"이 아니라 프로젝트를 통해 무엇을 배우고 성장했는지가 잘 드러나서 보고서 마무리로 적합했습니다.
+- 테스트 범위 확대
+- 네트워크 오류에 대한 사용자 피드백 강화
+- 접근성 지속 개선
 
+---
