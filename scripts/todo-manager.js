@@ -3,7 +3,6 @@
  * 보드 렌더링, Firestore 데이터 동기화를 담당하는 모듈입니다.
  */
 
-import { applyFilter } from "./filter.js";
 import {
   getTodos as getFirestoreTodos,
   saveTodo as saveFirestoreTodo,
@@ -23,9 +22,7 @@ const form = document.querySelector(".modal-form");
 const titleInput = document.querySelector('.modal-input[name="task-title"]');
 const descInput = document.querySelector(".modal-textarea");
 const dueAtInput = document.querySelector("#todo-due-at");
-// const notificationSettingButton = document.querySelector(
-//   "#notification-setting-button",
-// );
+const dueAtPlaceholder = document.querySelector(".todo-due-placeholder");
 const dropdownToggle = document.querySelector(".modal-status-button");
 const dropdownItems = document.querySelectorAll(".modal-status-item");
 const priorityInputs = document.querySelectorAll(".task-priority");
@@ -79,7 +76,13 @@ function mapStatusLabelToInternal(text) {
   if (/완료|DONE/i.test(t)) return "DONE";
   return t;
 }
+function updateDueAtPlaceholder() {
+  if (!dueAtInput || !dueAtPlaceholder) return;
 
+  const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+
+  dueAtPlaceholder.hidden = !isTouchDevice || Boolean(dueAtInput.value);
+}
 /**
  * 모달 UI 상태를 '새 할 일' 작성 모드(기본값)로 초기화합니다.
  * - 입력 폼 비우기 및 기본 선택값(우선순위: 중간, 상태: 할 일) 지정
@@ -90,7 +93,7 @@ function setDefaultModalState() {
   if (descInput) descInput.value = "";
   if (dueAtInput) dueAtInput.value = "";
 
-  // updateNotificationButtonState();
+  updateDueAtPlaceholder();
 
   priorityInputs.forEach((input) => (input.checked = false));
   priorityLabels.forEach((label) => label.classList.remove("active"));
@@ -110,11 +113,7 @@ function setDefaultModalState() {
   currentSelectedStatus = "TODO";
   editingTaskId = null;
 }
-// function updateNotificationButtonState() {
-//   if (!dueAtInput || !notificationSettingButton) return;
 
-//   // notificationSettingButton.disabled = !dueAtInput.value;
-// }
 /**
  * 특정 태스크 데이터를 전달받아 모달 폼에 값을 채워 넣습니다. (수정 모드 전환용)
  * @param {object|null} task - 모달에 반영할 태스크 객체. null이면 기본 폼(등록 모드)으로 초기화합니다.
@@ -137,7 +136,7 @@ function populateModal(task) {
     dueAtInput.value = formatDateTimeLocal(task.dueAt);
   }
 
-  // updateNotificationButtonState();
+  updateDueAtPlaceholder();
   const targetPriorityValue = getPriorityValue(task.priority);
 
   priorityInputs.forEach((input) => {
@@ -1038,7 +1037,9 @@ export function initTodoManager() {
       titleInput.classList.add("input-error");
     }
   });
-  // dueAtInput?.addEventListener("change", updateNotificationButtonState);
+  dueAtInput?.addEventListener("input", updateDueAtPlaceholder);
+  dueAtInput?.addEventListener("change", updateDueAtPlaceholder);
+
   // 모달 열기
   openButton?.addEventListener("click", () => openModal());
 
@@ -1104,22 +1105,45 @@ export function initTodoManager() {
     });
   });
 
-  // 드롭다운 외부 클릭
+  // 드롭다운 제어
   document.addEventListener("click", (event) => {
     const target = event.target;
-    const isDropdownClick = target.closest(".dropdown");
+    const dropdown = target.closest(".dropdown");
 
-    if (!isDropdownClick) {
+    // 드롭다운 바깥 클릭 → 모두 닫기
+    if (!dropdown) {
       closeAllDropdowns();
       return;
     }
 
-    const dropdown = target.closest(".dropdown");
     const isItemClick = target.closest(".dropdown-item");
 
-    if (isItemClick && dropdown) {
+    // 항목 선택 → 현재 드롭다운 닫기
+    if (isItemClick) {
       dropdown.removeAttribute("open");
+      dropdown.classList.remove("is-open", "is-close");
+      return;
     }
+
+    // 현재 드롭다운을 제외한 나머지 드롭다운 닫기
+    document.querySelectorAll(".dropdown").forEach((otherDropdown) => {
+      if (otherDropdown !== dropdown) {
+        otherDropdown.removeAttribute("open");
+        otherDropdown.classList.remove("is-open", "is-close");
+      }
+    });
+  });
+
+  // 키보드 포커스가 다른 드롭다운으로 이동하면 기존 드롭다운 닫기
+  document.addEventListener("focusin", (event) => {
+    const focusedDropdown = event.target.closest(".dropdown");
+
+    document.querySelectorAll(".dropdown").forEach((dropdown) => {
+      if (dropdown !== focusedDropdown) {
+        dropdown.removeAttribute("open");
+        dropdown.classList.remove("is-open", "is-close");
+      }
+    });
   });
 
   // 상태 드롭다운 선택
