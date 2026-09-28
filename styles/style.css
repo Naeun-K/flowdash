@@ -30,32 +30,111 @@ body {
     transform: rotate(1turn);
   }
 }
+/* 로그인 / 회원가입 */
+.auth-container {
+  min-height: 100dvh;
+  padding: 32px 20px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+}
+
+.auth-container[hidden],
+.auth-error-message[hidden],
+.auth-password-toggle svg[hidden] {
+  display: none;
+}
+
+.auth-card {
+  width: min(100%, 420px);
+  padding: 40px 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: var(--color-white);
+  box-shadow: 0 16px 48px rgba(27, 36, 50, 0.1);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.auth-card h1 {
+  color: var(--theme-text);
+  font-size: clamp(2rem, 6vw, 2.7rem);
+  line-height: 1.2;
+}
+
+.auth-description {
+  padding-top: 12px;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+  padding-top: 32px;
+}
+
+.auth-input-container {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  text-align: left;
+}
+
+.auth-input-container label {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.auth-input-container input {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  outline: none;
+  background: var(--color-white);
+  color: var(--color-text-primary);
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.auth-input-container input:focus-visible {
+  border-color: var(--theme-border);
+  box-shadow: 0 0 0 3px var(--theme-focus);
+}
+
 .auth-password-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .auth-password-wrapper input {
-  width: 100%;
-  padding-right: 45px;
+  padding-right: 52px;
 }
 
 .auth-password-toggle {
   position: absolute;
   top: 50%;
-  right: 12px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
   padding: 0;
-
   border: 0;
+  border-radius: 8px;
   background: transparent;
-
+  color: var(--color-text-secondary);
   cursor: pointer;
-
   transform: translateY(-50%);
+}
+
+.auth-password-toggle:hover {
+  background: var(--color-bg-hover);
+  color: var(--theme-text);
 }
 
 .auth-password-toggle svg {
@@ -65,25 +144,18 @@ body {
 
 .auth-password-requirements {
   display: grid;
-  gap: 4px;
-
-  padding: 0;
-
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 8px 0 0;
   list-style: none;
+  text-align: left;
 }
 
 .password-requirement {
   display: flex;
   align-items: center;
   gap: 6px;
-
-  font-size: 0.75rem;
-}
-
-.password-requirement-icon {
-  width: 14px;
-
-  text-align: center;
+  font-size: 0.9rem;
 }
 
 /* 조건 미충족 */
@@ -95,6 +167,126 @@ body {
 .password-requirement.is-valid {
   color: #4f7d61;
 }
+/* 다크 테마 */
+body.dark .password-requirement {
+  color: var(--dark-text-secondary);
+}
+
+body.dark .password-requirement.is-invalid {
+  color: #ff9292;
+}
+
+body.dark .password-requirement.is-valid {
+  color: #91d4a8;
+}
+.password-requirement-icon {
+  flex: none;
+  width: 14px;
+  text-align: center;
+}
+
+.auth-error-message {
+  color: #b44747;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.auth-login-button,
+.auth-signup-button {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+
+.auth-login-button {
+  margin-top: 8px;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-button);
+  color: var(--color-white);
+}
+
+.auth-login-button:hover {
+  background: var(--theme-button-hover);
+}
+
+.auth-signup-button {
+  border: 1px solid var(--theme-border);
+  background: transparent;
+  color: var(--theme-text);
+}
+
+.auth-signup-button:hover {
+  background: var(--color-bg-hover);
+}
+
+.auth-login-button:focus-visible,
+.auth-signup-button:focus-visible,
+.auth-password-toggle:focus-visible {
+  outline: 3px solid var(--theme-border);
+  outline-offset: 2px;
+}
+
+.auth-login-button:active,
+.auth-signup-button:active {
+  transform: scale(0.98);
+}
+
+/* 밝은 계절색 버튼 */
+html[data-theme="spring"] .auth-login-button,
+html[data-theme="summer"] .auth-login-button,
+html[data-theme="autumn"] .auth-login-button,
+html[data-theme="winter"] .auth-login-button {
+  color: var(--color-text-primary);
+}
+
+/* 다크 모드 */
+body.dark .auth-card {
+  border-color: var(--dark-border);
+  background: var(--dark-bg-primary);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+}
+
+body.dark .auth-description,
+body.dark .auth-password-toggle {
+  color: var(--dark-text-secondary);
+}
+
+body.dark .auth-input-container label {
+  color: var(--dark-text-primary);
+}
+
+body.dark .auth-input-container input {
+  border-color: var(--dark-border);
+  background: var(--dark-bg-hover);
+  color: var(--dark-text-primary);
+}
+
+body.dark .auth-password-toggle:hover,
+body.dark .auth-signup-button:hover {
+  background: var(--dark-bg-hover);
+}
+
+body.dark .auth-signup-button {
+  color: var(--dark-text-primary);
+}
+
+body.dark .auth-login-button {
+  color: var(--color-white);
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 32px 22px;
+  }
+}
+
 .app-container {
   width: 100%;
   min-height: 100vh;
@@ -752,86 +944,221 @@ button {
   background: rgb(0 0 0 / 55%);
 }
 
+/* 알림 설정 모달 */
 .notification-settings-dialog {
   width: min(100%, 440px);
-  max-height: min(90vh, 720px);
+  max-height: min(90dvh, 720px);
   overflow-y: auto;
-  padding: 24px;
+
+  padding: 32px;
+  border: 1px solid #dbe2ea;
   border-radius: 16px;
-  background: var(--theme-bgc, #fff);
-  color: var(--theme-text, #222);
-  box-shadow: 0 12px 36px rgb(0 0 0 / 22%);
+  background: #fff;
+  color: #26313d;
+  box-shadow: 0 12px 36px rgb(0 0 0 / 18%);
 }
 
 .notification-settings-dialog h2 {
-  font-size: 1.35rem;
-}
-
-.notification-settings-due {
-  padding: 12px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .notification-settings-dialog h3 {
   font-size: 1rem;
+  font-weight: 600;
+}
+.notification-settings-dialog h2,
+.notification-settings-dialog h3 {
+  color: var(--theme-text);
+}
+
+.notification-settings-due {
+  padding: 20px 0;
+  color: #43546a;
+  line-height: 1.5;
 }
 
 .notification-settings-list {
   display: grid;
-  gap: 8px;
-  padding: 12px 0;
+  gap: 12px;
+  padding: 16px 0;
   list-style: none;
 }
 
 .notification-settings-list li {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  min-height: 36px;
+  min-height: 44px;
+  color: #43546a;
+  line-height: 1.5;
 }
 
 .notification-settings-form {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  padding: 12px 0;
+  color: #26313d;
 }
 
 .notification-settings-form input {
-  width: 68px;
+  width: 72px;
 }
 
 .notification-settings-form input,
-.notification-settings-form select,
-.notification-settings-dialog button {
-  min-height: 40px;
-  padding: 6px 10px;
-  border: 1px solid var(--color-border, #aaa);
+.notification-settings-form select {
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid #cbd5df;
   border-radius: 8px;
-  background: var(--color-white, #fff);
-  color: #222;
+  background: #fff;
+  color: #26313d;
+  font: inherit;
+}
+
+.notification-settings-form input:focus-visible,
+.notification-settings-form select:focus-visible,
+.notification-settings-dialog button:focus-visible {
+  outline: 2px solid #c6774d;
+  outline-offset: 2px;
 }
 
 .notification-settings-dialog button {
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 8px 16px;
+  border: 1px solid #cbd5df;
+  border-radius: 8px;
+  background: #fff;
+  color: #26313d;
+  font: inherit;
+  font-weight: 600;
   cursor: pointer;
 }
 
+.notification-settings-dialog button:hover:not(:disabled) {
+  background: #f3f6f9;
+}
+
 .notification-settings-dialog button:disabled {
-  opacity: 0.5;
-  cursor: wait;
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .notification-settings-error {
   min-height: 1.5em;
   padding-top: 8px;
   color: #b42318;
+  line-height: 1.5;
 }
 
 .notification-settings-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  padding-top: 12px;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #e5eaf0;
+}
+
+/* 하단의 마지막 버튼인 '적용' 강조 */
+.notification-settings-actions button:last-child {
+  border-color: #bd7854;
+  background: #bd7854;
+  color: #fff;
+}
+
+.notification-settings-actions button:last-child:hover:not(:disabled) {
+  background: #a96643;
+}
+
+/* 다크 테마에서도 본문과 입력값의 대비 유지 */
+body.dark .notification-settings-dialog {
+  border-color: #49515c;
+  background: #252a31;
+  color: #f2f4f7;
+}
+
+body.dark .notification-settings-dialog h2,
+body.dark .notification-settings-dialog h3 {
+  color: var(--dark-text-primary);
+}
+body.dark .notification-settings-due,
+body.dark .notification-settings-list li,
+body.dark .notification-settings-form {
+  color: var(--dark-text-secondary);
+}
+
+body.dark .notification-settings-form input,
+body.dark .notification-settings-form select,
+body.dark .notification-settings-dialog button {
+  border-color: #697482;
+  background: #343b45;
+  color: #f2f4f7;
+}
+
+body.dark .notification-settings-dialog button:hover:not(:disabled) {
+  background: #46505c;
+}
+
+body.dark .notification-settings-actions {
+  border-top-color: #49515c;
+}
+
+body.dark .notification-settings-actions button:last-child {
+  border-color: #d38b63;
+  background: #c77d55;
+  color: #fff;
+}
+
+body.dark
+  .notification-settings-actions
+  button:last-child:hover:not(:disabled) {
+  background: #b66d46;
+}
+
+@media (max-width: 480px) {
+  .notification-settings-dialog {
+    padding: 24px 20px;
+  }
+
+  .notification-settings-form {
+    gap: 8px;
+  }
+}
+@media (max-width: 480px) {
+  .notification-settings-dialog {
+    width: min(100%, 440px);
+    padding: 24px 16px;
+  }
+
+  .notification-settings-form {
+    flex-wrap: nowrap;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .notification-settings-form input {
+    flex: 0 0 58px;
+    width: 58px;
+    min-width: 0;
+    padding-inline: 6px;
+  }
+
+  .notification-settings-form select {
+    flex: 0 0 68px;
+    width: 68px;
+    min-width: 0;
+    padding-inline: 6px;
+  }
+
+  .notification-settings-form button {
+    flex: 0 0 auto;
+    padding-inline: 10px;
+  }
 }
 .logout-button:hover {
   border-color: var(--theme-button);
@@ -1314,18 +1641,23 @@ button {
 }
 .modal-close-button {
   display: flex;
-  padding: 12.56px 16px 13.65px 16px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--color-text-secondary);
-  border: none;
-  background-color: var(--color-white);
+
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid #cbd5df;
+  border-radius: 8px;
+  background: #fff;
+  color: #26313d;
+  font: inherit;
+  font-weight: 600;
 }
 .modal-submit-button {
   border: none;
   display: flex;
-  padding: 12px 24px;
+  padding: 10px 20px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -1336,10 +1668,81 @@ button {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
+.modal-close-button,
+.modal-submit-button {
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.modal-close-button:hover:not(:disabled) {
+  background: #f3f6f9;
+}
+
+.modal-submit-button:hover:not(:disabled) {
+  background-color: var(--theme-button-hover);
+}
+
+.modal-close-button:focus-visible,
+.modal-submit-button:focus-visible {
+  outline: 2px solid var(--theme-button);
+  outline-offset: 3px;
+}
+
+.modal-close-button:disabled,
+.modal-submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.todo-due-input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.todo-due-clear-button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.todo-due-clear-button[hidden] {
+  display: none;
+}
+
+/* 달력 버튼의 클릭 영역 확대 */
+.todo-due-input::-webkit-calendar-picker-indicator {
+  width: 24px;
+  height: 24px;
+  padding: 8px;
+  margin-right: 0;
+  cursor: pointer;
+}
+/* 다크 테마: 기본 달력 아이콘과 팝업 색상 */
+:root body.dark .todo-due-input {
+  color-scheme: dark;
+}
+.input-help {
+  color: var(--color-text-secondary);
+}
+:root body.dark .input-help {
+  color: var(--dark-text-secondary);
+}
 .theme-setting-modal {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 99;
 
   display: flex;
   align-items: center;
@@ -1735,6 +2138,12 @@ button {
   font-size: 14.4px;
   font-weight: 400;
   line-height: 21.6px;
+}
+
+.notification-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }
 .two-update-time-container {
   display: flex;
@@ -2492,6 +2901,7 @@ body.dark .null-data {
     flex-direction: column;
     gap: 8px;
   }
+
   .container {
     padding: 44px 10px 0 10px;
   }

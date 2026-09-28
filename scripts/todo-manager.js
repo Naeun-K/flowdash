@@ -13,7 +13,7 @@ import {
 import {
   openNotificationSettings,
   recalculateNotifications,
-} from "./notification-setting.js";
+} from "./utils/notification-setting.js";
 
 // --- DOM 요소 선택 ---
 const modal = document.querySelector(".new-task-modal");
