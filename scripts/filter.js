@@ -288,6 +288,13 @@ export function initFilterAndSort() {
 
     if (savedPeriodItem) {
       periodButton.childNodes[0].textContent = `${savedPeriodItem.textContent.trim()} `;
+
+      periodItems.forEach((item) => {
+        item.setAttribute(
+          "aria-selected",
+          String(item.dataset.value === selectedPeriod),
+        );
+      });
     }
   }
 
@@ -303,6 +310,13 @@ export function initFilterAndSort() {
 
     if (savedPriorityItem) {
       priorityButton.childNodes[0].textContent = `${savedPriorityItem.textContent.trim()} `;
+
+      priorityItems.forEach((item) => {
+        item.setAttribute(
+          "aria-selected",
+          String(item.dataset.value === selectedPriority),
+        );
+      });
     }
   }
 
@@ -330,6 +344,11 @@ export function initFilterAndSort() {
     item.addEventListener("click", () => {
       selectedPeriod = item.dataset.value;
 
+      // 선택된 항목의 접근성 상태 갱신
+      periodItems.forEach((option) => {
+        option.setAttribute("aria-selected", String(option === item));
+      });
+
       if (periodButton?.childNodes[0]) {
         periodButton.childNodes[0].textContent = `${item.textContent.trim()} `;
       }
@@ -344,12 +363,30 @@ export function initFilterAndSort() {
     item.addEventListener("click", () => {
       selectedPriority = item.dataset.value;
 
+      // 선택된 항목의 접근성 상태 갱신
+      priorityItems.forEach((option) => {
+        option.setAttribute("aria-selected", String(option === item));
+      });
+
       if (priorityButton?.childNodes[0]) {
         priorityButton.childNodes[0].textContent = `${item.textContent.trim()} `;
       }
 
       saveSettingsToStorage();
       applyFilter();
+    });
+  });
+
+  // 드롭다운 항목 키보드 선택
+  [...periodItems, ...priorityItems].forEach((item) => {
+    item.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      event.preventDefault();
+
+      // 기존 click 이벤트를 실행하여
+      // 선택값 변경 → 저장 → 필터 적용까지 동일하게 처리
+      item.click();
     });
   });
 
