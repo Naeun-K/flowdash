@@ -12,7 +12,7 @@
   --color-white: #fff;
   --color-text-primary: #1b2432;
   --color-text-secondary: #5c6f8a;
-  --color-text-muted: #98a4b3;
+  --color-text-muted: #5c6f8a;
   --color-border: #e0e5eb;
   --color-bg-hover: #f8fafc;
 
@@ -25,6 +25,8 @@
 
   /* 기본 테마 */
   --theme-text: #5f42f0;
+  --theme-on-button: #fff;
+  --theme-nav-text: #fff;
   --theme-button-hover: #5f42f0;
   --theme-button: #4b32c3;
   --theme-border: #4b32c3;
@@ -47,7 +49,9 @@ html[data-theme="spring"] {
   --theme-border: #dc9fad;
   --theme-bgc: linear-gradient(#ffffff, #fff3f8);
   --theme-button-hover: #d38798;
-  --theme-text: #d38798;
+  --theme-text: #98445d;
+  --theme-on-button: #1b2432;
+  --theme-nav-text: #fff;
   --theme-focus: rgba(229, 183, 193, 0.3);
 }
 
@@ -58,6 +62,8 @@ html[data-theme="spring"] body.dark {
   --theme-nav: #383239;
   --theme-button-hover: #c78993;
   --theme-text: #e98ec0;
+  --theme-on-button: #1b2432;
+  --theme-nav-text: #1b2432;
   --theme-focus: #ffd6e3;
 }
 
@@ -69,7 +75,9 @@ html[data-theme="summer"] {
   --theme-border: #2cacad;
   --theme-bgc: linear-gradient(#fff, #edf8fb);
   --theme-button-hover: #2cacad;
-  --theme-text: #4a90e2;
+  --theme-text: #206595;
+  --theme-on-button: #1b2432;
+  --theme-nav-text: #fff;
   --theme-focus: #d9f5f0;
 }
 
@@ -79,6 +87,8 @@ html[data-theme="summer"] body.dark {
   --theme-bgc-dark: #121821;
   --theme-button-hover: #425b71;
   --theme-text: #8ee7e7;
+  --theme-on-button: #fff;
+  --theme-nav-text: #1b2432;
   --theme-nav: #0a1d2e;
   --theme-focus: #b5d6e0;
 }
@@ -91,7 +101,9 @@ html[data-theme="autumn"] {
   --theme-border: #ca9174;
   --theme-bgc: linear-gradient(#fff, #e9d0c6);
   --theme-button-hover: #ca9174;
-  --theme-text: #b86c45;
+  --theme-text: #895034;
+  --theme-on-button: #1b2432;
+  --theme-nav-text: #fff;
   --theme-focus: #eddad1;
 }
 
@@ -101,7 +113,9 @@ html[data-theme="autumn"] body.dark {
   --theme-bgc-dark: #232222;
   --theme-nav: #e5effd;
   --theme-button-hover: #9b6e34;
-  --theme-text: #b77751;
+  --theme-text: #eab59a;
+  --theme-on-button: #fff;
+  --theme-nav-text: #1b2432;
   --theme-focus: #ac7015;
 }
 
@@ -114,6 +128,8 @@ html[data-theme="winter"] {
   --theme-bgc: linear-gradient(#fff, #deeefd);
   --theme-button-hover: #a2c4c9;
   --theme-text: #46679c;
+  --theme-on-button: #1b2432;
+  --theme-nav-text: #fff;
   --theme-focus: #d0e0e3;
 }
 
@@ -122,7 +138,9 @@ html[data-theme="winter"] body.dark {
   --theme-border: #76a5af;
   --theme-bgc-dark: #14181c;
   --theme-button-hover: #76a5af;
-  --theme-text: #415a77;
+  --theme-text: #a9c5ea;
+  --theme-on-button: #1b2432;
+  --theme-nav-text: #1b2432;
   --theme-nav: #e5effd;
   --theme-focus: #dce6f3;
 }
